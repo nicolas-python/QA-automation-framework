@@ -1,9 +1,11 @@
-from gui import start_gui
+from gui import QA_GUI
 
 
 def main():
     print("QA Automation Framework gestartet")
-    start_gui()
+    app = QA_GUI()
+    app.start()
+
 
 
 if __name__ == "__main__":

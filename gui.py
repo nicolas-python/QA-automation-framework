@@ -1,22 +1,29 @@
 import tkinter as tk
 
 
-def start_gui():
-    window = tk.Tk()
+class QA_GUI:
 
-    window.title("QA Automation Framework")
-    window.geometry("400x200")
+    def __init__(self):
+        self.window = tk.Tk()
 
-    label = tk.Label(window,text="Webseite testen:")
-    label.pack(pady=10)
+        self.window.title("QA Automation Framework")
+        self.window.geometry("400x200")
 
-    url_entry = tk.Entry(window,width=40)
-    url_entry.pack()
+        self.label = tk.Label(self.window,text="Webseite testen:")
+        self.label.pack(pady=10)
 
-    button = tk.Button(window,text="Test starten",command = button_clicked)
-    button.pack(pady=20)
+        self.url_entry = tk.Entry(self.window,width=40)
+        self.url_entry.pack()
 
-    window.mainloop()
+        self.button = tk.Button(self.window,text="Test starten",command=self.button_clicked)
+        self.button.pack(pady=20)
 
-def button_clicked():
-    print("Button clicked")
+    def button_clicked(self):
+        url = self.url_entry.get()
+        print("Button clicked")
+        print("Teste URL:", url)
+
+
+    def start(self):
+        self.window.mainloop()
+
