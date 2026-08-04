@@ -7,7 +7,7 @@ class QA_GUI:
         self.window = tk.Tk()
 
         self.window.title("QA Automation Framework")
-        self.window.geometry("400x200")
+        self.window.geometry("400x350")
 
         self.label = tk.Label(self.window,text="Webseite testen:")
         self.label.pack(pady=10)
@@ -18,8 +18,14 @@ class QA_GUI:
         self.button = tk.Button(self.window,text="Test starten",command=self.button_clicked)
         self.button.pack(pady=20)
 
+        self.url_listbox = tk.Listbox(self.window, width=50, height=5)
+        self.url_listbox.pack(pady=10)
+
         self.url_button = tk.Button(self.window,text="Gespeicherte URLs laden",command=self.load_saved_urls)
         self.url_button.pack(pady=10)
+
+        self.load_button = tk.Button(self.window,text="URLs laden",command=self.load_saved_urls)
+        self.load_button.pack()
 
     def button_clicked(self):
         url = self.url_entry.get()
@@ -29,8 +35,7 @@ class QA_GUI:
     def load_saved_urls(self):
         urls = load_urls()
 
-        for url in urls:
-            print(url)
+        for url in urls:self.url_listbox.insert(tk.END,url)
 
     def start(self):
         self.window.mainloop()
