@@ -13,10 +13,10 @@ def start_gui():
     url_entry = tk.Entry(window,width=40)
     url_entry.pack()
 
-    button = tk.Button(window,text="Test starten")
-    print("Button clicked")
+    button = tk.Button(window,text="Test starten",command = button_clicked)
     button.pack(pady=20)
 
     window.mainloop()
 
-start_gui()
+def button_clicked():
+    print("Button clicked")
