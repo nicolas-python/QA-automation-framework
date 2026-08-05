@@ -1,5 +1,5 @@
 import tkinter as tk
-from url_manager import load_urls
+from url_manager import load_urls, save_url
 
 class QA_GUI:
 
@@ -17,6 +17,9 @@ class QA_GUI:
 
         self.button = tk.Button(self.window,text="Test starten",command=self.button_clicked)
         self.button.pack(pady=20)
+
+        self.save_button = tk.Button(self.window,text="URL speichern",command=self.save_url)
+        self.save_button.pack(pady=10)
 
         self.url_listbox = tk.Listbox(self.window, width=50, height=5)
         self.url_listbox.pack(pady=10)
@@ -39,6 +42,16 @@ class QA_GUI:
 
         for url in urls:
             self.url_listbox.insert(tk.END,url)
+
+    def save_url(self):
+        url = self.url_entry.get()
+
+        if url:
+            save_url(url)
+            print("URL gespeichert:", url)
+
+        else:
+            print("Keine URL eingegeben")
 
     def select_url(self):
         selection = self.url_listbox.curselection()
