@@ -30,7 +30,7 @@ class QA_GUI:
         self.delete_button = tk.Button(self.window,text="URL löschen",command=self.delete_selected_url)
         self.delete_button.pack(padx=10)
 
-        self.load_button = tk.Button(self.window,text="URLs laden",command=self.select_url)
+        self.load_button = tk.Button(self.window,text="URLs laden",command=self.load_selected_url)
         self.load_button.pack()
 
     def button_clicked(self):
@@ -69,12 +69,14 @@ class QA_GUI:
         else:
             print("Keine URL eingegeben")
 
-    def select_url(self):
+    def load_selected_url(self):
         selection = self.url_listbox.curselection()
 
         if selection:
             selected_url = self.url_listbox.get(selection[0])
-            print("Ausgewählte URL:", selected_url)
+            self.url_entry.delete(0, tk.END)
+            self.url_entry.insert(0, selected_url)
+            print("URL geladen:", selected_url)
 
         else:
             print("Keine URL ausgewählt")
