@@ -24,7 +24,7 @@ class QA_GUI:
         self.url_button = tk.Button(self.window,text="Gespeicherte URLs laden",command=self.load_saved_urls)
         self.url_button.pack(pady=10)
 
-        self.load_button = tk.Button(self.window,text="URLs laden",command=self.load_saved_urls)
+        self.load_button = tk.Button(self.window,text="URLs laden",command=self.select_url)
         self.load_button.pack()
 
     def button_clicked(self):
@@ -33,9 +33,16 @@ class QA_GUI:
         print("Teste URL:", url)
 
     def load_saved_urls(self):
+        self.url_listbox.delete(0, tk.END)
+
         urls = load_urls()
 
-        for url in urls:self.url_listbox.insert(tk.END,url)
+        for url in urls:
+            self.url_listbox.insert(tk.END,url)
+
+    def select_url(self):
+        selected_url = self.url_listbox.get(self.url_listbox.curselection())
+        print("Ausgewählte URL:", selected_url)
 
     def start(self):
         self.window.mainloop()
