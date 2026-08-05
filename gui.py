@@ -1,5 +1,5 @@
 import tkinter as tk
-from url_manager import load_urls, save_url
+from url_manager import load_urls, save_url, delete_url
 
 class QA_GUI:
 
@@ -20,6 +20,9 @@ class QA_GUI:
 
         self.save_button = tk.Button(self.window,text="URL speichern",command=self.save_url)
         self.save_button.pack(pady=10)
+
+        self.delete_button = tk.Button(self.window,text="URL löschen",command=self.delete_selected_url)
+        self.delete_button.pack(pady=10)
 
         self.url_listbox = tk.Listbox(self.window, width=50, height=5)
         self.url_listbox.pack(pady=10)
@@ -42,6 +45,18 @@ class QA_GUI:
 
         for url in urls:
             self.url_listbox.insert(tk.END,url)
+
+    def delete_selected_url(self):
+        selection = self.url_listbox.curselection()
+
+        if selection:
+            url = self.url_listbox.get(selection[0])
+            delete_url(url)
+            self.load_saved_urls()
+            print("URL gelöscht:", url)
+
+        else:
+            print("Keine URL ausgewählt")
 
     def save_url(self):
         url = self.url_entry.get()
