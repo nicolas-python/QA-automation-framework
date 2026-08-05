@@ -49,6 +49,7 @@ class QA_GUI:
         if url:
             save_url(url)
             print("URL gespeichert:", url)
+            self.url_entry.delete(0, tk.END)
 
         else:
             print("Keine URL eingegeben")
