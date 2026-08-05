@@ -16,19 +16,19 @@ class QA_GUI:
         self.url_entry.pack()
 
         self.button = tk.Button(self.window,text="Test starten",command=self.button_clicked)
-        self.button.pack(pady=20)
+        self.button.pack(pady=10)
 
         self.save_button = tk.Button(self.window,text="URL speichern",command=self.save_url)
-        self.save_button.pack(pady=10)
+        self.save_button.pack(padx=10)
 
-        self.delete_button = tk.Button(self.window,text="URL löschen",command=self.delete_selected_url)
-        self.delete_button.pack(pady=10)
+        self.url_button = tk.Button(self.window, text="Gespeicherte URLs laden", command=self.load_saved_urls)
+        self.url_button.pack(pady=10)
 
         self.url_listbox = tk.Listbox(self.window, width=50, height=5)
         self.url_listbox.pack(pady=10)
 
-        self.url_button = tk.Button(self.window,text="Gespeicherte URLs laden",command=self.load_saved_urls)
-        self.url_button.pack(pady=10)
+        self.delete_button = tk.Button(self.window,text="URL löschen",command=self.delete_selected_url)
+        self.delete_button.pack(padx=10)
 
         self.load_button = tk.Button(self.window,text="URLs laden",command=self.select_url)
         self.load_button.pack()
