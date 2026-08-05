@@ -41,8 +41,14 @@ class QA_GUI:
             self.url_listbox.insert(tk.END,url)
 
     def select_url(self):
-        selected_url = self.url_listbox.get(self.url_listbox.curselection())
-        print("Ausgewählte URL:", selected_url)
+        selection = self.url_listbox.curselection()
+
+        if selection:
+            selected_url = self.url_listbox.get(selection[0])
+            print("Ausgewählte URL:", selected_url)
+
+        else:
+            print("Keine URL ausgewählt")
 
     def start(self):
         self.window.mainloop()
