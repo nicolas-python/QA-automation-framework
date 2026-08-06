@@ -53,7 +53,6 @@ class QA_GUI:
             url = self.url_listbox.get(selection[0])
             delete_url(url)
             self.load_saved_urls()
-            print("URL gelöscht:", url)
 
         else:
             print("Keine URL ausgewählt")
@@ -63,7 +62,6 @@ class QA_GUI:
 
         if url:
             save_url(url)
-            print("URL gespeichert:", url)
             self.url_entry.delete(0, tk.END)
 
         else:
@@ -76,7 +74,6 @@ class QA_GUI:
             selected_url = self.url_listbox.get(selection[0])
             self.url_entry.delete(0, tk.END)
             self.url_entry.insert(0, selected_url)
-            print("URL geladen:", selected_url)
 
         else:
             print("Keine URL ausgewählt")
