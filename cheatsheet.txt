@@ -1,0 +1,38 @@
+HTTP Status Codes
+
+200 - OK
+     Anfrage erfolgreich, Webseite erreichbar
+
+301 - Moved Permanently
+     Dauerhafte Weiterleitung
+
+302 - Found
+     Temporäre Weiterleitung
+
+400 - Bad Request
+     Fehlerhafte Anfrage
+
+401 - Unauthorized
+     Anmeldung erforderlich
+
+403 - Forbidden
+     Zugriff verweigert
+
+404 - Not Found
+     Seite nicht gefunden
+
+500 - Internal Server Error
+     Serverfehler
+
+502 - Bad Gateway
+     Fehler zwischen Servern
+
+503 - Service Unavailable
+     Dienst nicht verfügbar
+
+
+QA Test Bewertung:
+
+200 = PASS
+400-499 = Client Fehler
+500-599 = Server Fehler
