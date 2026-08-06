@@ -1,5 +1,6 @@
 import tkinter as tk
 from url_manager import load_urls, save_url, delete_url
+from test_runner import run_test
 
 class QA_GUI:
 
@@ -35,8 +36,7 @@ class QA_GUI:
 
     def button_clicked(self):
         url = self.url_entry.get()
-        print("Button clicked")
-        print("Teste URL:", url)
+        run_test(url)
 
     def load_saved_urls(self):
         self.url_listbox.delete(0, tk.END)
