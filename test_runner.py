@@ -11,7 +11,22 @@ def run_test(url):
         end = time.time()
 
         print("URL:", url)
-        print("Status:", response.status_code)
+
+        if 200 <= response.status_code < 300:
+            print("Status: PASS")
+
+        elif 300 <= response.status_code < 400:
+            print("Status: REDIRECT")
+
+        elif 400 <= response.status_code < 500:
+            print("Status: FAIL - Client Fehler")
+
+        elif 500 <= response.status_code < 600:
+            print("Status: FAIL - Server Fehler")
+
+        else:
+            print("Status: Unbekannter Status")
+
         print("Antwortzeit:", round(end - start, 2), "Sekunden")                # round(..., 2) rundet auf 2 Nachkommastellen
 
     except requests.exceptions.RequestException:
