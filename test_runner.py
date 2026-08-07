@@ -6,7 +6,7 @@ def run_test(url):
     start = time.time()                 #time.time() aus dem time Modul gibt die aktuelle Zeit in Sekunden zurück.
 
     try:
-        response = requests.get(url)
+        response = requests.get(url, timeout=10)
 
         end = time.time()
 
