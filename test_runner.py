@@ -12,9 +12,12 @@ def run_test(url):
         response = requests.get(url, timeout=10)
         final_url = urlparse(response.url)
 
+        start_domain = parsed_url.hostname.removeprefix("www.")
+        final_domain = final_url.hostname.removeprefix("www.")
+
         print("URL:", url)
 
-        if parsed_url.hostname == final_url.hostname:               #hostname gibt den Hostnamen der URL zurück
+        if start_domain == final_domain:         #hostname gibt den Hostnamen der URL zurück
             print("Domain: PASS")
         else:
             print("Domain: WARNING - different domain")
