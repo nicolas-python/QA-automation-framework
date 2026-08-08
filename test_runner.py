@@ -38,6 +38,8 @@ def run_test(url):
         else:
             print("Performance: FAIL")
 
+    except requests.exceptions.Timeout:
+        print("Timeout: Anfrage dauerte länger als 10 Sekunden")
     except requests.exceptions.RequestException:
         print("Website nicht erreichbar")
         return

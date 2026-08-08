@@ -60,7 +60,7 @@ QA Test Bewertung:
    - Antwortzeit bewerten
 
 
-3. Timeout
+3. Timeout✅
    Verhindert, dass der Test unendlich wartet.
 
    Prüfen:
