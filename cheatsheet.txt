@@ -52,7 +52,7 @@ QA Test Bewertung:
    - 5xx = Server Fehler
 
 
-2. Antwortzeit / Performance
+2. Antwortzeit / Performance✅
    Eine erreichbare Webseite kann trotzdem zu langsam sein.
 
    Prüfen:

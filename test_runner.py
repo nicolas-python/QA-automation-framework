@@ -27,8 +27,18 @@ def run_test(url):
         else:
             print("Status: Unbekannter Status")
 
-        print("Antwortzeit:", round(end - start, 2), "Sekunden")                # round(..., 2) rundet auf 2 Nachkommastellen
+        response_time = round(end - start, 2)               # round(..., 2) rundet auf 2 Nachkommastellen
+
+        if response_time < 2:
+            print("Performance: PASS")
+
+        elif response_time <= 3:
+            print("Performance: WARNING SLOW")
+
+        else:
+            print("Performance: FAIL")
 
     except requests.exceptions.RequestException:
         print("Website nicht erreichbar")
         return
+
