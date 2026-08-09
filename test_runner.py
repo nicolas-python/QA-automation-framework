@@ -52,6 +52,8 @@ def run_test(url):
 
     except requests.exceptions.Timeout:
         print("Timeout: Anfrage dauerte länger als 10 Sekunden")
+    except requests.exceptions.TooManyRedirects:
+        print("Redirect: FAIL - too many redirects")
     except requests.exceptions.RequestException:
         print("Website nicht erreichbar")
         return

@@ -68,7 +68,7 @@ QA Test Bewertung:
    - Fehler bei Zeitüberschreitung erkennen
 
 
-4. HTTPS
+4. HTTPS✅
    Ohne HTTPS könnten Daten theoretisch im Netzwerk mitgelesen werden.
    HTTP = Daten werden nicht verschlüsselt übertragen
    HTTPS = Daten werden verschlüsselt übertragen
