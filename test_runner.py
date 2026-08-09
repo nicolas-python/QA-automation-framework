@@ -1,6 +1,8 @@
 import  requests                        #Requests zum Prüfen von Webseiten und APIs per HTTP-Anfragen,urls prüfen und Serverantworten auszulesen
 import time
 from urllib.parse import urlparse       #urlparse zum Zerlegen und Auslesen von Bestandteilen einer URL
+import ssl                              #SSL/TLS = Transport Layer Security, sorgt für verschlüsselte Verbindungen und Zertifikatsprüfung
+import socket                           #für eine direkte Netzwerkverbindung zum Server
 
 
 
@@ -8,8 +10,20 @@ def run_test(url):
     start = time.time()                 #time.time() aus dem time Modul gibt die aktuelle Zeit in Sekunden zurück.
 
     try:
-        parsed_url = urlparse(url)      #parsed_url  zerlegt die komplette URL
+        parsed_url = urlparse(url)      #parsed_url  zerlegt die komplette
+
+        hostname = parsed_url.hostname
+        context = ssl.create_default_context()                          #erstellt die Standard-TLS-Einstellungen für die Zertifikatsprüfung
+
+        with socket.create_connection((hostname, 443), timeout=10) as sock:             #port 443 standartsgemäß für https
+            with context.wrap_socket(sock, server_hostname=hostname) as connection:             #wrap_socket = daraus eine TLS-Verbindung machen
+                certificate = connection.getpeercert()                  #getpeercert()=Zertifikat des Servers holen
+
         response = requests.get(url, timeout=10)
+
+        print(certificate)
+        print("SSL/TLS: PASS")
+
         final_url = urlparse(response.url)
 
         start_domain = parsed_url.hostname.removeprefix("www.")
@@ -54,6 +68,8 @@ def run_test(url):
         print("Timeout: Anfrage dauerte länger als 10 Sekunden")
     except requests.exceptions.TooManyRedirects:
         print("Redirect: FAIL - too many redirects")
+    except requests.exceptions.SSLError:
+        print("SSL/TLS: FAIL - certificate error")
     except requests.exceptions.RequestException:
         print("Website nicht erreichbar")
         return

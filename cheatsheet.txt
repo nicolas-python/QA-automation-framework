@@ -90,6 +90,18 @@ QA Test Bewertung:
    - Ablaufdatum prüfen
    - Zertifikat abgelaufen?
 
+           https://google.com/test
+            │       │          │
+            │       │          └─ Pfad
+            │       └──────────── Hostname
+            └─────────────────── Schema
+            HTTPS verwendet standardmäßig Port 443.
+            HTTP verwendet standardmäßig Port 80.
+
+            Hostname:
+            Der Hostname identifiziert den Server bzw. die Domain,
+            mit der die TLS-Verbindung aufgebaut wird.
+
 
 6. Content Check
    Eine Seite kann erreichbar sein, aber falschen Inhalt anzeigen.
