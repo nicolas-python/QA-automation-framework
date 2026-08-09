@@ -26,9 +26,9 @@ def run_test(url):
 
         current_date = datetime.now()
         if expiration_date > current_date:
-            print("Certificate: PASS")
+            print("Certificate: PASS - gültig bis:", expiration_date)
         else:
-            print("Certificate: FAIL - expired")
+            print("Certificate: FAIL - expired", expiration_date)
 
 
         response = requests.get(url, timeout=10)
@@ -39,43 +39,46 @@ def run_test(url):
         final_domain = final_url.hostname.removeprefix("www.")
 
         if start_domain == final_domain:         #hostname gibt den Hostnamen der URL zurück
-            print("Domain: PASS")
+            print("Domain: PASS -", start_domain, "→", final_domain)
         else:
-            print("Domain: WARNING - different domain")
+            print("Domain: WARNING - different domain", start_domain, "→", final_domain)
 
         if response.url.startswith("https://"):
-            print("HTTPS: PASS")
+            print("HTTPS: PASS -", response.url)
         else:
-            print("HTTPS: FAIL")
+            print("HTTPS: FAIL", response.url)
 
         end = time.time()
 
         if 200 <= response.status_code < 300:
-            print("Status: PASS")
+            print("Status: PASS -", response.status_code)
         elif 300 <= response.status_code < 400:
-            print("Status: REDIRECT")
+            print("Status: REDIRECT", response.status_code)
         elif 400 <= response.status_code < 500:
-            print("Status: FAIL - Client Fehler")
+            print("Status: FAIL - Client Fehler", response.status_code)
         elif 500 <= response.status_code < 600:
-            print("Status: FAIL - Server Fehler")
+            print("Status: FAIL - Server Fehler", response.status_code)
         else:
-            print("Status: Unbekannter Status")
+            print("Status: Unbekannter Status", response.status_code)
 
         response_time = round(end - start, 2)               # round(..., 2) rundet auf 2 Nachkommastellen
 
         if response_time < 2:
-            print("Performance: PASS")
+            print("Performance: PASS -", response_time, "Sekunden")
         elif response_time <= 3:
-            print("Performance: WARNING SLOW")
+            print("Performance: WARNING SLOW -", response_time, "Sekunden")
         else:
-            print("Performance: FAIL")
+            print("Performance: FAIL -", response_time, "Sekunden")
+
 
 
     except requests.exceptions.Timeout:
         print("Timeout: Anfrage dauerte länger als 10 Sekunden")
     except requests.exceptions.TooManyRedirects:
         print("Redirect: FAIL - too many redirects")
-    except requests.exceptions.SSLError:
+    except ssl.SSLCertVerificationError:                     #fängt Zertifikatsfehler bei der direkten SSL/TLS-Verbindung mit socket ab
+        print("SSL/TLS: FAIL - certificate error")
+    except requests.exceptions.SSLError:                     #fängt SSL/TLS-Fehler ab, die bei requests auftreten
         print("SSL/TLS: FAIL - certificate error")
     except requests.exceptions.RequestException:
         print("Website nicht erreichbar")
