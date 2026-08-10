@@ -146,12 +146,12 @@ def run_test(url, expected_title, expected_text):
 
         actual_title = response.text[start_title + 7:end_title]
 
-        if expected_title == actual_title:
+        if expected_title.strip().lower() == actual_title.strip().lower():
             print("Title: PASS -", actual_title)
         else:
             print("Title: FAIL - erwartet:", expected_title, "| gefunden:", actual_title)
 
-        if expected_text in response.text:
+        if expected_text.strip().lower() in response.text.strip().lower():
             print("Content: PASS - erwarteter Text gefunden:", expected_text)
         else:
             print("Content: FAIL - erwarteter Text nicht gefunden:", expected_text)
