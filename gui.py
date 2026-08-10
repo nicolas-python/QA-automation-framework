@@ -18,6 +18,7 @@ class QA_GUI:
 
         self.button = tk.Button(self.window,text="Test starten",command=self.button_clicked)
         self.button.pack(pady=10)
+        self.window.bind("<Return>", lambda event: self.button_clicked())
 
         self.save_button = tk.Button(self.window,text="URL speichern",command=self.save_url)
         self.save_button.pack(padx=10)
@@ -47,7 +48,8 @@ class QA_GUI:
         expected_text_entry = tk.Entry(content_window, font=("Arial", 14))
         expected_text_entry.pack(pady=5)
 
-        tk.Button(content_window,text="Test starten",command=lambda: self.button_start(content_window, expected_title_entry.get(), expected_text_entry.get())).pack(pady=5)
+        tk.Button(content_window,text="Test starten",command=lambda: self.button_start(content_window, expected_title_entry.get(), expected_text_entry.get())).pack(pady=5)     #Maus
+        content_window.bind("<Return>", lambda event: self.button_start(content_window,expected_title_entry.get(),expected_text_entry.get()))                                   #Entertaste
 
     def button_start(self, content_window, expected_title, expected_text):
         url = self.url_entry.get()
