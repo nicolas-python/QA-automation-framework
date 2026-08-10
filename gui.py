@@ -35,6 +35,21 @@ class QA_GUI:
         self.load_button.pack()
 
     def button_clicked(self):
+        content_window = tk.Toplevel()
+        content_window.title("Content Check")
+        content_window.geometry("400x250")
+
+        tk.Label(content_window, text="Erwarteter Titel:", font=("Arial", 10)).pack(pady=5)
+        expected_title_entry = tk.Entry(content_window, font=("Arial", 14))
+        expected_title_entry.pack(pady=5)
+
+        tk.Label(content_window, text="Erwarteter Text:", font=("Arial", 10)).pack(pady=5)
+        expected_text_entry = tk.Entry(content_window, font=("Arial", 14))
+        expected_text_entry.pack(pady=5)
+
+        tk.Button(content_window,text="Test starten", command=self.button_start).pack(pady=5)
+
+    def button_start(self):
         url = self.url_entry.get()
         run_test(url)
 
