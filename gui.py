@@ -47,11 +47,11 @@ class QA_GUI:
         expected_text_entry = tk.Entry(content_window, font=("Arial", 14))
         expected_text_entry.pack(pady=5)
 
-        tk.Button(content_window,text="Test starten", command=self.button_start).pack(pady=5)
+        tk.Button(content_window,text="Test starten",command=lambda: self.button_start(expected_title_entry.get(),expected_text_entry.get())).pack(pady=5)
 
-    def button_start(self):
+    def button_start(self, expected_title, expected_text):
         url = self.url_entry.get()
-        run_test(url)
+        run_test(url, expected_title, expected_text)
 
     def load_saved_urls(self):
         self.url_listbox.delete(0, tk.END)

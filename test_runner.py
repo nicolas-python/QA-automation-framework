@@ -5,7 +5,7 @@ import ssl                              #SSL/TLS = Transport Layer Security, sor
 import socket                           #für eine direkte Netzwerkverbindung zum Server
 from datetime import datetime           #datetime zum Erstellen, Umwandeln und Vergleichen von Datum und Uhrzeit
 
-def run_test(url):
+def run_test(url, expected_title, expected_text):
     print("URL:", url)
 
 
@@ -135,3 +135,26 @@ def run_test(url):
 
     except Exception as error:
         print("Performance: FAIL - konnte nicht geprüft werden: ", error)
+
+
+# --------------------------------------------------
+# Content Check
+# --------------------------------------------------
+    try:
+        start_title = response.text.find("<title>")                 #speichert position nicht titel
+        end_title = response.text.find("</title>")
+
+        actual_title = response.text[start_title + 7:end_title]
+
+        if expected_title == actual_title:
+            print("Title: PASS -", actual_title)
+        else:
+            print("Title: FAIL - erwartet:", expected_title, "| gefunden:", actual_title)
+
+        if expected_text in response.text:
+            print("Content: PASS - erwarteter Text gefunden:", expected_text)
+        else:
+            print("Content: FAIL - erwarteter Text nicht gefunden:", expected_text)
+
+    except Exception as error:
+        print("Content Check: FAIL - konnte nicht geprüft werden:", error)

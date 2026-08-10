@@ -112,6 +112,14 @@ QA Test Bewertung:
    - Richtige Seite geladen?
 
 
+               <title>Google</title>
+                   ↑       ↑
+                   |       |
+                   |       end_title
+                   |
+                   start_title + 7
+
+
 7. Broken Links
    Verhindert tote Links auf Webseiten.
 
