@@ -8,6 +8,41 @@ from datetime import datetime           #datetime zum Erstellen, Umwandeln und V
 def run_test(url):
     print("URL:", url)
 
+
+# --------------------------------------------------
+# HTTP-Anfrage
+# --------------------------------------------------
+    try:
+        start = time.time()
+        response = requests.get(url, timeout=10)
+        end = time.time()
+
+    except requests.exceptions.Timeout as error:
+        print("Timeout: Anfrage dauerte länger als 10 Sekunden", error)
+
+    except requests.exceptions.TooManyRedirects as error:
+        print("Redirect: FAIL - too many redirects", error)
+
+    except requests.exceptions.SSLError as error:
+        print("Request: FAIL - SSL/TLS certificate error", error)
+
+    except requests.exceptions.RequestException as error:
+        print("Website nicht erreichbar", error)
+
+
+# --------------------------------------------------
+# HTTPS
+# --------------------------------------------------
+    try:
+        if response.url.startswith("https://"):
+            print("HTTPS: PASS -", response.url)
+        else:
+            print("HTTPS: FAIL", response.url)
+
+    except Exception as error:
+        print("HTTPS: FAIL - konnte nicht geprüft werden: ", error)
+
+
 # --------------------------------------------------
 # SSL/TLS + Zertifikat
 # --------------------------------------------------
@@ -41,25 +76,6 @@ def run_test(url):
     except ConnectionRefusedError as error:  # fängt Fehler ab, wenn der Server die Verbindung ablehnt
         print("SSL/TLS: FAIL - connection refused:", error)
 
-# --------------------------------------------------
-# HTTP-Anfrage
-# --------------------------------------------------
-    try:
-        start = time.time()
-        response = requests.get(url, timeout=10)
-        end = time.time()
-
-    except requests.exceptions.Timeout as error:
-        print("Timeout: Anfrage dauerte länger als 10 Sekunden", error)
-
-    except requests.exceptions.TooManyRedirects as error:
-        print("Redirect: FAIL - too many redirects", error)
-
-    except requests.exceptions.SSLError as error:
-        print("Request: FAIL - SSL/TLS certificate error", error)
-
-    except requests.exceptions.RequestException as error:
-        print("Website nicht erreichbar", error)
 
 # --------------------------------------------------
 # Domain
@@ -77,19 +93,6 @@ def run_test(url):
 
     except Exception as error:                                                     #fängt Fehler innerhalb dieses try-Blocks ab und führt danach den nächsten Code aus
         print("Domain: FAIL - konnte nicht geprüft werden: ", error)
-
-
-# --------------------------------------------------
-# HTTPS
-# --------------------------------------------------
-    try:
-        if response.url.startswith("https://"):
-            print("HTTPS: PASS -", response.url)
-        else:
-            print("HTTPS: FAIL", response.url)
-
-    except Exception as error:
-        print("HTTPS: FAIL - konnte nicht geprüft werden: ", error)
 
 
 # --------------------------------------------------
