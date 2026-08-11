@@ -79,7 +79,7 @@ QA Test Bewertung:
    - Weiterleitungsfehler
 
 
-5. SSL/TLS Zertifikat
+5. SSL/TLS Zertifikat✅
    Das Zertifikat bestätigt, dass die Webseite zu der angegebenen Domain gehört.
    Domain = Eine lesbare Adresse einer Webseite ,die Domain wird über DNS(Domain Name System) in eine IP-Adresse(Technische Adresse eines Servers oder Gerätes) umgewandelt, damit der Server gefunden werden kann.
    SSL = Secure Sockets Layer
@@ -103,13 +103,12 @@ QA Test Bewertung:
             mit der die TLS-Verbindung aufgebaut wird.
 
 
-6. Content Check
+6. Content Check✅
    Eine Seite kann erreichbar sein, aber falschen Inhalt anzeigen.
 
    Prüfen:
    - Erwarteter Text vorhanden?
    - Richtiger Titel?
-   - Richtige Seite geladen?
 
 
                <title>Google</title>
@@ -127,6 +126,23 @@ QA Test Bewertung:
    - Alle Links testen
    - 404 Seiten finden
 
+    r'href=["\'](.*?)["\'] sucht im HTML nach href-Attributen und gibt den Inhalt zwischen den Anführungszeichen zurück, also z. B. den Pfad oder die URL eines Links
+
+    r' href= ["\'] (.*?) ["\'] '
+   │      │       │       │
+   │      │       │       └─ schließendes " oder '
+   │      │       └───────── Inhalt des Links erfassen
+   │      └───────────────── öffnendes " oder '
+   └──────────────────────── href= suchen
+
+    r(Raw String) = damit behandelt Python Backslashes im String nicht auf die normale Art. Bei Regex(modul re) ist das praktisch, weil man Suchmuster dadurch einfacher schreiben kann
+    href= Das ist das HTML-Attribut, in dem ein Link gespeichert wird z.b <a href="/about">
+    ["\']=Nach href= muss entweder ein doppeltes oder ein einfaches Anführungszeichen kommen.
+
+(.*?) = () → markieren den Teil, den wir aus dem Treffer herauslesen wollen.
+        . → steht für ein beliebiges Zeichen.
+        * → bedeutet null oder beliebig viele dieser Zeichen.
+        ? → macht die Suche „lazy“: Es wird so wenig wie möglich erfasst, bis das nächste passende Anführungszeichen gefunden wird.
 
 8. Bilder / Dateien
    Prüft, ob alle Ressourcen geladen werden.

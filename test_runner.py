@@ -4,6 +4,7 @@ from urllib.parse import urlparse       #urlparse zum Zerlegen und Auslesen von 
 import ssl                              #SSL/TLS = Transport Layer Security, sorgt für verschlüsselte Verbindungen und Zertifikatsprüfung
 import socket                           #für eine direkte Netzwerkverbindung zum Server
 from datetime import datetime           #datetime zum Erstellen, Umwandeln und Vergleichen von Datum und Uhrzeit
+import re                               #Regular Expressions= Suchmuster für Text
 
 def run_test(url, expected_title, expected_text):
     print("URL:", url)
@@ -158,3 +159,18 @@ def run_test(url, expected_title, expected_text):
 
     except Exception as error:
         print("Content Check: FAIL - konnte nicht geprüft werden:", error)
+
+
+# --------------------------------------------------
+# Broken Links
+# --------------------------------------------------
+    print("Broken Links Check gestartet")
+
+    try:
+        links = re.findall(r'href=["\'](.*?)["\']', response.text)          #re.findall(...) =Der durchsucht response.text nach Stellen wie:
+                                                                                   #r'href=["\'](.*?)["\']' = sucht href-Attribute und liest den Inhalt zwischen den Anführungszeichen aus
+        for link in links:
+            print("Link gefunden:", link)
+
+    except Exception as error:
+        print("Broken Links: FAIL - konnte Links nicht finden:", error)
