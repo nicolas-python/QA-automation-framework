@@ -144,6 +144,18 @@ QA Test Bewertung:
         * → bedeutet null oder beliebig viele dieser Zeichen.
         ? → macht die Suche „lazy“: Es wird so wenig wie möglich erfasst, bis das nächste passende Anführungszeichen gefunden wird.
 
+        links prüfen und ausorteiren da sonst zu viele
+                        ↓
+                Was steht am Anfang?
+               ↓
+            #          → Anker → überspringen
+            javascript: → JavaScript → überspringen
+            mailto:     → E-Mail → überspringen
+            leer        → kein Ziel → überspringen
+            /abo/       → normaler relativer Link → behalten
+            https://... → normale URL → behalten
+
+
 8. Bilder / Dateien
    Prüft, ob alle Ressourcen geladen werden.
 
