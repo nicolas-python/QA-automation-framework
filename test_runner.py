@@ -167,20 +167,24 @@ def run_test(url, expected_title, expected_text):
     try:
         links = re.findall(r'href=["\'](.*?)["\']', response.text)          #re.findall(...) =Der durchsucht response.text nach Stellen wie:
                                                                                    #r'href=["\'](.*?)["\']' = sucht href-Attribute und liest den Inhalt zwischen den Anführungszeichen aus
-        for link in links:
-            if link.startswith("#"):
-                continue
+        if not links:
+            print("Keine Links gefunden")
 
-            if link.startswith("javascript:"):
-                continue
+        else:
+            for link in links:
+                if link.startswith("#"):
+                    continue
 
-            if link.startswith("mailto:"):
-                continue
+                if link.startswith("javascript:"):
+                    continue
 
-            if link == "":
-                continue
+                if link.startswith("mailto:"):
+                    continue
 
-            print("Link gefunden:", link)
+                if link == "":
+                    continue
+
+                print("Link gefunden:", link)
 
     except Exception as error:
         print("Broken Links: FAIL - konnte Links nicht finden:", error)
