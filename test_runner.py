@@ -1,6 +1,7 @@
 import  requests                        #Requests zum Prüfen von Webseiten und APIs per HTTP-Anfragen,urls prüfen und Serverantworten auszulesen
 import time
 from urllib.parse import urlparse       #urlparse zum Zerlegen und Auslesen von Bestandteilen einer URL
+from urllib.parse import urljoin        #setzt einen relativen Link mit der Ausgangs-URL zu einer vollständigen URL zusammen
 import ssl                              #SSL/TLS = Transport Layer Security, sorgt für verschlüsselte Verbindungen und Zertifikatsprüfung
 import socket                           #für eine direkte Netzwerkverbindung zum Server
 from datetime import datetime           #datetime zum Erstellen, Umwandeln und Vergleichen von Datum und Uhrzeit
@@ -184,7 +185,15 @@ def run_test(url, expected_title, expected_text):
                 if link == "":
                     continue
 
-                print("Link gefunden:", link)
+                full_url = urljoin(response.url, link)                          #setzt relative Links zur vollständigen URL zusammen.
+                print("Link gefunden:", full_url)
+
+                try:
+                    link_response = requests.get(full_url, timeout=10)
+                    print("Link:", full_url, "- Status:", link_response.status_code)
+
+                except requests.RequestException as error:
+                    print("Link:", full_url, "- FAIL:", error)
 
     except Exception as error:
         print("Broken Links: FAIL - konnte Links nicht finden:", error)
