@@ -165,6 +165,9 @@ def run_test(url, expected_title, expected_text):
 # --------------------------------------------------
 # Broken Links
 # --------------------------------------------------
+    passed_links = []
+    failed_links = []
+
     try:
         links = re.findall(r'href=["\'](.*?)["\']', response.text)          #re.findall(...) =Der durchsucht response.text nach Stellen wie:
                                                                                    #r'href=["\'](.*?)["\']' = sucht href-Attribute und liest den Inhalt zwischen den Anführungszeichen aus
@@ -172,6 +175,8 @@ def run_test(url, expected_title, expected_text):
             print("Keine Links gefunden")
 
         else:
+            filtered_links = []
+
             for link in links:
                 if link.startswith("#"):
                     continue
@@ -185,15 +190,35 @@ def run_test(url, expected_title, expected_text):
                 if link == "":
                     continue
 
-                full_url = urljoin(response.url, link)                          #setzt relative Links zur vollständigen URL zusammen.
-                print("Link gefunden:", full_url)
+                full_url = urljoin(response.url, link)                          #setzt relative Links zur vollständigen URL zusammen
+
+                if full_url not in filtered_links:
+                    filtered_links.append(full_url)
+
+            links = filtered_links                      #bereinigte Liste wird zur Prüfliste keine doppelten mehr
+            for full_url in links:
 
                 try:
                     link_response = requests.get(full_url, timeout=10)
-                    print("Link:", full_url, "- Status:", link_response.status_code)
 
-                except requests.RequestException as error:
-                    print("Link:", full_url, "- FAIL:", error)
+                    if link_response.status_code < 400:
+                        passed_links.append(full_url)
+                    else:
+                        failed_links.append(full_url)
+
+                except requests.RequestException:
+                    failed_links.append(full_url)
+
+                #fortschrittszeile
+                print(f"\rBroken Links: Prüfe Links... {len(passed_links) + len(failed_links)}/{len(links)}", end="")       #\r= innerhalb der aktuellen Zeile wieder an den Anfang
+                                                                                                                            #end ="" = kein zeilenburch, der Cursor in derselben Zeile
+            #Zeilenumbruch nach der Fortschrittsanzeige
+            print()
+
+            print(f"Broken Links: {len(passed_links)} PASS - {len(failed_links)} FAIL")
+
+            for link in failed_links:
+                print("FAIL:", link)
 
     except Exception as error:
         print("Broken Links: FAIL - konnte Links nicht finden:", error)
