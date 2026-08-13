@@ -237,8 +237,6 @@ def run_test(url, expected_title, expected_text):
             print("Keine Bilder gefunden")
 
         else:
-            print("Bilder gefunden")
-
             filtered_images = []
 
             for image in images:
@@ -255,7 +253,9 @@ def run_test(url, expected_title, expected_text):
                 try:
                     image_response = requests.get(full_url, timeout=10)
 
-                    if image_response.status_code < 400:
+                    content_type = image_response.headers.get("Content-Type", "")        #.headers = enthält Zusatzinformationen zur HTTP-Antwort = Content-Type: image/png
+
+                    if image_response.status_code < 400 and content_type.startswith("image/"):
                         passed_images.append(full_url)
                     else:
                         failed_images.append(full_url)

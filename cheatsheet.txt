@@ -156,7 +156,7 @@ QA Test Bewertung:
             https://... → normale URL → behalten
 
 
-8. Bilder / Dateien
+8. Bilder / Dateien✅
    Prüft, ob alle Ressourcen geladen werden.
 
    Prüfen:
