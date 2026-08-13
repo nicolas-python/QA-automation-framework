@@ -275,3 +275,37 @@ def run_test(url, expected_title, expected_text):
 
     except Exception as error:
         print("Images: FAIL - konnte Bilder nicht prüfen:", error)
+
+
+# --------------------------------------------------
+# HTML / Struktur
+# --------------------------------------------------
+    try:
+        h1 = re.findall(r"<h1[^>]*>(.*?)</h1>", response.text, re.IGNORECASE | re.DOTALL)       #re.IGNORECASE = Ignoriert Groß-/Kleinschreibung
+        h2 = re.findall(r"<h2[^>]*>(.*?)</h2>", response.text, re.IGNORECASE | re.DOTALL)       #re.DOTALL =sorgt dafür dass . auch Zeilenumbrüche erfasst
+        h3 = re.findall(r"<h3[^>]*>(.*?)</h3>", response.text, re.IGNORECASE | re.DOTALL)
+
+        h1 = list(set(h1))
+        h2 = list(set(h2))
+        h3 = list(set(h3))
+
+        #h1
+        if not h1:
+            print("H1: FAIL - keine H1 gefunden")
+        else:
+            print(f"H1: PASS - {len(h1)} gefunden")
+
+        #h2
+        if not h2:
+            print("H2: FAIL - keine H2 gefunden")
+        else:
+            print(f"H2: PASS - {len(h2)} gefunden")
+
+        #h3
+        if not h3:
+            print("H3: FAIL - keine H3 gefunden")
+        else:
+            print(f"H3: PASS - {len(h3)} gefunden")
+
+    except Exception as error:
+        print("HTML/Struktur: FAIL - konnte nicht prüfen:", error)

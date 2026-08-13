@@ -169,9 +169,8 @@ QA Test Bewertung:
    Prüft grundlegende Webseitenqualität.
 
    Prüfen:
-   - Titel vorhanden
-   - H1 vorhanden
-   - Meta Informationen
+   - Titel vorhanden/H1/H2... vorhanden
+   - Meta Informationen (kurze Beschreibung einer Webseite)
 
 
 10. Browser Tests
