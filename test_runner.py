@@ -227,15 +227,51 @@ def run_test(url, expected_title, expected_text):
 # --------------------------------------------------
 # Bilder / Dateien
 # --------------------------------------------------
+    passed_images = []
+    failed_images = []
 
     try:
         images = re.findall(r'<img[^>]+src=["\'](.*?)["\']', response.text)
 
         if not images:
             print("Keine Bilder gefunden")
+
         else:
             print("Bilder gefunden")
 
+            filtered_images = []
+
+            for image in images:
+
+                full_url = urljoin(response.url, image)
+
+                if full_url not in filtered_images:
+                    filtered_images.append(full_url)
+
+            images = filtered_images
+
+            for full_url in images:
+
+                try:
+                    image_response = requests.get(full_url, timeout=10)
+
+                    if image_response.status_code < 400:
+                        passed_images.append(full_url)
+                    else:
+                        failed_images.append(full_url)
+
+                except requests.RequestException:
+                    failed_images.append(full_url)
+
+
+                print(f"\rBilder: Prüfe Bilder... {len(passed_images) + len(failed_images)}/{len(images)}", end="")
+
+            print()
+
+            print(f"Bilder: {len(passed_images)} PASS - {len(failed_images)} FAIL")
+
+            for image in failed_images:
+                print("FAIL:", image)
 
     except Exception as error:
-        print("Images: FAIL - konnte Bilder nicht finden:", error)
+        print("Images: FAIL - konnte Bilder nicht prüfen:", error)
