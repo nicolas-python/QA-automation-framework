@@ -222,3 +222,20 @@ def run_test(url, expected_title, expected_text):
 
     except Exception as error:
         print("Broken Links: FAIL - konnte Links nicht finden:", error)
+
+
+# --------------------------------------------------
+# Bilder / Dateien
+# --------------------------------------------------
+
+    try:
+        images = re.findall(r'<img[^>]+src=["\'](.*?)["\']', response.text)
+
+        if not images:
+            print("Keine Bilder gefunden")
+        else:
+            print("Bilder gefunden")
+
+
+    except Exception as error:
+        print("Images: FAIL - konnte Bilder nicht finden:", error)
