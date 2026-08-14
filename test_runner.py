@@ -289,7 +289,16 @@ def run_test(url, expected_title, expected_text):
             if text not in headings_by_level[level]:
                 headings_by_level[level].append(text)
 
-        print(headings_by_level)
+        print()
+        print("HTML / Struktur:")
+        print("  Überschriften:")
+        if not headings_by_level["h1"]:
+            print("     H1: FAIL - keine H1 gefunden")
+        else:
+            print(f"    H1: PASS - {len(headings_by_level['h1'])} gefunden")
+
+        for level in ["h2", "h3", "h4", "h5", "h6"]:
+            print(f"    {level.upper()}: INFO - {len(headings_by_level[level])} gefunden")
 
     except Exception as error:
         print("HTML/Struktur: FAIL - konnte nicht prüfen:", error)
