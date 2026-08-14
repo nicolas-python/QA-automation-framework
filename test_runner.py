@@ -286,7 +286,8 @@ def run_test(url, expected_title, expected_text):
         headings_by_level = {"h1": [],"h2": [],"h3": [],"h4": [],"h5": [],"h6": []}
 
         for level, text in headings:
-            headings_by_level[level].append(text)
+            if text not in headings_by_level[level]:
+                headings_by_level[level].append(text)
 
         print(headings_by_level)
 
