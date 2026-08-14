@@ -20,29 +20,37 @@ def run_test(url, expected_title, expected_text):
         end = time.time()
 
     except requests.exceptions.Timeout as error:
-        print("Timeout: Anfrage dauerte länger als 10 Sekunden", error)
+        print("HTTP-Anfrage")
+        print("  Timeout: Anfrage dauerte länger als 10 Sekunden", error)
 
     except requests.exceptions.TooManyRedirects as error:
-        print("Redirect: FAIL - too many redirects", error)
+        print("HTTP-Anfrage")
+        print("  Redirect: FAIL - too many redirects", error)
 
     except requests.exceptions.SSLError as error:
-        print("Request: FAIL - SSL/TLS certificate error", error)
+        print("HTTP-Anfrage")
+        print("  Request: FAIL - SSL/TLS certificate error", error)
 
     except requests.exceptions.RequestException as error:
-        print("Website nicht erreichbar", error)
+        print("HTTP-Anfrage")
+        print("  Website nicht erreichbar", error)
 
 
 # --------------------------------------------------
 # HTTPS
 # --------------------------------------------------
     try:
+        print()
+        print("HTTPS Prüfung")
+
         if response.url.startswith("https://"):
-            print("HTTPS: PASS -", response.url)
+            print("  HTTPS: PASS -", response.url)
         else:
-            print("HTTPS: FAIL", response.url)
+            print("  HTTPS: FAIL", response.url)
 
     except Exception as error:
-        print("HTTPS: FAIL - konnte nicht geprüft werden: ", error)
+        print("HTTPS Prüfung")
+        print("  HTTPS: FAIL - konnte nicht geprüft werden: ", error)
 
 
 # --------------------------------------------------
@@ -57,7 +65,10 @@ def run_test(url, expected_title, expected_text):
         with socket.create_connection((hostname, 443), timeout=10) as sock:             #Port 443 = Standardport für HTTPS
             with context.wrap_socket(sock, server_hostname=hostname) as connection:      #wrap_socket = daraus eine TLS-Verbindung machen
                 certificate = connection.getpeercert()                                  #getpeercert() = Zertifikat des Servers holen
-        print("SSL/TLS: PASS")
+
+        print()
+        print("SSL/TLS Prüfung")
+        print("  SSL/TLS: PASS")
 
         expiration_date = certificate["notAfter"]                   #notAfter = Datum, bis zu dem das Zertifikat gültig ist
         expiration_date = datetime.strptime(expiration_date,"%b %d %H:%M:%S %Y %Z")     #wandelt den Text des Ablaufdatums in ein datetime-Objekt um
@@ -65,18 +76,21 @@ def run_test(url, expected_title, expected_text):
         current_date = datetime.now()
 
         if expiration_date > current_date:
-            print("Certificate: PASS - gültig bis:", expiration_date)
+            print("  Certificate: PASS - gültig bis:", expiration_date)
         else:
-            print("Certificate: FAIL - expired", expiration_date)
+            print("  Certificate: FAIL - expired", expiration_date)
 
     except ssl.SSLCertVerificationError:        #fängt Zertifikatsfehler bei der direkten SSL/TLS-Verbindung mit socket ab
-        print("SSL/TLS: FAIL - certificate error")
+        print("SSL/TLS Prüfung")
+        print("  SSL/TLS: FAIL - certificate error")
 
     except requests.exceptions.SSLError:        #fängt SSL/TLS-Fehler ab, die bei requests auftreten
-        print("SSL/TLS: FAIL - certificate error")
+        print("SSL/TLS Prüfung")
+        print("  SSL/TLS: FAIL - certificate error")
 
     except ConnectionRefusedError as error:  # fängt Fehler ab, wenn der Server die Verbindung ablehnt
-        print("SSL/TLS: FAIL - connection refused:", error)
+        print("SSL/TLS Prüfung")
+        print("  SSL/TLS: FAIL - connection refused:", error)
 
 
 # --------------------------------------------------
@@ -88,36 +102,44 @@ def run_test(url, expected_title, expected_text):
         start_domain = parsed_url.hostname.removeprefix("www.")
         final_domain = final_url.hostname.removeprefix("www.")
 
+        print()
+        print("Domain Prüfung")
+
         if start_domain == final_domain:         #hostname gibt den Hostnamen der URL zurück
-            print("Domain: PASS -", start_domain, "→", final_domain)
+            print("  Domain: PASS -", start_domain, "→", final_domain)
         else:
-            print("Domain: WARNING - different domain", start_domain, "→", final_domain)
+            print("  Domain: WARNING - different domain", start_domain, "→", final_domain)
 
     except Exception as error:                                                     #fängt Fehler innerhalb dieses try-Blocks ab und führt danach den nächsten Code aus
-        print("Domain: FAIL - konnte nicht geprüft werden: ", error)
+        print("Domain Prüfung")
+        print("  Domain: FAIL - konnte nicht geprüft werden: ", error)
 
 
 # --------------------------------------------------
 # Status
 # --------------------------------------------------
     try:
+        print()
+        print("Status Prüfung")
+
         if 200 <= response.status_code < 300:
-            print("Status: PASS -", response.status_code)
+            print("  Status: PASS -", response.status_code)
 
         elif 300 <= response.status_code < 400:
-            print("Status: REDIRECT", response.status_code)
+            print("  Status: REDIRECT", response.status_code)
 
         elif 400 <= response.status_code < 500:
-            print("Status: FAIL - Client Fehler", response.status_code)
+            print("  Status: FAIL - Client Fehler", response.status_code)
 
         elif 500 <= response.status_code < 600:
-            print("Status: FAIL - Server Fehler", response.status_code)
+            print("  Status: FAIL - Server Fehler", response.status_code)
 
         else:
-            print("Status: Unbekannter Status", response.status_code)
+            print("  Status: Unbekannter Status", response.status_code)
 
     except Exception as error:
-        print("Status: FAIL - konnte nicht geprüft werden: ", error)
+        print("Status Prüfung")
+        print("  Status: FAIL - konnte nicht geprüft werden: ", error)
 
 
 # --------------------------------------------------
@@ -126,17 +148,21 @@ def run_test(url, expected_title, expected_text):
     try:
         response_time = round(end - start, 2)       #round(..., 2) rundet auf 2 Nachkommastellen
 
+        print()
+        print("Performance Prüfung")
+
         if response_time < 2:
-            print("Performance: PASS -", response_time, "Sekunden")
+            print("  Ladezeit: PASS -", response_time, "Sekunden")
 
         elif response_time <= 3:
-            print("Performance: WARNING -", response_time, "Sekunden")
+            print("  Ladezeit: WARNING -", response_time, "Sekunden")
 
         else:
-            print("Performance: FAIL -", response_time, "Sekunden")
+            print("  Ladezeit: FAIL -", response_time, "Sekunden")
 
     except Exception as error:
-        print("Performance: FAIL - konnte nicht geprüft werden: ", error)
+        print("Performance Prüfung")
+        print("  Ladezeit: FAIL - konnte nicht geprüft werden: ", error)
 
 
 # --------------------------------------------------
@@ -148,18 +174,22 @@ def run_test(url, expected_title, expected_text):
 
         actual_title = response.text[start_title + 7:end_title]
 
+        print()
+        print("Content Check Prüfung")
+
         if expected_title.strip().lower() == actual_title.strip().lower():
-            print("Title: PASS -", actual_title)
+            print("  Title: PASS -", actual_title)
         else:
-            print("Title: FAIL - erwartet:", expected_title, "| gefunden:", actual_title)
+            print("  Title: FAIL - erwartet:", expected_title, "| gefunden:", actual_title)
 
         if expected_text.strip().lower() in response.text.strip().lower():
-            print("Content: PASS - erwarteter Text gefunden:", expected_text)
+            print("  Content: PASS - erwarteter Text gefunden:", expected_text)
         else:
-            print("Content: FAIL - erwarteter Text nicht gefunden:", expected_text)
+            print("  Content: FAIL - erwarteter Text nicht gefunden:", expected_text)
 
     except Exception as error:
-        print("Content Check: FAIL - konnte nicht geprüft werden:", error)
+        print("Content Check Prüfung")
+        print("  Content Check: FAIL - konnte nicht geprüft werden:", error)
 
 
 # --------------------------------------------------
@@ -169,10 +199,12 @@ def run_test(url, expected_title, expected_text):
     failed_links = []
 
     try:
+        print()
+        print("Broken Links Prüfung")
         links = re.findall(r'href=["\'](.*?)["\']', response.text)          #re.findall(...) =Der durchsucht response.text nach Stellen wie:
                                                                                    #r'href=["\'](.*?)["\']' = sucht href-Attribute und liest den Inhalt zwischen den Anführungszeichen aus
         if not links:
-            print("Keine Links gefunden")
+            print("  Keine Links gefunden")
 
         else:
             filtered_links = []
@@ -215,13 +247,14 @@ def run_test(url, expected_title, expected_text):
             #Zeilenumbruch nach der Fortschrittsanzeige
             print()
 
-            print(f"Broken Links: {len(passed_links)} PASS - {len(failed_links)} FAIL")
+            print(f"  Broken Links: {len(passed_links)} PASS - {len(failed_links)} FAIL")
 
             for link in failed_links:
                 print("FAIL:", link)
 
     except Exception as error:
-        print("Broken Links: FAIL - konnte Links nicht finden:", error)
+        print("Broken Links Prüfung")
+        print(" Broken Links: FAIL - konnte Links nicht finden:", error)
 
 
 # --------------------------------------------------
@@ -231,10 +264,12 @@ def run_test(url, expected_title, expected_text):
     failed_images = []
 
     try:
+        print()
+        print("Bilder / Dateien Prüfung")
         images = re.findall(r'<img[^>]+src=["\'](.*?)["\']', response.text)
 
         if not images:
-            print("Keine Bilder gefunden")
+            print("  Keine Bilder gefunden")
 
         else:
             filtered_images = []
@@ -268,13 +303,14 @@ def run_test(url, expected_title, expected_text):
 
             print()
 
-            print(f"Bilder: {len(passed_images)} PASS - {len(failed_images)} FAIL")
+            print(f"  Bilder: {len(passed_images)} PASS - {len(failed_images)} FAIL")
 
             for image in failed_images:
-                print("FAIL:", image)
+                print("  FAIL:", image)
 
     except Exception as error:
-        print("Images: FAIL - konnte Bilder nicht prüfen:", error)
+        print("Bilder / Dateien Prüfung")
+        print("  Bilder: FAIL - konnte Bilder nicht prüfen:", error)
 
 
 # --------------------------------------------------
@@ -290,7 +326,7 @@ def run_test(url, expected_title, expected_text):
                 headings_by_level[level].append(text)
 
         print()
-        print("HTML / Struktur:")
+        print("HTML / Struktur Prüfung")
         print("  Überschriften:")
         if not headings_by_level["h1"]:
             print("     H1: FAIL - keine H1 gefunden")
@@ -298,7 +334,8 @@ def run_test(url, expected_title, expected_text):
             print(f"    H1: PASS - {len(headings_by_level['h1'])} gefunden")
 
         for level in ["h2", "h3", "h4", "h5", "h6"]:
-            print(f"    {level.upper()}: INFO - {len(headings_by_level[level])} gefunden")
+            print(f"        {level.upper()}: INFO - {len(headings_by_level[level])} gefunden")
 
     except Exception as error:
-        print("HTML/Struktur: FAIL - konnte nicht prüfen:", error)
+        print("HTML / Struktur Prüfung")
+        print("  HTML/Struktur: FAIL - konnte nicht prüfen:", error)
