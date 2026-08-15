@@ -406,3 +406,19 @@ def run_test(url, expected_title, expected_text):
         print("Meta-Informationen Prüfung")
         print("  Meta-Informationen Charset: FAIL - konnte nicht geprüft werden:", error)
 
+    #viewport prüfen --> für vernünftige Darstellung auf mobilen Geräten
+    try:
+        viewport = re.search(r'<meta[^>]*name=["\']viewport["\'][^>]*content=["\'](.*?)["\']',response.text,re.IGNORECASE)
+
+        print()
+        print("  Viewport:")
+
+        if viewport:
+            viewport_value = viewport.group(1).lower()
+            print(f"    Viewport: PASS - {viewport_value}")
+        else:
+            print("    Viewport: FAIL - nicht vorhanden")
+
+    except Exception as error:
+        print("Meta-Informationen Prüfung")
+        print("  Meta-Informationen Viewport: FAIL - konnte nicht geprüft werden:", error)
