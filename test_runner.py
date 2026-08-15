@@ -49,7 +49,6 @@ def run_test(url, expected_title, expected_text):
             print("  HTTPS: FAIL", response.url)
 
     except Exception as error:
-        print("HTTPS Prüfung")
         print("  HTTPS: FAIL - konnte nicht geprüft werden: ", error)
 
 
@@ -111,7 +110,6 @@ def run_test(url, expected_title, expected_text):
             print("  Domain: WARNING - different domain", start_domain, "→", final_domain)
 
     except Exception as error:                                                     #fängt Fehler innerhalb dieses try-Blocks ab und führt danach den nächsten Code aus
-        print("Domain Prüfung")
         print("  Domain: FAIL - konnte nicht geprüft werden: ", error)
 
 
@@ -138,7 +136,6 @@ def run_test(url, expected_title, expected_text):
             print("  Status: Unbekannter Status", response.status_code)
 
     except Exception as error:
-        print("Status Prüfung")
         print("  Status: FAIL - konnte nicht geprüft werden: ", error)
 
 
@@ -161,7 +158,6 @@ def run_test(url, expected_title, expected_text):
             print("  Ladezeit: FAIL -", response_time, "Sekunden")
 
     except Exception as error:
-        print("Performance Prüfung")
         print("  Ladezeit: FAIL - konnte nicht geprüft werden: ", error)
 
 
@@ -188,7 +184,6 @@ def run_test(url, expected_title, expected_text):
             print("  Content: FAIL - erwarteter Text nicht gefunden:", expected_text)
 
     except Exception as error:
-        print("Content Check Prüfung")
         print("  Content Check: FAIL - konnte nicht geprüft werden:", error)
 
 
@@ -253,7 +248,6 @@ def run_test(url, expected_title, expected_text):
                 print("FAIL:", link)
 
     except Exception as error:
-        print("Broken Links Prüfung")
         print(" Broken Links: FAIL - konnte Links nicht finden:", error)
 
 
@@ -309,7 +303,6 @@ def run_test(url, expected_title, expected_text):
                 print("  FAIL:", image)
 
     except Exception as error:
-        print("Bilder / Dateien Prüfung")
         print("  Bilder: FAIL - konnte Bilder nicht prüfen:", error)
 
 
@@ -335,7 +328,6 @@ def run_test(url, expected_title, expected_text):
             print("    Lang: FAIL - kein Sprachattribut gefunden")
 
     except Exception as error:
-        print("HTML-Struktur Sprachprüfung")
         print("  HTML/Struktur: FAIL - konnte nicht prüfen:", error)
 
 
@@ -358,7 +350,6 @@ def run_test(url, expected_title, expected_text):
             print("  BODY: FAIL - nicht vorhanden")
 
     except Exception as error:
-        print("Grundstruktur Prüfung")
         print("  Grundstruktur: FAIL - konnte nicht geprüft werden:", error)
 
 
@@ -383,7 +374,6 @@ def run_test(url, expected_title, expected_text):
             print(f"    {level.upper()}: INFO - {len(headings_by_level[level])} gefunden")
 
     except Exception as error:
-        print("HTML-Struktur Überschrift Prüfung")
         print("  HTML/Struktur: FAIL - konnte nicht prüfen:", error)
 
 
@@ -403,7 +393,6 @@ def run_test(url, expected_title, expected_text):
             print("    Charset: FAIL - nicht vorhanden")
 
     except Exception as error:
-        print("Meta-Informationen Prüfung")
         print("  Meta-Informationen Charset: FAIL - konnte nicht geprüft werden:", error)
 
     #viewport prüfen --> für vernünftige Darstellung auf mobilen Geräten
