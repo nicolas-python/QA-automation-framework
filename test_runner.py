@@ -416,9 +416,16 @@ def run_test(url, expected_title, expected_text):
         if viewport:
             viewport_value = viewport.group(1).lower()
             print(f"    Viewport: PASS - {viewport_value}")
+
+            if "width=device-width" in viewport_value:              #device-width= Behandle die Breite der Webseite so, als wäre sie so breit wie das Gerät
+                print(f"    Mobile Darstellung: PASS - {viewport_value}")
+            else:
+                print(f"    Mobile Darstellung: FAIL - width=device-width fehlt - {viewport_value}")
+
         else:
             print("    Viewport: FAIL - nicht vorhanden")
 
     except Exception as error:
-        print("Meta-Informationen Prüfung")
         print("  Meta-Informationen Viewport: FAIL - konnte nicht geprüft werden:", error)
+
+    #description = Beschreibung der Seite für Suchmaschinen
