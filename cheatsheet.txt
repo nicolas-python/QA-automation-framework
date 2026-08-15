@@ -169,7 +169,9 @@ QA Test Bewertung:
    Prüft grundlegende Webseitenqualität.
 
    Prüfen:
+   - Sprache Attribut prüfen <html lang="de">
    - Titel vorhanden/H1/H2... vorhanden
+   - Grundstruktur <head>,<body>
    - Meta Informationen (kurze Beschreibung einer Webseite)
 
 

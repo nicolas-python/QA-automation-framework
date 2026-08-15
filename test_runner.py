@@ -314,8 +314,32 @@ def run_test(url, expected_title, expected_text):
 
 
 # --------------------------------------------------
-# HTML / Struktur
+# HTML-Struktur
 # --------------------------------------------------
+    print()
+    print("HTML-Struktur Prüfung")
+
+    #Sprachprüfung
+    try:
+        lang_names = {"de": "Deutsch","en": "Englisch","fr": "Französisch","es": "Spanisch","it": "Italienisch"}
+
+        lang = re.search(r'<html[^>]*lang=["\'](.*?)["\']', response.text, re.IGNORECASE)
+
+        print("  Sprache:")
+        if lang:
+            language_code = lang.group(1).lower()
+            language_name = lang_names.get(language_code, "Unbekannte Sprache")
+
+            print(f"    Lang: PASS - {language_code} = {language_name}")
+        else:
+            print("    Lang: FAIL - kein Sprachattribut gefunden")
+
+    except Exception as error:
+        print("HTML-Struktur Prüfung")
+        print("  HTML/Struktur: FAIL - konnte nicht prüfen:", error)
+
+
+    #Überschriften H1 check
     try:
         headings = re.findall(r"<(h[1-6])[^>]*>(.*?)</\1>",response.text,re.IGNORECASE | re.DOTALL) #re.IGNORECASE = Ignoriert Groß-/Kleinschreibung
                                                                                                            #re.DOTALL =sorgt dafür dass . auch Zeilenumbrüche erfasst
@@ -326,10 +350,9 @@ def run_test(url, expected_title, expected_text):
                 headings_by_level[level].append(text)
 
         print()
-        print("HTML / Struktur Prüfung")
         print("  Überschriften:")
         if not headings_by_level["h1"]:
-            print("     H1: FAIL - keine H1 gefunden")
+            print("    H1: FAIL - keine H1 gefunden")
         else:
             print(f"    H1: PASS - {len(headings_by_level['h1'])} gefunden")
 
@@ -337,5 +360,5 @@ def run_test(url, expected_title, expected_text):
             print(f"        {level.upper()}: INFO - {len(headings_by_level[level])} gefunden")
 
     except Exception as error:
-        print("HTML / Struktur Prüfung")
+        print("HTML-Struktur Prüfung")
         print("  HTML/Struktur: FAIL - konnte nicht prüfen:", error)
