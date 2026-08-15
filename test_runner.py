@@ -323,7 +323,7 @@ def run_test(url, expected_title, expected_text):
     try:
         lang_names = {"de": "Deutsch","en": "Englisch","fr": "Französisch","es": "Spanisch","it": "Italienisch"}
 
-        lang = re.search(r'<html[^>]*lang=["\'](.*?)["\']', response.text, re.IGNORECASE)
+        lang = re.search(r'<html[^>]*lang=["\'](.*?)["\']', response.text, re.IGNORECASE)           #re.search = sucht nach dem ersten passenden Treffer
 
         print("  Sprache:")
         if lang:
@@ -339,6 +339,29 @@ def run_test(url, expected_title, expected_text):
         print("  HTML/Struktur: FAIL - konnte nicht prüfen:", error)
 
 
+    #Grundstruktur <head>,<body>
+    try:
+        head = re.search(r"<head\b[^>]*>", response.text, re.IGNORECASE)        #\b = Wortgrenze, damit nur das Tag "head" bzw. "body" erkannt wird
+        body = re.search(r"<body\b[^>]*>", response.text, re.IGNORECASE)
+
+        print()
+        print("Grundstruktur:")
+
+        if head:
+            print("  HEAD: PASS - vorhanden")
+        else:
+            print("  HEAD: FAIL - nicht vorhanden")
+
+        if body:
+            print("  BODY: PASS - vorhanden")
+        else:
+            print("  BODY: FAIL - nicht vorhanden")
+
+    except Exception as error:
+        print("Grundstruktur Prüfung")
+        print("  Grundstruktur: FAIL - konnte nicht geprüft werden:", error)
+
+
     #Überschriften H1 check
     try:
         headings = re.findall(r"<(h[1-6])[^>]*>(.*?)</\1>",response.text,re.IGNORECASE | re.DOTALL) #re.IGNORECASE = Ignoriert Groß-/Kleinschreibung
@@ -350,15 +373,16 @@ def run_test(url, expected_title, expected_text):
                 headings_by_level[level].append(text)
 
         print()
-        print("  Überschriften:")
+        print("Überschriften:")
         if not headings_by_level["h1"]:
-            print("    H1: FAIL - keine H1 gefunden")
+            print("  H1: FAIL - keine H1 gefunden")
         else:
-            print(f"    H1: PASS - {len(headings_by_level['h1'])} gefunden")
+            print(f"  H1: PASS - {len(headings_by_level['h1'])} gefunden")
 
         for level in ["h2", "h3", "h4", "h5", "h6"]:
-            print(f"        {level.upper()}: INFO - {len(headings_by_level[level])} gefunden")
+            print(f"    {level.upper()}: INFO - {len(headings_by_level[level])} gefunden")
 
     except Exception as error:
         print("HTML-Struktur Prüfung")
         print("  HTML/Struktur: FAIL - konnte nicht prüfen:", error)
+
