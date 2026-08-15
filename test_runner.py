@@ -390,7 +390,7 @@ def run_test(url, expected_title, expected_text):
     #Meta Informationen
     #Charset prüfen --> damit Zeichen korrekt interpretiert werden
     try:
-        charset = re.search(r'<meta[^>]*charset=["\']?(.*?)["\']?[^>]*>', response.text, re.IGNORECASE)
+        charset = re.search(r'<meta[^>]*charset=["\']?([^"\'>\s]+)',response.text,re.IGNORECASE)    #[^"\'>\s]+ = mindestens ein Zeichen als Wert, dadurch wird der Wert zuverlässig ausgelesen
 
         print()
         print("Meta-Informationen Prüfung")
