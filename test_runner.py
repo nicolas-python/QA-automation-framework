@@ -335,7 +335,7 @@ def run_test(url, expected_title, expected_text):
             print("    Lang: FAIL - kein Sprachattribut gefunden")
 
     except Exception as error:
-        print("HTML-Struktur Prüfung")
+        print("HTML-Struktur Sprachprüfung")
         print("  HTML/Struktur: FAIL - konnte nicht prüfen:", error)
 
 
@@ -383,6 +383,26 @@ def run_test(url, expected_title, expected_text):
             print(f"    {level.upper()}: INFO - {len(headings_by_level[level])} gefunden")
 
     except Exception as error:
-        print("HTML-Struktur Prüfung")
+        print("HTML-Struktur Überschrift Prüfung")
         print("  HTML/Struktur: FAIL - konnte nicht prüfen:", error)
+
+
+    #Meta Informationen
+    #Charset prüfen --> damit Zeichen korrekt interpretiert werden
+    try:
+        charset = re.search(r'<meta[^>]*charset=["\']?(.*?)["\']?[^>]*>', response.text, re.IGNORECASE)
+
+        print()
+        print("Meta-Informationen Prüfung")
+        print("  Charset:")
+
+        if charset:
+            charset_value = charset.group(1).lower()
+            print(f"    Charset: PASS - {charset_value}")
+        else:
+            print("    Charset: FAIL - nicht vorhanden")
+
+    except Exception as error:
+        print("Meta-Informationen Prüfung")
+        print("  Meta-Informationen Charset: FAIL - konnte nicht geprüft werden:", error)
 

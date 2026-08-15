@@ -172,7 +172,19 @@ QA Test Bewertung:
    - Sprache Attribut prüfen <html lang="de">
    - Titel vorhanden/H1/H2... vorhanden
    - Grundstruktur <head>,<body>
-   - Meta Informationen (kurze Beschreibung einer Webseite)
+   - Meta Informationen (kurze Beschreibung einer Webseite,bei einer professionell aufgebauten Website ist eine Meta-Description normalerweise sinnvoll und üblich)
+            welche meta infos wären wichtig ?
+                (Strg + U öffnet direkt den Seitenquelltext der aktuellen Webseite)
+
+            - charset = damit Zeichen korrekt interpretiert werden
+            - viewport = für vernünftige Darstellung auf mobilen Geräten
+                         -->mobilegerade tun ja nein ?
+            - description = Beschreibung der Seite für Suchmaschinen
+            - robots = Anweisungen für Suchmaschinen-Crawler
+
+            evt ?
+            -og:title, og:image = Social-Media-Vorschauen
+            -author = Angabe des Autors sinvolle info ?
 
 
 10. Browser Tests
