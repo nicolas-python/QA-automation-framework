@@ -395,6 +395,7 @@ def run_test(url, expected_title, expected_text):
     except Exception as error:
         print("  Meta-Informationen Charset: FAIL - konnte nicht geprüft werden:", error)
 
+
     #viewport prüfen --> für vernünftige Darstellung auf mobilen Geräten
     try:
         viewport = re.search(r'<meta[^>]*name=["\']viewport["\'][^>]*content=["\'](.*?)["\']',response.text,re.IGNORECASE)
@@ -407,7 +408,7 @@ def run_test(url, expected_title, expected_text):
             print(f"    Viewport: PASS - {viewport_value}")
 
             if "width=device-width" in viewport_value:              #device-width= Behandle die Breite der Webseite so, als wäre sie so breit wie das Gerät
-                print(f"    Mobile Darstellung: PASS - {viewport_value}")
+                print(f"    Mobile Darstellung: PASS - width=device-width")
             else:
                 print(f"    Mobile Darstellung: FAIL - width=device-width fehlt - {viewport_value}")
 
@@ -417,4 +418,27 @@ def run_test(url, expected_title, expected_text):
     except Exception as error:
         print("  Meta-Informationen Viewport: FAIL - konnte nicht geprüft werden:", error)
 
+
     #description = Beschreibung der Seite für Suchmaschinen
+    try:
+        description = re.search(r'<meta[^>]*name=["\']description["\'][^>]*content=["\'](.*?)["\']',response.text,re.IGNORECASE)
+
+        print()
+        print("  Description:")
+
+        if description:
+            description_value = description.group(1).strip()
+
+            if description_value:
+                print(f"    Description: PASS - {description_value}")
+            else:
+                print("    Description: FAIL - Beschreibung ist leer")
+
+        else:
+            print("    Description: FAIL - nicht vorhanden")
+
+
+    except Exception as error:
+        print("  Meta-Informationen description: FAIL - konnte nicht geprüft werden:", error)
+    
+    #robots = Anweisungen für Suchmaschinen-Crawler

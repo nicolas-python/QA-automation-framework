@@ -165,7 +165,7 @@ QA Test Bewertung:
    - JavaScript geladen?
 
 
-9. HTML Struktur
+9. HTML Struktur✅
    Prüft grundlegende Webseitenqualität.
 
    Prüfen:
