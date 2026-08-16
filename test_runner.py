@@ -7,7 +7,7 @@ import socket                           #für eine direkte Netzwerkverbindung zu
 from datetime import datetime           #datetime zum Erstellen, Umwandeln und Vergleichen von Datum und Uhrzeit
 import re                               #Regular Expressions= Suchmuster für Text
 from playwright.sync_api import sync_playwright     #playwright für Browser-Automatisierung und Browser-Tests     #sync_playwright() startet die Schnittstelle, über die Python den Browser steuern kann
-
+from playwright.sync_api import expect              #expect zum Prüfen, ob ein erwarteter Zustand eingetreten ist(speziell für Browser-Elemente und Browser-Zustände)
 
 
 def run_test(url, expected_title, expected_text):
@@ -480,16 +480,45 @@ def run_test(url, expected_title, expected_text):
     failed_buttons = []
 
     try:
-        print("Button test")
         with sync_playwright() as p:
-            print("Playwright gestartet")
+            browser = p.chromium.launch()               #startet einen Chromium-Browser über Python
+            page = browser.new_page()                   #page= eine einzelne Browserseite bzw ein tap
+            page.goto(url)                              # öffnet die geladene URL im automatisierten Browser
+
+            #beginn des tests
+            print("  Button test:")
+            buttons = page.locator("button")            #.locator() = suche Elemente auf dieser Seite
+            filtered_buttons = []
+
+            for button in buttons.all():
+                button_name = button.inner_text().strip()
+
+                if button_name and button_name not in filtered_buttons:
+                    filtered_buttons.append(button_name)
+
+            for button_name in filtered_buttons:
+
+                try:
+                    button = page.get_by_role("button", name=button_name)
+                    button.click()   #timeout=3000
+
+                    passed_buttons.append(button_name)
+
+
+                except Exception as error:
+                    failed_buttons.append(button_name)
+                    print(f"      Fehler bei {button_name}: {error}")
+
+                print(f"\r  Buttons: Prüfe Buttons... "f"{len(passed_buttons) + len(failed_buttons)}/{len(filtered_buttons)}",end="")
+
+            print(f"    Buttons: {len(passed_buttons)} PASS - "f"{len(failed_buttons)} FAIL")
+
+            for button in failed_buttons:
+                print("    FAIL:", button)
 
 
     except Exception as error:
         print("  Browser Tests Knöpfe funktion: FAIL - konnte nicht geprüft werden:", error)
-
-
-
 
 
     #Formulare ausfüllen
