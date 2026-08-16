@@ -6,6 +6,9 @@ import ssl                              #SSL/TLS = Transport Layer Security, sor
 import socket                           #für eine direkte Netzwerkverbindung zum Server
 from datetime import datetime           #datetime zum Erstellen, Umwandeln und Vergleichen von Datum und Uhrzeit
 import re                               #Regular Expressions= Suchmuster für Text
+from playwright.sync_api import sync_playwright     #playwright für Browser-Automatisierung und Browser-Tests     #sync_playwright() startet die Schnittstelle, über die Python den Browser steuern kann
+
+
 
 def run_test(url, expected_title, expected_text):
     print("URL:", url)
@@ -462,5 +465,35 @@ def run_test(url, expected_title, expected_text):
 
     except Exception as error:
         print("  Meta-Informationen robots: FAIL - konnte nicht geprüft werden:", error)
+
+    #og:title, og:image = Social-Media-Vorschauen
+    #author = Angabe des Autors sinvolle info ?
+
+# --------------------------------------------------
+# Browser Tests
+# --------------------------------------------------
+    #Buttons klicken
+    print()
+    print("Browser Tests")
+
+    passed_buttons = []
+    failed_buttons = []
+
+    try:
+        print("Button test")
+        with sync_playwright() as p:
+            print("Playwright gestartet")
+
+
+    except Exception as error:
+        print("  Browser Tests Knöpfe funktion: FAIL - konnte nicht geprüft werden:", error)
+
+
+
+
+
+    #Formulare ausfüllen
+
+    #Login testen
 
 

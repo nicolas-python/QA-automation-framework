@@ -196,9 +196,9 @@ QA Test Bewertung:
     Testet das Verhalten aus Sicht eines Benutzers.
 
     Prüfen:
-    - Buttons klicken
-    - Formulare ausfüllen
-    - Login testen
+    - Buttons klicken    ----> PASS = Der Klick löst eine erkennbare Browser-Aktion aus
+    - Formulare ausfüllen ---> PASS = Das Formular lässt sich ausfüllen und absenden
+    - Login testen        -----> PASS = Der Login funktioniert mit gültigen Testdaten
 
 
 11. Test Report
