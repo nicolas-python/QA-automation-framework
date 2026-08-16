@@ -181,6 +181,11 @@ QA Test Bewertung:
                          -->mobilegerade tun ja nein ?
             - description = Beschreibung der Seite für Suchmaschinen
             - robots = Anweisungen für Suchmaschinen-Crawler
+                        index       → Seite darf in Suchmaschinen aufgenommen werden
+                        noindex     → Seite soll nicht in Suchmaschinen aufgenommen werden
+
+                        follow      → Suchmaschinen darf den Links auf der Seite folgen
+                        nofollow    → Suchmaschinen soll den Links nicht folgen
 
             evt ?
             -og:title, og:image = Social-Media-Vorschauen

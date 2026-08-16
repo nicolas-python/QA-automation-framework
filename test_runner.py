@@ -440,5 +440,27 @@ def run_test(url, expected_title, expected_text):
 
     except Exception as error:
         print("  Meta-Informationen description: FAIL - konnte nicht geprüft werden:", error)
-    
+
+
     #robots = Anweisungen für Suchmaschinen-Crawler
+    try:
+        robots = re.search(r'<meta[^>]*name=["\']robots["\'][^>]*content=["\'](.*?)["\']',response.text,re.IGNORECASE)
+
+        print()
+        print("  Robots:")
+
+        if robots:
+            robots_value = robots.group(1).strip()
+
+            if robots_value:
+                print(f"    Robots: PASS - {robots_value}")
+            else:
+                print("     Robots: FAIL - Wert ist leer")
+
+        else:
+            print("    Robots: FAIL - nicht vorhanden")
+
+    except Exception as error:
+        print("  Meta-Informationen robots: FAIL - konnte nicht geprüft werden:", error)
+
+
