@@ -487,30 +487,52 @@ def run_test(url, expected_title, expected_text):
 
             #beginn des tests
             print("  Button test:")
+
+            # Button-Namen einmal aus der Startseite sammeln
             buttons = page.locator("button")            #.locator() = suche Elemente auf dieser Seite
             filtered_buttons = []
 
             for button in buttons.all():
+                if not button.is_visible():
+                    continue
+
                 button_name = button.inner_text().strip()
 
                 if not button_name:
                     button_name = button.get_attribute("aria-label")
 
-                if button_name and button_name not in filtered_buttons:
-                    filtered_buttons.append(button_name)
+                if button_name and button_name not in [item[0] for item in filtered_buttons]:
+                    filtered_buttons.append((button_name, button))
 
-            for button_name in filtered_buttons:
-
+            # Buttons einzeln testen
+            for button_name, button in filtered_buttons:
                 try:
-                    button = page.get_by_role("button", name=button_name)
+                    buttons = page.locator("button")
+                    current_button = None
+
+                    for button in buttons.all():
+                        current_name = button.inner_text().strip()
+
+                        if not current_name:
+                            current_name = button.get_attribute("aria-label")
+
+                        if current_name == button_name:
+                            current_button = button
+                            break
+
+                    if current_button is None:
+                        raise Exception("Button nicht gefunden")
+
+                    #Button klicken
                     button.click(timeout=3000)
-
                     passed_buttons.append(button_name)
-
 
                 except Exception as error:
                     failed_buttons.append(button_name)
                     print(f"      Fehler bei {button_name}: {error}")
+
+                #zurück zur startseite
+                page.goto(url)              #nach jedem Button zurück zur Startseite, wichtig wegen gleicher Bedingungen
 
                 print(f"\r  Buttons: Prüfe Buttons... "f"{len(passed_buttons) + len(failed_buttons)}/{len(filtered_buttons)}",end="")
 
@@ -518,7 +540,6 @@ def run_test(url, expected_title, expected_text):
 
             for button in failed_buttons:
                 print("    FAIL:", button)
-
 
     except Exception as error:
         print("  Browser Tests Knöpfe funktion: FAIL - konnte nicht geprüft werden:", error)
