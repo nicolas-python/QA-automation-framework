@@ -493,6 +493,9 @@ def run_test(url, expected_title, expected_text):
             for button in buttons.all():
                 button_name = button.inner_text().strip()
 
+                if not button_name:
+                    button_name = button.get_attribute("aria-label")
+
                 if button_name and button_name not in filtered_buttons:
                     filtered_buttons.append(button_name)
 
@@ -500,7 +503,7 @@ def run_test(url, expected_title, expected_text):
 
                 try:
                     button = page.get_by_role("button", name=button_name)
-                    button.click()   #timeout=3000
+                    button.click(timeout=3000)
 
                     passed_buttons.append(button_name)
 
