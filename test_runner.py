@@ -510,21 +510,21 @@ def run_test(url, expected_title, expected_text):
                     buttons = page.locator("button")
                     current_button = None
 
-                    for button in buttons.all():
-                        current_name = button.inner_text().strip()
+                    for b in buttons.all():
+                        current_name = b.inner_text().strip()
 
                         if not current_name:
-                            current_name = button.get_attribute("aria-label")
+                            current_name = b.get_attribute("aria-label")
 
                         if current_name == button_name:
-                            current_button = button
+                            current_button = b
                             break
 
                     if current_button is None:
                         raise Exception("Button nicht gefunden")
 
                     #Button klicken
-                    button.click(timeout=3000)
+                    current_button.click(timeout=3000)
                     passed_buttons.append(button_name)
 
                 except Exception as error:
