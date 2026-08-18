@@ -502,10 +502,10 @@ def run_test(url, expected_title, expected_text):
                     button_name = button.get_attribute("aria-label")
 
                 if button_name and button_name not in [item[0] for item in filtered_buttons]:
-                    filtered_buttons.append((button_name, button))
+                    filtered_buttons.append(button_name)
 
             # Buttons einzeln testen
-            for button_name, button in filtered_buttons:
+            for button_name in filtered_buttons:
                 try:
                     buttons = page.locator("button")
                     current_button = None
@@ -522,6 +522,38 @@ def run_test(url, expected_title, expected_text):
 
                     if current_button is None:
                         raise Exception("Button nicht gefunden")
+
+                    #prüfen, ob der Button sichtbar ist
+                    if not current_button.is_visible():
+                        failed_buttons.append(button_name)
+                        print(f"      Button nicht sichtbar: {button_name}")
+                        page.goto(url)
+                        print("  Startseite geladen")
+                        continue
+
+                    #DEBUG: Prüfen, welches Element an der Klickposition liegt
+                    box = current_button.bounding_box()
+
+                    if box:
+                        #mittelpunkt des Buttons bestimmen
+                        x = box["x"] + box["width"] / 2
+                        y = box["y"] + box["height"] / 2
+
+                        #element ermitteln das an dieser Position die Mausereignisse erhält
+                        element = page.evaluate(                            #page.evaluate(...)=playwright führt JavaScript direkt im Browser aus
+                            """({x, y}) => {
+                                const el = document.elementFromPoint(x, y);             //welches HTML-Element befindet sich an den Koordinaten x/y ganz oben?
+                                return el ? {
+                                    tag: el.tagName,                                    //Eigenschaften des gefundenen HTML-Elements
+                                    id: el.id,
+                                    class: el.className,
+                                    text: el.innerText
+                                } : null;
+                            }""",
+                            {"x": x, "y": y}
+                        )
+
+                        print(f"\n      Klickposition von {button_name}: {element}")
 
                     #Button klicken
                     current_button.click(timeout=3000)
