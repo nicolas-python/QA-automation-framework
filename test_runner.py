@@ -532,7 +532,11 @@ def run_test(url, expected_title, expected_text):
                     print(f"      Fehler bei {button_name}: {error}")
 
                 #zurück zur startseite
-                page.goto(url)              #nach jedem Button zurück zur Startseite, wichtig wegen gleicher Bedingungen
+                try:
+                    page.goto(url)              #nach jedem Button zurück zur Startseite, wichtig wegen gleicher Bedingungen
+
+                except Exception as nav_error:
+                    print(f"      Navigation zurück fehlgeschlagen: {nav_error}")
 
                 print(f"\r  Buttons: Prüfe Buttons... "f"{len(passed_buttons) + len(failed_buttons)}/{len(filtered_buttons)}",end="")
 
