@@ -548,14 +548,22 @@ def run_test(url, expected_title, expected_text):
                                     tag: el.tagName,                                    //Eigenschaften des gefundenen HTML-Elements
                                     id: el.id,
                                     class: el.className,
-                                    text: el.innerText
-                                } : null;
+                                    text: el.innerText,
+                                    
+                                    parent_tag: el.parentElement?.tagName,              //HTML-Tag des direkten übergeordneten Elements
+                                    parent_class: el.parentElement?.className           //CSS-Klasse des übergeordneten Elements
+                                } : null;                                                //wenn kein Element gefunden wurde
                             }""",
                             {"x": x, "y": y}
                         )
 
                         print(f"\n      Klickposition von {button_name}: {element}")        # zeigt welches HTML-Element an der Klickposition ganz oben liegt und dadurch möglicherweise den Klick abfängt
-                        print(f"      Button Position: {current_button.bounding_box()}")    #zeigt wo sich der gefundene Button auf der Seite befindet.
+                        print(f"      Button Position: {current_button.bounding_box()}")    #zeigt wo sich der gefundene Button auf der Seite befindet
+
+                        print(f"      HTML von {button_name}:")                               #zeigt an, von welchem Button wir den HTML-Code ausgeben
+                        print(current_button.evaluate("el => el.outerHTML"))                  #gibt den vollständigen HTML-Code des gefundenen Buttons aus
+
+                    current_button.scroll_into_view_if_needed()    #ausschließen das die Positionierung/der Scrollzustand das Problem verursacht
                     #Button klicken
                     current_button.click(timeout=3000)
                     passed_buttons.append(button_name)
