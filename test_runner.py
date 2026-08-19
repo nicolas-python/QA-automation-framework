@@ -503,6 +503,7 @@ def run_test(url, expected_title, expected_text):
 
                 if button_name and button_name not in [item[0] for item in filtered_buttons]:
                     filtered_buttons.append(button_name)
+                    print(f"      Gefunden: {button_name}")     #zeigt welche buttons beim ersten Einsammeln tatsächlich erkannt werden
 
             # Buttons einzeln testen
             for button_name in filtered_buttons:
@@ -553,8 +554,8 @@ def run_test(url, expected_title, expected_text):
                             {"x": x, "y": y}
                         )
 
-                        print(f"\n      Klickposition von {button_name}: {element}")
-
+                        print(f"\n      Klickposition von {button_name}: {element}")        # zeigt welches HTML-Element an der Klickposition ganz oben liegt und dadurch möglicherweise den Klick abfängt
+                        print(f"      Button Position: {current_button.bounding_box()}")    #zeigt wo sich der gefundene Button auf der Seite befindet.
                     #Button klicken
                     current_button.click(timeout=3000)
                     passed_buttons.append(button_name)
