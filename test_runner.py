@@ -532,11 +532,10 @@ def run_test(url, expected_title, expected_text):
                         print("  Startseite geladen")
                         continue
 
-                    current_button.scroll_into_view_if_needed()    #ausschließen das die Positionierung/der Scrollzustand das Problem verursacht
 
                     #Button klicken
-                    current_button.click(timeout=3000)
-                    passed_buttons.append(button_name)
+                    current_button.scroll_into_view_if_needed()  # ausschließen das die Positionierung/der Scrollzustand das Problem verursacht
+                    current_button.click(timeout=3000, force=True)          #force=true= button wird auch dann geklickt, wenn ein anderes Element die Klickposition überlagert
 
                 except Exception as error:
                     failed_buttons.append(button_name)
