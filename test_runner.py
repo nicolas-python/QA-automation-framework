@@ -503,19 +503,21 @@ def run_test(url, expected_title, expected_text):
 
                 if button_name and button_name not in [item[0] for item in filtered_buttons]:
                     filtered_buttons.append(button_name)
-                    print(f"      Gefunden: {button_name}")     #zeigt welche buttons beim ersten Einsammeln tatsächlich erkannt werden
 
             # Buttons einzeln testen
             for button_name in filtered_buttons:
                 try:
+                    page.goto(url)
+
                     buttons = page.locator("button")
                     current_button = None
 
+                    #liest den sichtbaren Text des aktuellen Buttons aus
                     for b in buttons.all():
                         current_name = b.inner_text().strip()
 
                         if not current_name:
-                            current_name = b.get_attribute("aria-label")
+                            current_name = b.get_attribute("aria-label")        #Falls kein Text vorhanden ist aria-label-Attribut auslesen
 
                         if current_name == button_name:
                             current_button = b
@@ -524,18 +526,40 @@ def run_test(url, expected_title, expected_text):
                     if current_button is None:
                         raise Exception("Button nicht gefunden")
 
+                    #Wenn der Button nicht sichtbar ist versuchen ein sichtbares Menü zu öffnen
+                    if not current_button.is_visible():
+                        menu_button = page.get_by_role("button",name=re.compile(r"menü|menu|navigation",re.IGNORECASE))  #sucht nach einem Button mit der Rolle "button" dessen Name Menü, Menu oder Navigation enthält
+
+                        #nur wenn ein passender sichtbarer menü-Button vorhanden ist
+                        if menu_button.count() > 0 and menu_button.first.is_visible():
+                            menu_button.first.click(timeout=3000,force=True)
+
+                            #button nach dem Öffnen des Menüs erneut suchen
+                            buttons = page.locator("button")
+                            current_button = None
+
+                            for b in buttons.all():
+                                current_name = b.inner_text().strip()
+
+                                if not current_name:
+                                    current_name = b.get_attribute("aria-label")
+
+                                if current_name == button_name:
+                                    current_button = b
+                                    break
+
                     #prüfen, ob der Button sichtbar ist
                     if not current_button.is_visible():
                         failed_buttons.append(button_name)
-                        print(f"      Button nicht sichtbar: {button_name}")
                         page.goto(url)
-                        print("  Startseite geladen")
                         continue
 
 
                     #Button klicken
                     current_button.scroll_into_view_if_needed()  # ausschließen das die Positionierung/der Scrollzustand das Problem verursacht
                     current_button.click(timeout=3000, force=True)          #force=true= button wird auch dann geklickt, wenn ein anderes Element die Klickposition überlagert
+                    passed_buttons.append(button_name)
+
 
                 except Exception as error:
                     failed_buttons.append(button_name)
