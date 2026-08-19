@@ -532,38 +532,8 @@ def run_test(url, expected_title, expected_text):
                         print("  Startseite geladen")
                         continue
 
-                    #DEBUG: Prüfen, welches Element an der Klickposition liegt
-                    box = current_button.bounding_box()
-
-                    if box:
-                        #mittelpunkt des Buttons bestimmen
-                        x = box["x"] + box["width"] / 2
-                        y = box["y"] + box["height"] / 2
-
-                        #element ermitteln das an dieser Position die Mausereignisse erhält
-                        element = page.evaluate(                            #page.evaluate(...)=playwright führt JavaScript direkt im Browser aus
-                            """({x, y}) => {
-                                const el = document.elementFromPoint(x, y);             //welches HTML-Element befindet sich an den Koordinaten x/y ganz oben?
-                                return el ? {
-                                    tag: el.tagName,                                    //Eigenschaften des gefundenen HTML-Elements
-                                    id: el.id,
-                                    class: el.className,
-                                    text: el.innerText,
-                                    
-                                    parent_tag: el.parentElement?.tagName,              //HTML-Tag des direkten übergeordneten Elements
-                                    parent_class: el.parentElement?.className           //CSS-Klasse des übergeordneten Elements
-                                } : null;                                                //wenn kein Element gefunden wurde
-                            }""",
-                            {"x": x, "y": y}
-                        )
-
-                        print(f"\n      Klickposition von {button_name}: {element}")        # zeigt welches HTML-Element an der Klickposition ganz oben liegt und dadurch möglicherweise den Klick abfängt
-                        print(f"      Button Position: {current_button.bounding_box()}")    #zeigt wo sich der gefundene Button auf der Seite befindet
-
-                        print(f"      HTML von {button_name}:")                               #zeigt an, von welchem Button wir den HTML-Code ausgeben
-                        print(current_button.evaluate("el => el.outerHTML"))                  #gibt den vollständigen HTML-Code des gefundenen Buttons aus
-
                     current_button.scroll_into_view_if_needed()    #ausschließen das die Positionierung/der Scrollzustand das Problem verursacht
+
                     #Button klicken
                     current_button.click(timeout=3000)
                     passed_buttons.append(button_name)
