@@ -524,7 +524,7 @@ def run_test(url, expected_title, expected_text):
                             break
 
                     if current_button is None:
-                        raise Exception("Button nicht gefunden")
+                        raise Exception("Button nicht gefunden")            #raise löst absichtlich einen Fehler aus und übergibt ihn an den passenden except-Block
 
                     #Wenn der Button nicht sichtbar ist versuchen ein sichtbares Menü zu öffnen
                     if not current_button.is_visible():
@@ -550,10 +550,7 @@ def run_test(url, expected_title, expected_text):
 
                     #prüfen, ob der Button sichtbar ist
                     if not current_button.is_visible():
-                        failed_buttons.append(button_name)
-                        page.goto(url)
-                        continue
-
+                        raise Exception("Button nicht sichtbar")        #raise löst absichtlich einen Fehler aus und übergibt ihn an den passenden except-Block
 
                     #Button klicken
                     current_button.scroll_into_view_if_needed()  # ausschließen das die Positionierung/der Scrollzustand das Problem verursacht
@@ -562,8 +559,7 @@ def run_test(url, expected_title, expected_text):
 
 
                 except Exception as error:
-                    failed_buttons.append(button_name)
-                    print(f"      Fehler bei {button_name}: {error}")
+                    failed_buttons.append((button_name, str(error)))
 
                 #zurück zur startseite
                 try:
@@ -576,8 +572,8 @@ def run_test(url, expected_title, expected_text):
 
             print(f"    Buttons: {len(passed_buttons)} PASS - "f"{len(failed_buttons)} FAIL")
 
-            for button in failed_buttons:
-                print("    FAIL:", button)
+            for button, error in failed_buttons:
+                print(f"    FAIL: {button} - {error}")
 
     except Exception as error:
         print("  Browser Tests Knöpfe funktion: FAIL - konnte nicht geprüft werden:", error)
