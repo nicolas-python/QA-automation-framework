@@ -578,9 +578,6 @@ def run_test(url, expected_title, expected_text):
             for button, error in failed_buttons:
                 print(f"    FAIL: {button} - {error}")
 
-            print("DEBUG: vor Aufklappbare Buttons")
-            print("DEBUG: Page URL:", page.url)
-
 
 #aufklappbare Buttons
             expandable_buttons = []
@@ -592,16 +589,7 @@ def run_test(url, expected_title, expected_text):
                 print()
                 print("  Aufklappbare Buttons:")
 
-
-                print("DEBUG: Browser verbunden:", browser.is_connected())                  #browser noch mit Playwright verbunden
-                print("DEBUG: Button-Anzahl:", page.locator("button").count())              #gibt es noh buttons auf der seite kan ich die seite noch ereieichen suhcen ?
-
-                buttons = page.locator('button[aria-expanded]')
-                print("Gefundene aufklappbare Buttons:", buttons.count())                   #wie viele <button> Elemente Playwright auf der aktuellen Seite finde
-
                 for button in buttons.all():
-                    print("DEBUG Aufklappbar:", button.inner_text().strip(), "|", button.get_attribute("aria-label"))
-
                     button_name = button.inner_text().strip()
 
                     if not button_name:
