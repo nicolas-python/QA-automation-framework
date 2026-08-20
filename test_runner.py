@@ -589,7 +589,12 @@ def run_test(url, expected_title, expected_text):
                 print()
                 print("  Aufklappbare Buttons:")
 
+                buttons = page.locator('button[aria-expanded]')
+
                 for button in buttons.all():
+                    if not button.is_visible():
+                        continue
+
                     button_name = button.inner_text().strip()
 
                     if not button_name:
@@ -607,12 +612,12 @@ def run_test(url, expected_title, expected_text):
                 for button_name in expandable_buttons:
 
                     try:
+                        page.goto(url)
                         buttons = page.locator("button")
                         current_button = None
 
                         #aufklappbaren Button wiederfinden
                         for button in buttons.all():
-
                             current_name = button.inner_text().strip()
 
                             if not current_name:
