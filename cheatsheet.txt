@@ -196,7 +196,7 @@ QA Test Bewertung:
     Testet das Verhalten aus Sicht eines Benutzers.
 
     Prüfen:
-    - Buttons klicken    ----> PASS = Der Klick löst eine erkennbare Browser-Aktion aus / nur auf der Homepage des aktuellen URL-links
+    - Buttons klicken    ----> PASS = Der Klick löst eine erkennbare Browser-Aktion aus / nur auf der Homepage des aktuellen URL-links✅
     - Formulare ausfüllen ---> PASS = Das Formular lässt sich ausfüllen und absenden
     - Login testen        -----> PASS = Der Login funktioniert mit gültigen Testdaten
 

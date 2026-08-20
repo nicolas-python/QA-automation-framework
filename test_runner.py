@@ -472,6 +472,8 @@ def run_test(url, expected_title, expected_text):
 # --------------------------------------------------
 # Browser Tests
 # --------------------------------------------------
+#normale Buttons
+
     #Buttons klicken
     print()
     print("Browser Tests")
@@ -486,21 +488,10 @@ def run_test(url, expected_title, expected_text):
             page.goto(url)                              # öffnet die geladene URL im automatisierten Browser
 
             #beginn des tests
-            print("  Button test:")
+            print("Button test:")
 
             # Button-Namen einmal aus der Startseite sammeln
             buttons = page.locator("button")            #.locator() = suche Elemente auf dieser Seite
-            print("Buttons im DOM:", buttons.count())               #DOM = Document Object Model → Struktur der HTML-Elemente einer Webseite
-
-            for i, button in enumerate(buttons.all(), start=1):        #enumerate = gibt zusätzlich eine Nummer für jedes Element aus, z. B. 1: Button
-                button_text = button.inner_text().strip()
-                aria_label = button.get_attribute("aria-label")
-
-                if not button_text:
-                    button_text = aria_label
-
-                print(f"{i}: "f"{button_text or '[KEIN NAME]'} | "f"sichtbar: {button.is_visible()}")
-
             filtered_buttons = []
 
             for button in buttons.all():
@@ -579,12 +570,89 @@ def run_test(url, expected_title, expected_text):
                 except Exception as nav_error:
                     print(f"      Navigation zurück fehlgeschlagen: {nav_error}")
 
-                print(f"\r  Buttons: Prüfe Buttons... "f"{len(passed_buttons) + len(failed_buttons)}/{len(filtered_buttons)}",end="")
+                print(f"\rButtons: Prüfe Buttons... "f"{len(passed_buttons) + len(failed_buttons)}/{len(filtered_buttons)}",end="")
 
-            print(f"    Buttons: {len(passed_buttons)} PASS - "f"{len(failed_buttons)} FAIL")
+            print()
+            print(f"  Buttons: {len(passed_buttons)} PASS - "f"{len(failed_buttons)} FAIL")
 
             for button, error in failed_buttons:
                 print(f"    FAIL: {button} - {error}")
+
+            print("DEBUG: vor Aufklappbare Buttons")
+            print("DEBUG: Page URL:", page.url)
+
+
+#aufklappbare Buttons
+            expandable_buttons = []
+            passed_expandable_buttons = []
+            failed_expandable_buttons = []
+
+            #aufklappbare Buttons erkennen
+            try:
+                print()
+                print("  Aufklappbare Buttons:")
+
+
+                print("DEBUG: Browser verbunden:", browser.is_connected())                  #browser noch mit Playwright verbunden
+                print("DEBUG: Button-Anzahl:", page.locator("button").count())              #gibt es noh buttons auf der seite kan ich die seite noch ereieichen suhcen ?
+
+                buttons = page.locator('button[aria-expanded]')
+                print("Gefundene aufklappbare Buttons:", buttons.count())                   #wie viele <button> Elemente Playwright auf der aktuellen Seite finde
+
+                for button in buttons.all():
+                    print("DEBUG Aufklappbar:", button.inner_text().strip(), "|", button.get_attribute("aria-label"))
+
+                    button_name = button.inner_text().strip()
+
+                    if not button_name:
+                        button_name = button.get_attribute("aria-label")
+
+                    if button_name and button_name not in expandable_buttons:
+                        expandable_buttons.append(button_name)
+
+            except Exception as error:
+                print("  Aufklappbare Buttons: "f"FAIL - konnte nicht erkannt werden: {error}")
+
+
+            #aufklappbare Buttons einzeln testen
+            try:
+                for button_name in expandable_buttons:
+
+                    try:
+                        buttons = page.locator("button")
+                        current_button = None
+
+                        #aufklappbaren Button wiederfinden
+                        for button in buttons.all():
+
+                            current_name = button.inner_text().strip()
+
+                            if not current_name:
+                                current_name = button.get_attribute("aria-label")
+
+                            if current_name == button_name:
+                                current_button = button
+                                break
+
+                        if current_button is None:
+                            raise Exception("Aufklappbarer Button nicht gefunden")      #raise löst absichtlich einen Fehler aus und übergibt ihn an den passenden except-Block
+
+                        current_button.click(timeout=3000, force=True)
+                        passed_expandable_buttons.append(button_name)
+
+                    except Exception as error:
+                        failed_expandable_buttons.append((button_name, str(error)))
+
+                    print(f"\r  Prüfe Aufklappbare Buttons... "f"{len(passed_expandable_buttons) + len(failed_expandable_buttons)}"f"/{len(expandable_buttons)}",end="")
+
+                print()
+                print(f"    Aufklappbare Buttons: "f"{len(passed_expandable_buttons)} PASS - "f"{len(failed_expandable_buttons)} FAIL")
+
+                for button, error in failed_expandable_buttons:
+                    print(f"      FAIL: {button} - {error}")
+
+            except Exception as error:
+                print("  Aufklappbare Buttons: "f"FAIL - konnte nicht geprüft werden: {error}")
 
     except Exception as error:
         print("  Browser Tests Knöpfe funktion: FAIL - konnte nicht geprüft werden:", error)
