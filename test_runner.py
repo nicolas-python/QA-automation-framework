@@ -490,6 +490,17 @@ def run_test(url, expected_title, expected_text):
 
             # Button-Namen einmal aus der Startseite sammeln
             buttons = page.locator("button")            #.locator() = suche Elemente auf dieser Seite
+            print("Buttons im DOM:", buttons.count())               #DOM = Document Object Model → Struktur der HTML-Elemente einer Webseite
+
+            for i, button in enumerate(buttons.all(), start=1):        #enumerate = gibt zusätzlich eine Nummer für jedes Element aus, z. B. 1: Button
+                button_text = button.inner_text().strip()
+                aria_label = button.get_attribute("aria-label")
+
+                if not button_text:
+                    button_text = aria_label
+
+                print(f"{i}: "f"{button_text or '[KEIN NAME]'} | "f"sichtbar: {button.is_visible()}")
+
             filtered_buttons = []
 
             for button in buttons.all():
