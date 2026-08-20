@@ -487,6 +487,17 @@ def run_test(url, expected_title, expected_text):
             page = browser.new_page()                   #page= eine einzelne Browserseite bzw ein tap
             page.goto(url)                              # öffnet die geladene URL im automatisierten Browser
 
+            # DEBUG: fehlende Buttons anzeigen
+            buttons = page.locator("button")
+
+            for button in buttons.all():
+                button_name = button.inner_text().strip()
+
+                if not button_name:
+                    button_name = button.get_attribute("aria-label")
+
+                print("BUTTON:", button_name)
+
             #beginn des tests
             print("Button test:")
 
