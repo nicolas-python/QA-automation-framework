@@ -478,6 +478,9 @@ def run_test(url, expected_title, expected_text):
     print()
     print("Browser Tests")
 
+    #sesamtstatistik buttons
+    all_button_results = {}
+
     passed_buttons = []
     failed_buttons = []
 
@@ -487,24 +490,14 @@ def run_test(url, expected_title, expected_text):
             page = browser.new_page()                   #page= eine einzelne Browserseite bzw ein tap
             page.goto(url)                              # öffnet die geladene URL im automatisierten Browser
 
-            # DEBUG: fehlende Buttons anzeigen
-            buttons = page.locator("button")
-
-            for button in buttons.all():
-                button_name = button.inner_text().strip()
-
-                if not button_name:
-                    button_name = button.get_attribute("aria-label")
-
-                print("BUTTON:", button_name)
-
             #beginn des tests
-            print("Button test:")
+            print("Button test sichtbar:")
 
             # Button-Namen einmal aus der Startseite sammeln
             buttons = page.locator("button")            #.locator() = suche Elemente auf dieser Seite
             filtered_buttons = []
 
+            #nur sichtbare Buttons für den Test
             for button in buttons.all():
                 if not button.is_visible():
                     continue
@@ -603,9 +596,6 @@ def run_test(url, expected_title, expected_text):
                 buttons = page.locator('button[aria-expanded]')
 
                 for button in buttons.all():
-                    if not button.is_visible():
-                        continue
-
                     button_name = button.inner_text().strip()
 
                     if not button_name:
@@ -639,10 +629,46 @@ def run_test(url, expected_title, expected_text):
                                 break
 
                         if current_button is None:
-                            raise Exception("Aufklappbarer Button nicht gefunden")      #raise löst absichtlich einen Fehler aus und übergibt ihn an den passenden except-Block
+                            raise Exception("Aufklappbarer Button nicht gefunden")
+
+                        if not current_button.is_visible():
+                            raise Exception("Aufklappbarer Button nicht sichtbar")
+
+                        #sichtbare Buttons vor dem Aufklappen merken
+                        before_buttons = set()
+
+                        for button in page.locator("button").all():
+
+                            if not button.is_visible():
+                                continue
+
+                            name = button.inner_text().strip()
+
+                            if not name:
+                                name = button.get_attribute("aria-label")
+
+                            if name:
+                                before_buttons.add(name)
 
                         current_button.click(timeout=3000, force=True)
                         passed_expandable_buttons.append(button_name)
+
+                        #nach dem Aufklappen prüfen, welche zusätzlichen Buttons jetzt sichtbar geworden sind
+                        for sub_button in page.locator("button").all():
+
+                            if not sub_button.is_visible():
+                                continue
+
+                            sub_name = sub_button.inner_text().strip()
+
+                            if not sub_name:
+                                sub_name = sub_button.get_attribute("aria-label")
+
+                            if not sub_name:
+                                continue
+
+                            if sub_name in before_buttons:
+                                continue
 
                     except Exception as error:
                         failed_expandable_buttons.append((button_name, str(error)))
