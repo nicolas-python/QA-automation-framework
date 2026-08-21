@@ -582,6 +582,9 @@ def run_test(url, expected_title, expected_text):
             for button, error in failed_buttons:
                 print(f"    FAIL: {button} - {error}")
 
+                #damit sie nicht nochmal als aufklappbare Buttons getestet werden
+                visible_button_names = set(filtered_buttons)
+
 
 #aufklappbare Buttons
             expandable_buttons = []
@@ -593,13 +596,17 @@ def run_test(url, expected_title, expected_text):
                 print()
                 print("  Aufklappbare Buttons:")
 
-                buttons = page.locator('button[aria-expanded]')
+                buttons = page.locator("button")
 
                 for button in buttons.all():
                     button_name = button.inner_text().strip()
 
                     if not button_name:
                         button_name = button.get_attribute("aria-label")
+
+                    #bereits im sichtbaren Button-Test geprüfte Buttons überspringen
+                    if button_name in visible_button_names:
+                        continue
 
                     if button_name and button_name not in expandable_buttons:
                         expandable_buttons.append(button_name)
@@ -651,6 +658,7 @@ def run_test(url, expected_title, expected_text):
                                 before_buttons.add(name)
 
                         current_button.click(timeout=3000, force=True)
+                        page.wait_for_timeout(500)
                         passed_expandable_buttons.append(button_name)
 
                         #nach dem Aufklappen prüfen, welche zusätzlichen Buttons jetzt sichtbar geworden sind
