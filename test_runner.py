@@ -602,19 +602,15 @@ def run_test(url, expected_title, expected_text):
             #aufklappbare Buttons erkennen
             try:
                 print()
-                print("  Aufklappbare Buttons:")
+                print("Aufklappbare Buttons:")
 
-                buttons = page.locator("button")
+                buttons = page.locator('button[aria-expanded]')
 
                 for index, button in enumerate(buttons.all()):
                     button_name = button.inner_text().strip()
 
                     if not button_name:
                         button_name = button.get_attribute("aria-label")
-
-                    #bereits im sichtbaren Button-Test geprüfte Buttons überspringen
-                    if button_name in visible_button_names:
-                        continue
 
                     if button_name and button_name not in expandable_buttons:
                         expandable_buttons.append(button_name)
@@ -625,11 +621,12 @@ def run_test(url, expected_title, expected_text):
 
             #aufklappbare Buttons einzeln testen
             try:
+
                 for button_name in expandable_buttons:
 
                     try:
                         page.goto(url)
-                        buttons = page.locator("button")
+                        buttons = page.locator('button[aria-expanded]')
                         current_button = None
 
                         #aufklappbaren Button wiederfinden
@@ -665,9 +662,12 @@ def run_test(url, expected_title, expected_text):
                             if name:
                                 before_buttons.add(name)
 
+                        #clicken button zuerst
                         current_button.click(timeout=3000, force=True)
-                        page.wait_for_timeout(500)
                         passed_expandable_buttons.append(button_name)
+
+                        #kurz warten, damit das Untermenü geöffnet werden kann
+                        page.wait_for_timeout(1000)
 
                         #nach dem Aufklappen prüfen, welche zusätzlichen Buttons jetzt sichtbar geworden sind
                         for sub_button in page.locator("button").all():
@@ -689,7 +689,7 @@ def run_test(url, expected_title, expected_text):
                     except Exception as error:
                         failed_expandable_buttons.append((button_name, str(error)))
 
-                    print(f"\r  Prüfe Aufklappbare Buttons... "f"{len(passed_expandable_buttons) + len(failed_expandable_buttons)}"f"/{len(expandable_buttons)}",end="")
+                    print(f"\rPrüfe Aufklappbare Buttons... "f"{len(passed_expandable_buttons) + len(failed_expandable_buttons)}"f"/{len(expandable_buttons)}",end="")
 
                 print()
                 print(f"    Aufklappbare Buttons: "f"{len(passed_expandable_buttons)} PASS - "f"{len(failed_expandable_buttons)} FAIL")
