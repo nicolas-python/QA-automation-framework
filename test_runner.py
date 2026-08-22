@@ -498,7 +498,7 @@ def run_test(url, expected_title, expected_text):
             filtered_buttons = []
 
             #nur sichtbare Buttons für den Test
-            for button in buttons.all():
+            for index, button in enumerate(buttons.all()):              #enumerate = gibt jedem gefundenen Button eine Nummer für die eindeutige Erkennung (z.B.wird aus menu --> 1. Menü)
                 if not button.is_visible():
                     continue
 
@@ -507,11 +507,11 @@ def run_test(url, expected_title, expected_text):
                 if not button_name:
                     button_name = button.get_attribute("aria-label")
 
-                if button_name and button_name not in [item[0] for item in filtered_buttons]:
-                    filtered_buttons.append(button_name)
+                if button_name:
+                    filtered_buttons.append((index, button_name))
 
             # Buttons einzeln testen
-            for button_name in filtered_buttons:
+            for button_index, button_name in filtered_buttons:
                 try:
                     page.goto(url)
 
@@ -519,18 +519,20 @@ def run_test(url, expected_title, expected_text):
                     current_button = None
 
                     #liest den sichtbaren Text des aktuellen Buttons aus
-                    for b in buttons.all():
-                        current_name = b.inner_text().strip()
+                    all_buttons = buttons.all()
 
-                        if not current_name:
-                            current_name = b.get_attribute("aria-label")        #Falls kein Text vorhanden ist aria-label-Attribut auslesen
+                    if button_index >= len(all_buttons):
+                        raise Exception("Button nicht gefunden")
 
-                        if current_name == button_name:
-                            current_button = b
-                            break
+                    current_button = all_buttons[button_index]
 
-                    if current_button is None:
-                        raise Exception("Button nicht gefunden")            #raise löst absichtlich einen Fehler aus und übergibt ihn an den passenden except-Block
+                    current_name = current_button.inner_text().strip()
+
+                    if not current_name:
+                        current_name = current_button.get_attribute("aria-label")        #Falls kein Text vorhanden ist aria-label-Attribut auslesen
+
+                    if current_name != button_name:
+                        raise Exception("Button nicht gefunden")                    #raise löst absichtlich einen Fehler aus und übergibt ihn an den passenden except-Block
 
                     #Wenn der Button nicht sichtbar ist versuchen ein sichtbares Menü zu öffnen
                     if not current_button.is_visible():
@@ -544,17 +546,23 @@ def run_test(url, expected_title, expected_text):
                             buttons = page.locator("button")
                             current_button = None
 
-                            for b in buttons.all():
-                                current_name = b.inner_text().strip()
+                            all_buttons = buttons.all()
+
+                            if button_index < len(all_buttons):
+                                current_button = all_buttons[button_index]
+
+                                current_name = current_button.inner_text().strip()
 
                                 if not current_name:
-                                    current_name = b.get_attribute("aria-label")
+                                    current_name = current_button.get_attribute("aria-label")
 
-                                if current_name == button_name:
-                                    current_button = b
-                                    break
+                                if current_name != button_name:
+                                    current_button = None
 
                     #prüfen, ob der Button sichtbar ist
+                    if current_button is None:
+                        raise Exception("Button nach Menüöffnung nicht gefunden")
+
                     if not current_button.is_visible():
                         raise Exception("Button nicht sichtbar")        #raise löst absichtlich einen Fehler aus und übergibt ihn an den passenden except-Block
 
@@ -583,7 +591,7 @@ def run_test(url, expected_title, expected_text):
                 print(f"    FAIL: {button} - {error}")
 
                 #damit sie nicht nochmal als aufklappbare Buttons getestet werden
-                visible_button_names = set(filtered_buttons)
+                visible_button_names = {name for index, name in filtered_buttons}
 
 
 #aufklappbare Buttons
@@ -598,7 +606,7 @@ def run_test(url, expected_title, expected_text):
 
                 buttons = page.locator("button")
 
-                for button in buttons.all():
+                for index, button in enumerate(buttons.all()):
                     button_name = button.inner_text().strip()
 
                     if not button_name:
