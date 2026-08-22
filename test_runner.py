@@ -599,6 +599,10 @@ def run_test(url, expected_title, expected_text):
             passed_expandable_buttons = []
             failed_expandable_buttons = []
 
+            new_buttons = []
+            passed_new_buttons = []
+            failed_new_buttons = []
+
             #aufklappbare Buttons erkennen
             try:
                 print()
@@ -621,11 +625,11 @@ def run_test(url, expected_title, expected_text):
 
             #aufklappbare Buttons einzeln testen
             try:
-
+                new_buttons = []
+                page.goto(url)
                 for button_name in expandable_buttons:
 
                     try:
-                        page.goto(url)
                         buttons = page.locator('button[aria-expanded]')
                         current_button = None
 
@@ -665,15 +669,11 @@ def run_test(url, expected_title, expected_text):
                         #clicken button zuerst
                         current_button.click(timeout=3000, force=True)
                         passed_expandable_buttons.append(button_name)
-
-                        #kurz warten, damit das Untermenü geöffnet werden kann
+                        #kurz warten, bis das Menü geöffnet wurde
                         page.wait_for_timeout(1000)
 
-                        #nach dem Aufklappen prüfen, welche zusätzlichen Buttons jetzt sichtbar geworden sind
-                        for sub_button in page.locator("button").all():
-
-                            if not sub_button.is_visible():
-                                continue
+                        #nur Buttons speichern, die durch genau durch Hauptbutton neu sichtbar wurden
+                        for sub_button in page.locator("button:visible").all():
 
                             sub_name = sub_button.inner_text().strip()
 
@@ -686,6 +686,14 @@ def run_test(url, expected_title, expected_text):
                             if sub_name in before_buttons:
                                 continue
 
+                            #elternbutton + unterbutton zusammen speichern,damit gleiche Namen unterschieden werden
+                            new_button = (button_name, sub_name)
+
+                            if new_button not in new_buttons:
+                                new_buttons.append(new_button)
+
+                                print(f"      NEU: {button_name} -> {sub_name}")
+
                     except Exception as error:
                         failed_expandable_buttons.append((button_name, str(error)))
 
@@ -696,6 +704,78 @@ def run_test(url, expected_title, expected_text):
 
                 for button, error in failed_expandable_buttons:
                     print(f"      FAIL: {button} - {error}")
+
+                #neue Buttons separat prüfen
+                try:
+                    print()
+                    print("Neue Buttons:")
+
+                    for index, (parent_name, new_button_name) in enumerate(new_buttons, start=1):
+
+                        try:
+                            page.goto(url)
+
+                            # Elternbutton suchen
+                            buttons = page.locator('button[aria-expanded]:visible')
+                            parent_button = None
+
+                            for button in buttons.all():
+                                current_name = button.inner_text().strip()
+
+                                if not current_name:
+                                    current_name = button.get_attribute("aria-label")
+
+                                if current_name == parent_name:
+                                    parent_button = button
+                                    break
+
+                            if parent_button is None:
+                                raise Exception("Elternbutton nicht gefunden")
+
+                            #elternmenü buttons öffnen
+                            parent_button.click(timeout=3000,force=True)
+
+                            page.wait_for_timeout(1000)
+
+                            #unterbutton suchen
+                            current_button = None
+
+                            for button in page.locator("button:visible").all():
+
+                                current_name = button.inner_text().strip()
+
+                                if not current_name:
+                                    current_name = button.get_attribute("aria-label")
+
+                                if current_name == new_button_name:
+                                    current_button = button
+                                    break
+
+                            if current_button is None:
+                                raise Exception("Neuer Button nicht gefunden")
+
+                            if not current_button.is_visible():
+                                raise Exception("Neuer Button nicht sichtbar")
+
+                            #Unterbutton klicken
+                            current_button.click(timeout=3000,force=True)
+
+                            passed_new_buttons.append((parent_name, new_button_name))
+
+                        except Exception as error:
+
+                            failed_new_buttons.append((parent_name,new_button_name,str(error)))
+
+                    print(f"Prüfe neue Buttons... "f"{len(passed_new_buttons) + len(failed_new_buttons)}"f"/{len(new_buttons)}")
+
+                    print(f"  Neue Buttons: "f"{len(passed_new_buttons)} PASS - "f"{len(failed_new_buttons)} FAIL")
+
+                    for parent, button, error in failed_new_buttons:
+                        print(f"      FAIL: {parent} -> "f"{button} - {error}")
+
+                except Exception as error:
+
+                    print("  Neue Buttons: "f"FAIL - konnte nicht geprüft werden: {error}")
 
             except Exception as error:
                 print("  Aufklappbare Buttons: "f"FAIL - konnte nicht geprüft werden: {error}")
