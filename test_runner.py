@@ -780,6 +780,73 @@ def run_test(url, expected_title, expected_text):
             except Exception as error:
                 print("  Aufklappbare Buttons: "f"FAIL - konnte nicht geprüft werden: {error}")
 
+
+#Interaktive DOM Elemente
+            #Interaktive DOM Elemente Starterseite
+            interactive_elements = []
+            passed_interactive_elements = []
+            failed_interactive_elements = []
+
+            try:
+                print()
+                print("Interaktive Elemente:")
+                page.goto(url)
+
+                #interaktive HTML-Elemente suchen
+                elements = page.locator('button, a, [role="button"], [aria-expanded]')
+
+                #gefundene Elemente sammeln
+                for element in elements.all():
+
+                    if not element.is_visible():
+                        continue
+
+                    tag_name = element.evaluate("(element) => element.tagName.toLowerCase()")
+
+                    element_name = element.inner_text().strip()
+
+                    if not element_name:
+                        element_name = element.get_attribute("aria-label")
+
+                    if not element_name:
+                        continue
+
+                    role = element.get_attribute("role")
+                    aria_expanded = element.get_attribute("aria-expanded")
+
+                    #informationen zum interaktiven Element speichern
+                    interactive_element = (tag_name,element_name,role,aria_expanded)
+
+                    if interactive_element not in interactive_elements:
+                        interactive_elements.append(interactive_element)
+
+                #start der Fortschrittsanzeige
+                print(f"  Prüfe Interaktive Elemente... "f"0/{len(interactive_elements)}",end="")
+
+                #interaktive Elemente einzeln prüfen
+                for tag_name, element_name, role, aria_expanded in interactive_elements:
+
+                    try:
+                        if not element_name:
+                            raise Exception("Interaktives Element ohne Namen")
+
+                        passed_interactive_elements.append((tag_name, element_name))
+
+                    except Exception as error:
+                        failed_interactive_elements.append((tag_name,element_name,str(error)))
+
+                    print(f"\r  Prüfe Interaktive Elemente... "f"{len(passed_interactive_elements) + len(failed_interactive_elements)}"f"/{len(interactive_elements)}",end="")
+
+                print()
+                print(f"  Interaktive Elemente: "f"{len(passed_interactive_elements)} PASS - "f"{len(failed_interactive_elements)} FAIL")
+
+                # fehler anzeigen
+                for tag_name, element_name, error in failed_interactive_elements:
+                    print(f"    FAIL: {tag_name} | "f"{element_name} - {error}")
+
+            except Exception as error:
+                print("  Interaktive Elemente: "f"FAIL - konnte nicht erkannt werden: {error}")
+
     except Exception as error:
         print("  Browser Tests Knöpfe funktion: FAIL - konnte nicht geprüft werden:", error)
 
