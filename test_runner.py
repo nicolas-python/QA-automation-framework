@@ -490,6 +490,31 @@ def run_test(url, expected_title, expected_text):
             page = browser.new_page()                   #page= eine einzelne Browserseite bzw ein tap
             page.goto(url)                              # öffnet die geladene URL im automatisierten Browser
 
+# -----------------------------------------------------------
+            # DOM interaktive Elemente zählen
+            dom_interactive_elements = page.locator('button, a, [role="button"], [aria-expanded]')
+
+            dom_interactive_count = 0
+
+            for element in dom_interactive_elements.all():
+
+                if not element.is_visible():
+                    continue
+
+                element_name = element.inner_text().strip()
+
+                if not element_name:
+                    element_name = element.get_attribute("aria-label")
+
+                if not element_name:
+                    continue
+
+                dom_interactive_count += 1
+
+            print()
+            print(f"DOM interaktive Elemente: "f"{dom_interactive_count} gefunden")
+#-----------------------------------------------------------
+
             #beginn des tests
             print("Button test sichtbar:")
 
@@ -697,8 +722,6 @@ def run_test(url, expected_title, expected_text):
                             if new_button not in new_buttons:
                                 new_buttons.append(new_button)
 
-                                print(f"      NEU: {button_name} -> {sub_name}")
-
                     except Exception as error:
                         failed_expandable_buttons.append((button_name, str(error)))
 
@@ -866,8 +889,7 @@ def run_test(url, expected_title, expected_text):
                 page.goto(url)
 
                 #interaktive Elemente verwenden die als mögliche Eltern für Unterelemente dienen
-                #expandable_interactive = page.locator('button[aria-expanded], a[aria-expanded], [role="button"][aria-expanded]')
-                expandable_interactive = page.locator('button, a, [role="button"], [aria-expanded]')
+                expandable_interactive = page.locator('button[aria-expanded], ''a[aria-expanded], ''[role="button"][aria-expanded], ''[aria-haspopup="true"], ''summary')
 
                 interactive_parents = []
 
@@ -888,13 +910,14 @@ def run_test(url, expected_title, expected_text):
                         interactive_parents.append(element_name)
 
                 #eltern-Elemente einzeln öffnen
+                page.set_default_timeout(3000)
                 for parent_name in interactive_parents:
 
                     try:
                         page.goto(url)
 
                         #eltern-Element suchen
-                        elements = page.locator('button:visible, a:visible, [role="button"]:visible, [aria-expanded]:visible')
+                        elements = page.locator('button[aria-expanded]:visible, ''a[aria-expanded]:visible, ''[role="button"][aria-expanded]:visible, ''[aria-haspopup="true"]:visible, ''summary:visible')
 
                         parent_element = None
 
@@ -951,7 +974,15 @@ def run_test(url, expected_title, expected_text):
                     except Exception as error:
                         failed_interactive_children.append((parent_name,"",str(error)))
 
+                    print(f"\r  Suche interaktive Unterelemente... "f"{len(interactive_children)} gefunden", end="")
+
+                print()
                 print(f"Prüfe interaktive Unterelemente... "f"0/{len(interactive_children)}", end="")
+
+                #prüfen, ob überhaupt Unterelemente gefunden wurden
+                if not interactive_children:
+                    print()
+                    print("  Interaktive Unterelemente: ""0 PASS - 0 FAIL")
 
                 #gefundene Unterelemente separat prüfen
                 for parent_name, child_name in interactive_children:
@@ -960,7 +991,7 @@ def run_test(url, expected_title, expected_text):
                         page.goto(url)
 
                         #eltern-Element erneut suchen
-                        elements = page.locator('button:visible, a:visible, [role="button"]:visible, [aria-expanded]:visible')
+                        elements = page.locator('button[aria-expanded]:visible, ''a[aria-expanded]:visible, ''[role="button"][aria-expanded]:visible, ''[aria-haspopup="true"]:visible, ''summary:visible')
 
                         parent_element = None
 
