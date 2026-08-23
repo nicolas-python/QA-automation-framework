@@ -510,7 +510,10 @@ def run_test(url, expected_title, expected_text):
                 if button_name:
                     filtered_buttons.append((index, button_name))
 
-            # Buttons einzeln testen
+            #damit es auch bei 0 anzeigt
+            print(f"Prüfe sichtbar Buttons... "f"0/{len(filtered_buttons)}",end="")
+
+            #buttons einzeln testen
             for button_index, button_name in filtered_buttons:
                 try:
                     page.goto(url)
@@ -619,6 +622,8 @@ def run_test(url, expected_title, expected_text):
                     if button_name and button_name not in expandable_buttons:
                         expandable_buttons.append(button_name)
 
+                print(f"Prüfe Aufklappbare Buttons... "f"0/{len(expandable_buttons)}",end="")
+
             except Exception as error:
                 print("  Aufklappbare Buttons: "f"FAIL - konnte nicht erkannt werden: {error}")
 
@@ -700,7 +705,7 @@ def run_test(url, expected_title, expected_text):
                     print(f"\rPrüfe Aufklappbare Buttons... "f"{len(passed_expandable_buttons) + len(failed_expandable_buttons)}"f"/{len(expandable_buttons)}",end="")
 
                 print()
-                print(f"    Aufklappbare Buttons: "f"{len(passed_expandable_buttons)} PASS - "f"{len(failed_expandable_buttons)} FAIL")
+                print(f"  Aufklappbare Buttons: "f"{len(passed_expandable_buttons)} PASS - "f"{len(failed_expandable_buttons)} FAIL")
 
                 for button, error in failed_expandable_buttons:
                     print(f"      FAIL: {button} - {error}")
@@ -821,7 +826,7 @@ def run_test(url, expected_title, expected_text):
                         interactive_elements.append(interactive_element)
 
                 #start der Fortschrittsanzeige
-                print(f"  Prüfe Interaktive Elemente... "f"0/{len(interactive_elements)}",end="")
+                print(f"Prüfe Interaktive Elemente... "f"0/{len(interactive_elements)}",end="")
 
                 #interaktive Elemente einzeln prüfen
                 for tag_name, element_name, role, aria_expanded in interactive_elements:
@@ -835,7 +840,7 @@ def run_test(url, expected_title, expected_text):
                     except Exception as error:
                         failed_interactive_elements.append((tag_name,element_name,str(error)))
 
-                    print(f"\r  Prüfe Interaktive Elemente... "f"{len(passed_interactive_elements) + len(failed_interactive_elements)}"f"/{len(interactive_elements)}",end="")
+                    print(f"\rPrüfe Interaktive Elemente... "f"{len(passed_interactive_elements) + len(failed_interactive_elements)}"f"/{len(interactive_elements)}",end="")
 
                 print()
                 print(f"  Interaktive Elemente: "f"{len(passed_interactive_elements)} PASS - "f"{len(failed_interactive_elements)} FAIL")
@@ -855,6 +860,8 @@ def run_test(url, expected_title, expected_text):
             try:
                 print()
                 print("Interaktive Unterelemente:")
+                # NEU: sofort anzeigen, dass der Test gestartet ist
+                print("Prüfe interaktive Unterelemente... 0/0",end="")
 
                 page.goto(url)
 
@@ -944,6 +951,8 @@ def run_test(url, expected_title, expected_text):
                     except Exception as error:
                         failed_interactive_children.append((parent_name,"",str(error)))
 
+                print(f"Prüfe interaktive Unterelemente... "f"0/{len(interactive_children)}", end="")
+
                 #gefundene Unterelemente separat prüfen
                 for parent_name, child_name in interactive_children:
 
@@ -1000,7 +1009,7 @@ def run_test(url, expected_title, expected_text):
                         error_message = str(error).splitlines()[0]
                         failed_interactive_children.append((parent_name, child_name, error_message))
 
-                    print(f"\r  Prüfe interaktive Unterelemente... "f"{len(passed_interactive_children) + len(failed_interactive_children)}"f"/{len(interactive_children)}",end="")
+                    print(f"\rPrüfe interaktive Unterelemente... "f"{len(passed_interactive_children) + len(failed_interactive_children)}"f"/{len(interactive_children)}",end="")
 
                 print()
                 print(f"  Interaktive Unterelemente: "f"{len(passed_interactive_children)} PASS - "f"{len(failed_interactive_children)} FAIL")
