@@ -847,8 +847,174 @@ def run_test(url, expected_title, expected_text):
             except Exception as error:
                 print("  Interaktive Elemente: "f"FAIL - konnte nicht erkannt werden: {error}")
 
+#Interaktive Unterelemente
+            interactive_children = []
+            passed_interactive_children = []
+            failed_interactive_children = []
+
+            try:
+                print()
+                print("Interaktive Unterelemente:")
+
+                page.goto(url)
+
+                #interaktive Elemente verwenden die als mögliche Eltern für Unterelemente dienen
+                #expandable_interactive = page.locator('button[aria-expanded], a[aria-expanded], [role="button"][aria-expanded]')
+                expandable_interactive = page.locator('button, a, [role="button"], [aria-expanded]')
+
+                interactive_parents = []
+
+                for element in expandable_interactive.all():
+
+                    if not element.is_visible():
+                        continue
+
+                    element_name = element.inner_text().strip()
+
+                    if not element_name:
+                        element_name = element.get_attribute("aria-label")
+
+                    if not element_name:
+                        continue
+
+                    if element_name not in interactive_parents:
+                        interactive_parents.append(element_name)
+
+                #eltern-Elemente einzeln öffnen
+                for parent_name in interactive_parents:
+
+                    try:
+                        page.goto(url)
+
+                        #eltern-Element suchen
+                        elements = page.locator('button:visible, a:visible, [role="button"]:visible, [aria-expanded]:visible')
+
+                        parent_element = None
+
+                        for element in elements.all():
+
+                            current_name = element.inner_text().strip()
+
+                            if not current_name:
+                                current_name = element.get_attribute("aria-label")
+
+                            if current_name == parent_name:
+                                parent_element = element
+                                break
+
+                        if parent_element is None:
+                            raise Exception("Interaktives Eltern-Element nicht gefunden")
+
+                        #vorher sichtbare interaktive Elemente merken
+                        before_elements = set()
+
+                        for element in page.locator('button:visible, a:visible, [role="button"]:visible').all():
+
+                            name = element.inner_text().strip()
+
+                            if not name:
+                                name = element.get_attribute("aria-label")
+
+                            if name:
+                                before_elements.add(name)
+
+                        #eltern-Element öffnen
+                        parent_element.click(timeout=3000,force=True)
+                        page.wait_for_timeout(1000)
+
+                        #neue interaktive Unterelemente suchen
+                        for child in page.locator('button:visible, a:visible, [role="button"]:visible').all():
+
+                            child_name = child.inner_text().strip()
+
+                            if not child_name:
+                                child_name = child.get_attribute("aria-label")
+
+                            if not child_name:
+                                continue
+
+                            if child_name in before_elements:
+                                continue
+
+                            interactive_child = (parent_name,child_name)
+
+                            if interactive_child not in interactive_children:
+                                interactive_children.append(interactive_child)
+
+                    except Exception as error:
+                        failed_interactive_children.append((parent_name,"",str(error)))
+
+                #gefundene Unterelemente separat prüfen
+                for parent_name, child_name in interactive_children:
+
+                    try:
+                        page.goto(url)
+
+                        #eltern-Element erneut suchen
+                        elements = page.locator('button:visible, a:visible, [role="button"]:visible, [aria-expanded]:visible')
+
+                        parent_element = None
+
+                        for element in elements.all():
+
+                            current_name = element.inner_text().strip()
+
+                            if not current_name:
+                                current_name = element.get_attribute("aria-label")
+
+                            if current_name == parent_name:
+                                parent_element = element
+                                break
+
+                        if parent_element is None:
+                            raise Exception("Interaktives Eltern-Element nicht gefunden")
+
+                        # Eltern-Element öffnen
+                        parent_element.click(timeout=3000,force=True)
+                        page.wait_for_timeout(1000)
+
+                        #unterelement suchen
+                        child_element = None
+
+                        for element in page.locator('button:visible, a:visible, [role="button"]:visible').all():
+
+                            current_name = element.inner_text().strip()
+
+                            if not current_name:
+                                current_name = element.get_attribute("aria-label")
+
+                            if current_name == child_name:
+                                child_element = element
+                                break
+
+                        if child_element is None:
+                            raise Exception("Interaktives Unterelement nicht gefunden")
+
+                        if not child_element.is_visible():
+                            raise Exception("Interaktives Unterelement nicht sichtbar")
+
+                        child_element.click(timeout=3000,force=True)
+                        passed_interactive_children.append((parent_name,child_name))
+
+                    except Exception as error:
+                        error_message = str(error).splitlines()[0]
+                        failed_interactive_children.append((parent_name, child_name, error_message))
+
+                    print(f"\r  Prüfe interaktive Unterelemente... "f"{len(passed_interactive_children) + len(failed_interactive_children)}"f"/{len(interactive_children)}",end="")
+
+                print()
+                print(f"  Interaktive Unterelemente: "f"{len(passed_interactive_children)} PASS - "f"{len(failed_interactive_children)} FAIL")
+
+                for parent, child, error in failed_interactive_children:
+                    print(f"    FAIL: {parent} -> {child} - {error}")
+
+            except Exception as error:
+                print("  Interaktive Unterelemente: "f"FAIL - konnte nicht geprüft werden: {error}")
+
+
     except Exception as error:
         print("  Browser Tests Knöpfe funktion: FAIL - konnte nicht geprüft werden:", error)
+
 
 
     #Formulare ausfüllen
