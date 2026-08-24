@@ -808,6 +808,15 @@ def run_test(url, expected_title, expected_text):
             except Exception as error:
                 print("  Aufklappbare Buttons: "f"FAIL - konnte nicht geprüft werden: {error}")
 
+            #alle gefundenen Buttons zusammenführen gesamt anzeige
+            button_total = (len(filtered_buttons)+ len(expandable_buttons)+ len(new_buttons))
+
+            print()
+            print("Buttons Gesamtübersicht:")
+            print(f"  Normale Buttons: {len(filtered_buttons)}")
+            print(f"  Aufklappbare Buttons: {len(expandable_buttons)}")
+            print(f"  Neue Buttons: {len(new_buttons)}")
+            print(f"  Insgesamt: {button_total}")
 
 #Interaktive DOM Elemente
             #Interaktive DOM Elemente Starterseite
@@ -974,7 +983,7 @@ def run_test(url, expected_title, expected_text):
                     except Exception as error:
                         failed_interactive_children.append((parent_name,"",str(error)))
 
-                    print(f"\r  Suche interaktive Unterelemente... "f"{len(interactive_children)} gefunden", end="")
+                    print(f"\rSuche interaktive Unterelemente... "f"{len(interactive_children)} gefunden", end="")
 
                 print()
                 print(f"Prüfe interaktive Unterelemente... "f"0/{len(interactive_children)}", end="")
