@@ -1060,6 +1060,15 @@ def run_test(url, expected_title, expected_text):
             except Exception as error:
                 print("  Interaktive Unterelemente: "f"FAIL - konnte nicht geprüft werden: {error}")
 
+            #Gesamtübersicht interaktive Elemente
+            interactive_total = (len(interactive_elements)+len(interactive_children))
+
+            print()
+            print("Interaktive Elemente Gesamtübersicht:")
+            print(f"  Starterseite: {len(interactive_elements)}")
+            print(f"  Unterelemente: {len(interactive_children)}")
+            print(f"  Insgesamt: {interactive_total}")
+
 
     except Exception as error:
         print("  Browser Tests Knöpfe funktion: FAIL - konnte nicht geprüft werden:", error)
