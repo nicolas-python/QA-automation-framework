@@ -892,7 +892,7 @@ def run_test(url, expected_title, expected_text):
             try:
                 print()
                 print("Interaktive Unterelemente:")
-                # NEU: sofort anzeigen, dass der Test gestartet ist
+                #sofort anzeigen, dass der Test gestartet ist
                 print("Prüfe interaktive Unterelemente... 0/0",end="")
 
                 page.goto(url)
@@ -947,38 +947,52 @@ def run_test(url, expected_title, expected_text):
                         #vorher sichtbare interaktive Elemente merken
                         before_elements = set()
 
-                        for element in page.locator('button:visible, a:visible, [role="button"]:visible').all():
+                        elements = page.locator('button:visible, a:visible, [role="button"]:visible')
 
-                            name = element.inner_text().strip()
+                        for index in range(elements.count()):
 
-                            if not name:
-                                name = element.get_attribute("aria-label")
+                            try:
+                                element = elements.nth(index)                               #nth = gibt das Element an der jeweiligen Position zurück
+                                name = element.inner_text(timeout=3000).strip()
 
-                            if name:
-                                before_elements.add(name)
+                                if not name:
+                                    name = element.get_attribute("aria-label",timeout=3000)
+
+                                if name:
+                                    before_elements.add(name)
+
+                            except Exception:
+                                continue
 
                         #eltern-Element öffnen
                         parent_element.click(timeout=3000,force=True)
                         page.wait_for_timeout(1000)
 
                         #neue interaktive Unterelemente suchen
-                        for child in page.locator('button:visible, a:visible, [role="button"]:visible').all():
+                        children = page.locator('button:visible, a:visible, [role="button"]:visible')           #a:visible = sichtbare Links
 
-                            child_name = child.inner_text().strip()
+                        for index in range(children.count()):
 
-                            if not child_name:
-                                child_name = child.get_attribute("aria-label")
+                            try:
+                                child = children.nth(index)
+                                child_name = child.inner_text(timeout=3000).strip()
 
-                            if not child_name:
+                                if not child_name:
+                                    child_name = child.get_attribute("aria-label",timeout=3000)
+
+                                if not child_name:
+                                    continue
+
+                                if child_name in before_elements:
+                                    continue
+
+                                interactive_child = (parent_name,child_name)
+
+                                if interactive_child not in interactive_children:
+                                    interactive_children.append(interactive_child)
+
+                            except Exception:
                                 continue
-
-                            if child_name in before_elements:
-                                continue
-
-                            interactive_child = (parent_name,child_name)
-
-                            if interactive_child not in interactive_children:
-                                interactive_children.append(interactive_child)
 
                     except Exception as error:
                         failed_interactive_children.append((parent_name,"",str(error)))
