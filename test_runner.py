@@ -826,6 +826,7 @@ def run_test(url, expected_title, expected_text):
             interactive_elements = []
             passed_interactive_elements = []
             failed_interactive_elements = []
+            dom_interactive_count = 0
 
             try:
                 print()
@@ -837,6 +838,7 @@ def run_test(url, expected_title, expected_text):
 
                 #gefundene Elemente sammeln
                 for element in elements.all():
+
 
                     if not element.is_visible():
                         continue
@@ -850,6 +852,9 @@ def run_test(url, expected_title, expected_text):
 
                     if not element_name:
                         continue
+
+                    # jedes relevante DOM-Element einmal zählen
+                    dom_interactive_count += 1
 
                     role = element.get_attribute("role")
                     aria_expanded = element.get_attribute("aria-expanded")
@@ -879,6 +884,12 @@ def run_test(url, expected_title, expected_text):
 
                 print()
                 print(f"  Interaktive Elemente: "f"{len(passed_interactive_elements)} PASS - "f"{len(failed_interactive_elements)} FAIL")
+
+                #DOM Soll/Ist Vergleich
+                interactive_duplicates = (dom_interactive_count - len(interactive_elements))
+                print(f"  DOM Referenz: "f"{dom_interactive_count}")
+                print(f"  Eindeutig geprüft: "f"{len(interactive_elements)}")
+                print(f"  Duplikate: "f"{interactive_duplicates}")
 
                 # fehler anzeigen
                 for tag_name, element_name, error in failed_interactive_elements:
