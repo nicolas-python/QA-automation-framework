@@ -492,18 +492,30 @@ def run_test(url, expected_title, expected_text):
 
 # -----------------------------------------------------------
             # DOM debug :einzelne Kategorien anzeigen, um zu sehen,welche interaktiven Elemente tatsächlich im DOM vorhanden sind
-            dom_buttons = page.locator("button")
-            dom_links = page.locator("a")
-            dom_role_buttons = page.locator('[role="button"]')
-            dom_aria_expanded = page.locator("[aria-expanded]")
+
+            dom_interactive_elements = page.locator('button, a, [role="button"], [aria-expanded]')
+
+            dom_reference_elements = []
+
+            for element in dom_interactive_elements.all():
+
+                if not element.is_visible():
+                    continue
+
+                element_name = element.inner_text().strip()
+
+                if not element_name:
+                    element_name = element.get_attribute("aria-label")
+
+                if not element_name:
+                    continue
+
+                dom_reference_elements.append(element)
+
+            dom_reference_count = len(dom_reference_elements)
 
             print()
-            print("DOM interaktive Elemente:")
-
-            print(f"  Buttons: "f"{dom_buttons.count()}")
-            print(f"  Links: "f"{dom_links.count()}")
-            print(f"  Role=button: "f"{dom_role_buttons.count()}")
-            print(f"  aria-expanded: "f"{dom_aria_expanded.count()}")
+            print(f"DOM Referenz: "f"{dom_reference_count} relevante interaktive Elemente")
 #-----------------------------------------------------------
 
             #beginn des tests
