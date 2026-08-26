@@ -486,6 +486,11 @@ def run_test(url, expected_title, expected_text):
     passed_buttons = []
     failed_buttons = []
 
+    # Interaktive DOM Elemente Starterseite
+    interactive_elements = []
+    passed_interactive_elements = []
+    failed_interactive_elements = []
+
     try:
         with sync_playwright() as p:
             browser = p.chromium.launch()               #startet einen Chromium-Browser über Python
@@ -586,8 +591,33 @@ def run_test(url, expected_title, expected_text):
                     #Button klicken
                     current_button.scroll_into_view_if_needed()  # ausschließen das die Positionierung/der Scrollzustand das Problem verursacht
                     current_button.click(timeout=3000, force=True)          #force=true= button wird auch dann geklickt, wenn ein anderes Element die Klickposition überlagert
-                    passed_buttons.append(button_name)
+                    page.wait_for_timeout(500)
+                    #neue interaktive Elemente nach dem Button-Klick suchen
+                    elements = page.locator('a, [role="button"]:not(button), [aria-expanded]:not(button)')
 
+                    for element in elements.all():
+
+                        if not element.is_visible():
+                            continue
+
+                        tag_name = element.evaluate("(element) => element.tagName.toLowerCase()")
+                        element_name = element.inner_text().strip()
+
+                        if not element_name:
+                            element_name = element.get_attribute("aria-label")
+
+                        if not element_name:
+                            continue
+
+                        role = element.get_attribute("role")
+                        aria_expanded = element.get_attribute("aria-expanded")
+                        interactive_element = (tag_name,element_name,role,aria_expanded)
+
+                        if interactive_element not in interactive_elements:
+                            interactive_elements.append(interactive_element)
+                            dom_interactive_count += 1
+
+                    passed_buttons.append(button_name)
 
                 except Exception as error:
                     failed_buttons.append((button_name, str(error)))
@@ -900,18 +930,13 @@ def run_test(url, expected_title, expected_text):
             print(f"  Insgesamt: {button_total}")
 
 #Interaktive DOM Elemente
-            #Interaktive DOM Elemente Starterseite
-            interactive_elements = []
-            passed_interactive_elements = []
-            failed_interactive_elements = []
-
             try:
                 print()
                 print("Interaktive Elemente:")
                 page.goto(url)
 
                 #interaktive HTML-Elemente suchen
-                elements = page.locator('button, a, [role="button"], [aria-expanded]')
+                elements = page.locator('a, [role="button"]:not(button), [aria-expanded]:not(button)')
 
                 #gefundene Elemente sammeln
                 for element in elements.all():
@@ -929,9 +954,6 @@ def run_test(url, expected_title, expected_text):
                     if not element_name:
                         continue
 
-                    #jedes relevante DOM-Element einmal zählen
-                    dom_interactive_count += 1
-
                     role = element.get_attribute("role")
                     aria_expanded = element.get_attribute("aria-expanded")
 
@@ -940,6 +962,7 @@ def run_test(url, expected_title, expected_text):
 
                     if interactive_element not in interactive_elements:
                         interactive_elements.append(interactive_element)
+                        dom_interactive_count += 1
 
                 #start der Fortschrittsanzeige
                 print(f"Prüfe Interaktive Elemente... "f"0/{len(interactive_elements)}",end="")
