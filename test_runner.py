@@ -1073,12 +1073,33 @@ def run_test(url, expected_title, expected_text):
             print(f"  Insgesamt: {interactive_total}")
 
 
+#Formulare ausfüllen
+            print()
+            print("Formulare:")
+
+            try:
+                inputs = page.locator("input, textarea, select")        #eingabefelder suchen
+                print(f"Eingabefelder gefunden: "f"{inputs.count()}")
+
+                #echte HTML-Formulare suchen
+                forms = page.locator("form")
+
+                visible_forms = []
+
+                for form in forms.all():
+
+                    if not form.is_visible():
+                        continue
+
+                    visible_forms.append(form)
+
+                print(f"Formulare gefunden: "f"{len(visible_forms)}")
+
+            except Exception as error:
+                print("  Formulare: "f"FAIL - konnte nicht geprüft werden: {error}")
+
     except Exception as error:
-        print("  Browser Tests Knöpfe funktion: FAIL - konnte nicht geprüft werden:", error)
-
-
-
-    #Formulare ausfüllen
+        print("  Browser Tests : FAIL - konnte nicht  vollständig geprüft werden:", error)
 
     #Login testen
 
