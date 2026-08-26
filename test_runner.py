@@ -636,6 +636,76 @@ def run_test(url, expected_title, expected_text):
                     if button_name and button_name not in expandable_buttons:
                         expandable_buttons.append(button_name)
 
+#---2 test fals website aufklappbare buttons kein aria label haben
+                #zusätzliche Elternbuttons erkennen, die neue Buttons erst nach dem Klick anzeigen
+                for button_index, button_name in filtered_buttons:
+
+                    #bereits als aufklappbaren Button erkannt?
+                    if button_name in expandable_buttons:
+                        continue
+
+                    try:
+                        page.goto(url)
+
+                        buttons = page.locator("button")
+                        current_button = None
+
+                        for button in buttons.all():
+
+                            current_name = button.inner_text().strip()
+
+                            if not current_name:
+                                current_name = button.get_attribute("aria-label")
+
+                            if current_name == button_name:
+                                current_button = button
+                                break
+
+                        if current_button is None:
+                            continue
+
+                        #vorher sichtbare Buttons merken
+                        before_buttons = set()
+
+                        for button in page.locator("button:visible").all():
+
+                            name = button.inner_text().strip()
+
+                            if not name:
+                                name = button.get_attribute("aria-label")
+
+                            if name:
+                                before_buttons.add(name)
+
+                        #elternbutton klicken
+                        current_button.click(timeout=3000, force=True)
+                        page.wait_for_timeout(1000)
+
+                        #neue Buttons nach dem Klick suchen
+                        for sub_button in page.locator("button:visible").all():
+
+                            sub_name = sub_button.inner_text().strip()
+
+                            if not sub_name:
+                                sub_name = sub_button.get_attribute("aria-label")
+
+                            if not sub_name:
+                                continue
+
+                            if sub_name in before_buttons:
+                                continue
+
+                            new_button = (button_name, sub_name)
+
+                            if new_button not in new_buttons:
+                                new_buttons.append(new_button)
+
+                        if any(parent == button_name for parent, child in new_buttons):
+                            expandable_buttons.append(button_name)
+
+                    except Exception:
+                        continue
+#---
                 print(f"Prüfe Aufklappbare Buttons... "f"0/{len(expandable_buttons)}",end="")
 
             except Exception as error:
@@ -649,10 +719,10 @@ def run_test(url, expected_title, expected_text):
                 for button_name in expandable_buttons:
 
                     try:
-                        buttons = page.locator('button[aria-expanded]')
+                        buttons = page.locator("button:visible")
                         current_button = None
 
-                        #aufklappbaren Button wiederfinden
+                        # aufklappbaren Button wiederfinden
                         for button in buttons.all():
                             current_name = button.inner_text().strip()
 
@@ -744,7 +814,7 @@ def run_test(url, expected_title, expected_text):
                             page.goto(url)
 
                             # Elternbutton suchen
-                            buttons = page.locator('button[aria-expanded]:visible')
+                            buttons = page.locator("button:visible")
                             parent_button = None
 
                             for button in buttons.all():
