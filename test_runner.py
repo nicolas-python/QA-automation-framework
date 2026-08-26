@@ -473,6 +473,8 @@ def run_test(url, expected_title, expected_text):
 # Browser Tests
 # --------------------------------------------------
 #normale Buttons
+    #gefundene Formulare/Eingabefelder speichern
+    found_forms = []
 
     #Buttons klicken
     print()
@@ -490,6 +492,17 @@ def run_test(url, expected_title, expected_text):
             page = browser.new_page()                   #page= eine einzelne Browserseite bzw ein tap
             page.goto(url)                              # öffnet die geladene URL im automatisierten Browser
             dom_interactive_count = 0                   #feste DOM-Referenz für den gesamten Browser-Test
+
+            # -------------------------------------------------------------------
+            # Formular / Eingabefelder nach dem Öffnen des Unterelements suchen
+            inputs = page.locator("input, textarea, select")
+
+            if inputs.count() > 0:
+                form_data = {"url": page.url, "button": None, "input_count": inputs.count()}
+
+                if form_data not in found_forms:
+                    found_forms.append(form_data)
+            # -------------------------------------------------------------------)
 
             #beginn des tests
             print("Button test sichtbar:")
@@ -678,6 +691,17 @@ def run_test(url, expected_title, expected_text):
                         #kurz warten, bis das Menü geöffnet wurde
                         page.wait_for_timeout(1000)
 
+                        #-------------------------------------------------------------------
+                        # Formular / Eingabefelder nach dem Öffnen des Unterelements suchen
+                        inputs = page.locator("input, textarea, select")
+
+                        if inputs.count() > 0:
+                            form_data = {"url": page.url, "input_count": inputs.count()}
+
+                            if form_data not in found_forms:
+                                found_forms.append(form_data)
+                        # -------------------------------------------------------------------
+
                         #nur Buttons speichern, die durch genau durch Hauptbutton neu sichtbar wurden
                         for sub_button in page.locator("button:visible").all():
 
@@ -740,6 +764,17 @@ def run_test(url, expected_title, expected_text):
                             parent_button.click(timeout=3000,force=True)
 
                             page.wait_for_timeout(1000)
+
+                            # -------------------------------------------------------------------
+                            # Formular / Eingabefelder nach dem Öffnen des Unterelements suchen
+                            inputs = page.locator("input, textarea, select")
+
+                            if inputs.count() > 0:
+                                form_data = {"url": page.url,"button": button_name, "input_count": inputs.count()}
+
+                                if form_data not in found_forms:
+                                    found_forms.append(form_data)
+                            # -------------------------------------------------------------------
 
                             #unterbutton suchen
                             current_button = None
@@ -953,6 +988,17 @@ def run_test(url, expected_title, expected_text):
                         parent_element.click(timeout=3000,force=True)
                         page.wait_for_timeout(1000)
 
+                        # -------------------------------------------------------------------
+                        # Formular / Eingabefelder nach dem Öffnen des Unterelements suchen
+                        inputs = page.locator("input, textarea, select")
+
+                        if inputs.count() > 0:
+                            form_data = {"url": page.url, "parent": parent_name,"button": None, "input_count": inputs.count()}
+
+                            if form_data not in found_forms:
+                                found_forms.append(form_data)
+                        # -------------------------------------------------------------------
+
                         #neue interaktive Unterelemente suchen
                         children = page.locator('button:visible, a:visible, [role="button"]:visible')           #a:visible = sichtbare Links
 
@@ -1023,6 +1069,17 @@ def run_test(url, expected_title, expected_text):
                         parent_element.click(timeout=3000,force=True)
                         page.wait_for_timeout(1000)
 
+                        # -------------------------------------------------------------------
+                        # Formular / Eingabefelder nach dem Öffnen des Unterelements suchen
+                        inputs = page.locator("input, textarea, select")
+
+                        if inputs.count() > 0:
+                            form_data = {"url": page.url,"parent": parent_name, "button": child_name, "input_count": inputs.count()}
+
+                            if form_data not in found_forms:
+                                found_forms.append(form_data)
+                        # -------------------------------------------------------------------
+
                         #unterelement suchen
                         child_element = None
 
@@ -1077,9 +1134,33 @@ def run_test(url, expected_title, expected_text):
             print()
             print("Formulare:")
 
+            print()
+            print(f"Gefundene Formularstellen: "f"{len(found_forms)}")
+            print()
+
             try:
                 inputs = page.locator("input, textarea, select")        #eingabefelder suchen
                 print(f"Eingabefelder gefunden: "f"{inputs.count()}")
+
+
+                for index in range(inputs.count()):
+                    field = inputs.nth(index)
+                    tag_name = field.evaluate("(element) => element.tagName.toLowerCase()")
+                    field_type = field.get_attribute("type")
+                    name = field.get_attribute("name")
+                    field_id = field.get_attribute("id")
+                    placeholder = field.get_attribute("placeholder")
+                    aria_label = field.get_attribute("aria-label")
+
+                    print()
+                    print(f"Feld {index + 1}:")
+                    print(f"  Tag: {tag_name}")
+                    print(f"  Type: {field_type}")
+                    print(f"  Name: {name}")
+                    print(f"  ID: {field_id}")
+                    print(f"  Placeholder: {placeholder}")
+                    print(f"  Aria-label: {aria_label}")
+
 
                 #echte HTML-Formulare suchen
                 forms = page.locator("form")
