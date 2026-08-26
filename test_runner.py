@@ -489,34 +489,7 @@ def run_test(url, expected_title, expected_text):
             browser = p.chromium.launch()               #startet einen Chromium-Browser über Python
             page = browser.new_page()                   #page= eine einzelne Browserseite bzw ein tap
             page.goto(url)                              # öffnet die geladene URL im automatisierten Browser
-
-# -----------------------------------------------------------
-            # DOM debug :einzelne Kategorien anzeigen, um zu sehen,welche interaktiven Elemente tatsächlich im DOM vorhanden sind
-
-            dom_interactive_elements = page.locator('button, a, [role="button"], [aria-expanded]')
-
-            dom_reference_elements = []
-
-            for element in dom_interactive_elements.all():
-
-                if not element.is_visible():
-                    continue
-
-                element_name = element.inner_text().strip()
-
-                if not element_name:
-                    element_name = element.get_attribute("aria-label")
-
-                if not element_name:
-                    continue
-
-                dom_reference_elements.append(element)
-
-            dom_reference_count = len(dom_reference_elements)
-
-            print()
-            print(f"DOM Referenz: "f"{dom_reference_count} relevante interaktive Elemente")
-#-----------------------------------------------------------
+            dom_interactive_count = 0                   #feste DOM-Referenz für den gesamten Browser-Test
 
             #beginn des tests
             print("Button test sichtbar:")
@@ -826,7 +799,6 @@ def run_test(url, expected_title, expected_text):
             interactive_elements = []
             passed_interactive_elements = []
             failed_interactive_elements = []
-            dom_interactive_count = 0
 
             try:
                 print()
@@ -838,7 +810,6 @@ def run_test(url, expected_title, expected_text):
 
                 #gefundene Elemente sammeln
                 for element in elements.all():
-
 
                     if not element.is_visible():
                         continue
@@ -853,7 +824,7 @@ def run_test(url, expected_title, expected_text):
                     if not element_name:
                         continue
 
-                    # jedes relevante DOM-Element einmal zählen
+                    #jedes relevante DOM-Element einmal zählen
                     dom_interactive_count += 1
 
                     role = element.get_attribute("role")
@@ -1016,6 +987,8 @@ def run_test(url, expected_title, expected_text):
                 print()
                 print(f"Prüfe interaktive Unterelemente... "f"0/{len(interactive_children)}", end="")
 
+                interactive_children_checked = 0  #zählt, wie viele Unterelemente tatsächlich geprüft wurden
+
                 #prüfen, ob überhaupt Unterelemente gefunden wurden
                 if not interactive_children:
                     print()
@@ -1077,7 +1050,9 @@ def run_test(url, expected_title, expected_text):
                         error_message = str(error).splitlines()[0]
                         failed_interactive_children.append((parent_name, child_name, error_message))
 
-                    print(f"\rPrüfe interaktive Unterelemente... "f"{len(passed_interactive_children) + len(failed_interactive_children)}"f"/{len(interactive_children)}",end="")
+                    interactive_children_checked += 1
+                    #genaueres anzeigen was  tatsächlich abgearbeitet ist
+                    print(f"\rPrüfe interaktive Unterelemente... "f"{interactive_children_checked}/{len(interactive_children)}",end="")
 
                 print()
                 print(f"  Interaktive Unterelemente: "f"{len(passed_interactive_children)} PASS - "f"{len(failed_interactive_children)} FAIL")
