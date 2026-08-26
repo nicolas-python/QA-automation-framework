@@ -218,3 +218,6 @@ QA Test Bewertung:
     - PASS / FAIL Übersicht
     - Fehler speichern
     - Datum/Uhrzeit
+
+Momentan nur starterseite am Testen
+# ⚠️ TODO: Weiterführende Seiten/URLs im Browser-Test ebenfalls prüfen

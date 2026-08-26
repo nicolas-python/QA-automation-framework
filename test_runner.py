@@ -507,7 +507,7 @@ def run_test(url, expected_title, expected_text):
 
                 if form_data not in found_forms:
                     found_forms.append(form_data)
-            # -------------------------------------------------------------------)
+            # -------------------------------------------------------------------
 
             #beginn des tests
             print("Button test sichtbar:")
@@ -862,19 +862,7 @@ def run_test(url, expected_title, expected_text):
 
                             #elternmenü buttons öffnen
                             parent_button.click(timeout=3000,force=True)
-
                             page.wait_for_timeout(1000)
-
-                            # -------------------------------------------------------------------
-                            # Formular / Eingabefelder nach dem Öffnen des Unterelements suchen
-                            inputs = page.locator("input, textarea, select")
-
-                            if inputs.count() > 0:
-                                form_data = {"url": page.url,"button": button_name, "input_count": inputs.count()}
-
-                                if form_data not in found_forms:
-                                    found_forms.append(form_data)
-                            # -------------------------------------------------------------------
 
                             #unterbutton suchen
                             current_button = None
@@ -898,6 +886,18 @@ def run_test(url, expected_title, expected_text):
 
                             #Unterbutton klicken
                             current_button.click(timeout=3000,force=True)
+                            page.wait_for_timeout(500)
+
+                            # -------------------------------------------------------------------
+                            # Formular / Eingabefelder nach dem Öffnen des Unterelements suchen
+                            inputs = page.locator("input, textarea, select")
+
+                            if inputs.count() > 0:
+                                form_data = {"url": page.url, "button": None, "input_count": inputs.count()}
+
+                                if form_data not in found_forms:
+                                    found_forms.append(form_data)
+                            # -------------------------------------------------------------------
 
                             passed_new_buttons.append((parent_name, new_button_name))
 
@@ -1005,6 +1005,7 @@ def run_test(url, expected_title, expected_text):
             try:
                 print()
                 print("Interaktive Unterelemente:")
+
                 #sofort anzeigen, dass der Test gestartet ist
                 print("Prüfe interaktive Unterelemente... 0/0",end="")
 
@@ -1227,47 +1228,56 @@ def run_test(url, expected_title, expected_text):
             print()
             print("Formulare:")
 
-            print()
-            print(f"Gefundene Formularstellen: "f"{len(found_forms)}")
-            print()
-
             try:
-                inputs = page.locator("input, textarea, select")        #eingabefelder suchen
-                print(f"Eingabefelder gefunden: "f"{inputs.count()}")
+                if not found_forms:
+                    print()
+                    print("  Keine Formularstellen gefunden")
+
+                else:
+                    for form_index, form_data in enumerate(found_forms, start=1):
+                        print(f"Prüfe Formulare... "f"0/{len(found_forms)}",end="")
+
+                    try:
+                        page.goto(form_data["url"],timeout=10000)
+
+                        print(f"\rPrüfe Formulare... "f"{form_index}/{len(found_forms)}",end="")
+                        print()
+
+                        print(f"Formular {form_index}:")
+                        print(f"  URL: {form_data['url']}")
+                        print(f"  Button: {form_data.get('button')}")
+                        print(f"  Eingabefelder erwartet: {form_data['input_count']}")
+
+                        #eingabefelder suchen
+                        inputs = page.locator("input, textarea, select")
+                        print(f"  Eingabefelder gefunden: "f"{inputs.count()}")
+
+                        # Felder auslesen
+                        for index in range(inputs.count()):
+                            field = inputs.nth(index)
+
+                            tag_name = field.evaluate("(element) => element.tagName.toLowerCase()")
+
+                            field_type = field.get_attribute("type")
+                            name = field.get_attribute("name")
+                            field_id = field.get_attribute("id")
+                            placeholder = field.get_attribute("placeholder")
+                            aria_label = field.get_attribute("aria-label")
+
+                            print()
+                            print(f"  Feld {index + 1}:")
+                            print(f"    Tag: {tag_name}")
+                            print(f"    Type: {field_type}")
+                            print(f"    Name: {name}")
+                            print(f"    ID: {field_id}")
+                            print(f"    Placeholder: {placeholder}")
+                            print(f"    Aria-label: {aria_label}")
 
 
-                for index in range(inputs.count()):
-                    field = inputs.nth(index)
-                    tag_name = field.evaluate("(element) => element.tagName.toLowerCase()")
-                    field_type = field.get_attribute("type")
-                    name = field.get_attribute("name")
-                    field_id = field.get_attribute("id")
-                    placeholder = field.get_attribute("placeholder")
-                    aria_label = field.get_attribute("aria-label")
+                    except Exception as error:
+                        print(f"\rPrüfe Formulare... "f"{form_index}/{len(found_forms)} "f"- FAIL: {error}")
 
                     print()
-                    print(f"Feld {index + 1}:")
-                    print(f"  Tag: {tag_name}")
-                    print(f"  Type: {field_type}")
-                    print(f"  Name: {name}")
-                    print(f"  ID: {field_id}")
-                    print(f"  Placeholder: {placeholder}")
-                    print(f"  Aria-label: {aria_label}")
-
-
-                #echte HTML-Formulare suchen
-                forms = page.locator("form")
-
-                visible_forms = []
-
-                for form in forms.all():
-
-                    if not form.is_visible():
-                        continue
-
-                    visible_forms.append(form)
-
-                print(f"Formulare gefunden: "f"{len(visible_forms)}")
 
             except Exception as error:
                 print("  Formulare: "f"FAIL - konnte nicht geprüft werden: {error}")
