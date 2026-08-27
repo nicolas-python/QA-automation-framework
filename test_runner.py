@@ -1307,12 +1307,21 @@ def run_test(url, expected_title, expected_text):
                         except Exception as error:
                             print(f"\rPrüfe Formulare... "f"{form_index}/{len(found_forms)} "f"- FAIL: {error}")
 
+#Formulare Gesamtübersicht
+                    total_forms = len(form_results)
+                    total_fields = sum(len(form_result["fields"])for form_result in form_results)
+
+                    passed_fields = sum(sum(1 for field in form_result["fields"]if field["status"] == "PASS")for form_result in form_results)
+                    failed_fields = sum(sum(1 for field in form_result["fields"]if field["status"] == "FAIL")for form_result in form_results)
+
+                    print("Formulare Gesamtübersicht:")
+                    print(f"  Formulare: {total_forms}")
+                    print(f"  Eingabefelder: {total_fields}")
+                    print(f"  Beschreibbar: {passed_fields}")
+                    print(f"  Nicht beschreibbar: {failed_fields}")
+
             except Exception as error:
                 print("  Formulare: "f"FAIL - konnte nicht geprüft werden: {error}")
 
     except Exception as error:
         print("  Browser Tests : FAIL - konnte nicht  vollständig geprüft werden:", error)
-
-    #Login testen
-
-
