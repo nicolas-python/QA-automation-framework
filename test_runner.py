@@ -1231,7 +1231,7 @@ def run_test(url, expected_title, expected_text):
             print(f"  Insgesamt: {interactive_total}")
 
 
-#Formulare ausfüllen
+#Formulare anzeige
             print()
             print("Formulare:")
 
@@ -1260,27 +1260,40 @@ def run_test(url, expected_title, expected_text):
                         inputs = page.locator("input, textarea, select")
                         print(f"  Eingabefelder gefunden: "f"{inputs.count()}")
 
-                        # Felder auslesen
-                        for index in range(inputs.count()):
-                            field = inputs.nth(index)
+                        input_count = inputs.count()
 
-                            tag_name = field.evaluate("(element) => element.tagName.toLowerCase()")
+                        print(f"  Eingabefelder: {input_count}")
 
-                            field_type = field.get_attribute("type")
-                            name = field.get_attribute("name")
-                            field_id = field.get_attribute("id")
-                            placeholder = field.get_attribute("placeholder")
-                            aria_label = field.get_attribute("aria-label")
+                        if input_count > 0:
+                            print("  Eingabefelder Vorhanden: JA")
+                        else:
+                            print("  Eingabefelder Vorhanden: NEIN")
 
-                            print()
-                            print(f"  Feld {index + 1}:")
-                            print(f"    Tag: {tag_name}")
-                            print(f"    Type: {field_type}")
-                            print(f"    Name: {name}")
-                            print(f"    ID: {field_id}")
-                            print(f"    Placeholder: {placeholder}")
-                            print(f"    Aria-label: {aria_label}")
+#Formulare ausfüllen
+                        test_value = "QA Test"                  #test text der in die Eingabefelder geschireben wird
 
+                        try:
+                            for index in range(inputs.count()):
+                                field = inputs.nth(index)
+
+                                field_type = field.get_attribute("type")
+
+                                #Checkboxen nicht mit Text befüllen
+                                if field_type == "checkbox":
+                                    continue
+
+                                #start
+                                field.fill(test_value)
+
+                                if field.input_value() == test_value:
+                                    continue
+
+                                raise Exception("Eingabe wurde nicht übernommen")
+
+                            print("  Eingabefelder beschreibbar: JA")
+
+                        except Exception as error:
+                            print(f"  Eingabefelder beschreibbar: NEIN - {error}")
 
                     except Exception as error:
                         print(f"\rPrüfe Formulare... "f"{form_index}/{len(found_forms)} "f"- FAIL: {error}")
