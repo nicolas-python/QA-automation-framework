@@ -11,6 +11,11 @@ from playwright.sync_api import expect              #expect zum Prüfen, ob ein 
 
 
 def run_test(url, expected_title, expected_text):
+    test_start = datetime.now()
+
+    print(f"Datum: {test_start.strftime('%d.%m.%Y')}")
+    print(f"Uhrzeit: {test_start.strftime('%H:%M:%S')}")
+    print()
     print("URL:", url)
 
 
@@ -1311,8 +1316,8 @@ def run_test(url, expected_title, expected_text):
                     total_forms = len(form_results)
                     total_fields = sum(len(form_result["fields"])for form_result in form_results)
 
-                    passed_fields = sum(sum(1 for field in form_result["fields"]if field["status"] == "PASS")for form_result in form_results)
-                    failed_fields = sum(sum(1 for field in form_result["fields"]if field["status"] == "FAIL")for form_result in form_results)
+                    passed_fields = sum(sum(1 for field in form_result["fields"] if field["status"] == "PASS")for form_result in form_results)
+                    failed_fields = sum(sum(1 for field in form_result["fields"] if field["status"] == "FAIL")for form_result in form_results)
 
                     print("Formulare Gesamtübersicht:")
                     print(f"  Formulare: {total_forms}")

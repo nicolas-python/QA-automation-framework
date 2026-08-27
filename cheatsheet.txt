@@ -197,8 +197,8 @@ QA Test Bewertung:
 
     Prüfen:
     - Buttons klicken    ----> PASS = Der Klick löst eine erkennbare Browser-Aktion aus / nur auf der Homepage des aktuellen URL-links⚠️
-    - Formulare ausfüllen ---> PASS = Formularfelder lassen sich ausfüllen und das Formular akzeptiert die Eingaben
-    - Login testen        -----> PASS = Der Login funktioniert mit gültigen Testdaten
+    - Formulare ausfüllen ---> PASS = Formularfelder lassen sich ausfüllen und das Formular akzeptiert die Eingaben -->Felder finden, Felder ausfüllen,prüfen ob Werte übernommen wurden
+    (- Login testen        -----> PASS = Der Login funktioniert mit gültigen Testdaten-->eingeloggt / Fehlermeldung / Weiterleitung)
 
 
         Chromium ist ein Browser-Projekt, auf dem viele bekannte Browser basieren
@@ -215,9 +215,10 @@ QA Test Bewertung:
     Speichert Ergebnisse und macht sie übersichtlich.
 
     Prüfen:
-    - PASS / FAIL Übersicht
-    - Fehler speichern
+    - PASS / FAIL Übersicht✅
+    - Fehler speichern✅
     - Datum/Uhrzeit
 
 Momentan nur starterseite am Testen
+# ⚠️ TODO: Browser-Tests optimieren zusammenfassen – Aufklappbare Buttons auf großen Seiten zu langsam  → Elemente nur einmal testen und Ergebnisse speichern, anschließend nur noch ausgeben
 # ⚠️ TODO: Weiterführende Seiten/URLs im Browser-Test ebenfalls prüfen
