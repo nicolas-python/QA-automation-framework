@@ -1234,7 +1234,7 @@ def run_test(url, expected_title, expected_text):
 #Formulare anzeige
             print()
             print("Formulare:")
-
+            form_results = []
 
             try:
                 if not found_forms:
@@ -1242,65 +1242,70 @@ def run_test(url, expected_title, expected_text):
                     print("  Keine Formularstellen gefunden")
 
                 else:
-                    for form_index, form_data in enumerate(found_forms, start=1):
-                        print(f"Prüfe Formulare... "f"0/{len(found_forms)}",end="")
+                    print(f"Prüfe Formulare... "f"0/{len(found_forms)}",end="")
 
+                    for form_index, form_data in enumerate(found_forms, start=1):
                         try:
                             page.goto(form_data["url"],timeout=10000)
+                            inputs = page.locator("input, textarea, select")
+                            input_count = inputs.count()
+                            field_results = []
 
                             print(f"\rPrüfe Formulare... "f"{form_index}/{len(found_forms)}",end="")
-                            print()
-
-                            print(f"Formular {form_index}:")
-                            print(f"  URL: {form_data['url']}")
-                            print(f"  Button: {form_data.get('button')}")
-                            print(f"  Eingabefelder erwartet: {form_data['input_count']}")
-
-                            #eingabefelder suchen
-                            inputs = page.locator("input, textarea, select")
-                            print(f"  Eingabefelder gefunden: "f"{inputs.count()}")
-
-                            input_count = inputs.count()
-
-                            print(f"  Eingabefelder: {input_count}")
-
-                            if input_count > 0:
-                                print("  Eingabefelder Vorhanden: JA")
-                            else:
-                                print("  Eingabefelder Vorhanden: NEIN")
 
 #Formulare ausfüllen
                             test_value = "QA Test"                  #test text der in die Eingabefelder geschireben wird
+                            for index in range(inputs.count()):
 
-                            try:
-                                for index in range(inputs.count()):
-                                    field = inputs.nth(index)
+                                field = inputs.nth(index)
+                                field_type = field.get_attribute("type")
 
-                                    field_type = field.get_attribute("type")
+                                #Checkboxen nicht mit Text befüllen
+                                if field_type == "checkbox":
+                                    continue
 
-                                    #Checkboxen nicht mit Text befüllen
-                                    if field_type == "checkbox":
-                                        continue
+                                #start
+                                try:
+                                    field.fill(test_value)          #Testwert in das Eingabefeld schreiben
 
-                                    #start
-                                    try:
-                                        field.fill(test_value)
+                                    if field.input_value() != test_value:
+                                        raise Exception("Eingabe wurde nicht übernommen")
 
-                                        if field.input_value() != test_value:
-                                            raise Exception("Eingabe wurde nicht übernommen")
+                                    #PASS-Ergebnis speichern
+                                    field_results.append({"index": index + 1,"status": "PASS","message": "beschreibbar"})
 
-                                        print(f"    Feld {index + 1}: PASS - beschreibbar")
+                                #FAIL-Ergebnis speichern
+                                except Exception as field_error:
+                                    field_results.append({"index": index + 1,"status": "FAIL","message": str(field_error)})
 
-                                    except Exception as field_error:
-                                        print(f"    Feld {index + 1}: FAIL - "f"nicht beschreibbar: {field_error}")
+                                #komplettes Formularergebnis speichern
+                            form_results.append({"form_index": form_index,"url": form_data["url"],"button": form_data.get("button"),"expected": form_data["input_count"],"found": input_count,"fields": field_results})
 
-                            except Exception as error:
-                                print(f"    Eingabefelder beschreibbar: NEIN - {error}")
+                            print(f"\rPrüfe Formulare... "f"{form_index}/{len(found_forms)}",end="")
+
+                            print()
+                            print()
+
+                            for form_result in form_results:
+
+                                print(f"Formular {form_result['form_index']}:")
+                                print(f"  URL: {form_result['url']}")
+                                print(f"  Button: {form_result['button']}")
+                                print(f"  Eingabefelder erwartet: {form_result['expected']}")
+                                print(f"  Eingabefelder gefunden: {form_result['found']}")
+
+                                if form_result["found"] > 0:
+                                    print("  Eingabefelder Vorhanden: JA")
+                                else:
+                                    print("  Eingabefelder Vorhanden: NEIN")
+
+                                for field_result in form_result["fields"]:
+                                    print(f"    Feld {field_result['index']}: "f"{field_result['status']} - "f"{field_result['message']}")
+
+                                print()
 
                         except Exception as error:
                             print(f"\rPrüfe Formulare... "f"{form_index}/{len(found_forms)} "f"- FAIL: {error}")
-
-                    print()
 
             except Exception as error:
                 print("  Formulare: "f"FAIL - konnte nicht geprüft werden: {error}")
