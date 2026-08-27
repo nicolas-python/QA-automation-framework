@@ -592,6 +592,17 @@ def run_test(url, expected_title, expected_text):
                     current_button.scroll_into_view_if_needed()  # ausschließen das die Positionierung/der Scrollzustand das Problem verursacht
                     current_button.click(timeout=3000, force=True)          #force=true= button wird auch dann geklickt, wenn ein anderes Element die Klickposition überlagert
                     page.wait_for_timeout(500)
+#DEBUG
+                    inputs = page.locator("input, textarea, select")
+
+                    print(f"DEBUG: {button_name} -> "f"{inputs.count()} Eingabefelder")
+
+                    if inputs.count() > 0:
+                        form_data = {"url": page.url,"button": button_name,"input_count": inputs.count()}
+                        found_forms.append(form_data)
+
+                        print(f"DEBUG: gespeichert -> {form_data}")
+#DEBUG
                     #neue interaktive Elemente nach dem Button-Klick suchen
                     elements = page.locator('a, [role="button"]:not(button), [aria-expanded]:not(button)')
 
@@ -1227,6 +1238,8 @@ def run_test(url, expected_title, expected_text):
 #Formulare ausfüllen
             print()
             print("Formulare:")
+
+            print(found_forms)
 
             try:
                 if not found_forms:
