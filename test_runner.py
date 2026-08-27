@@ -1245,58 +1245,60 @@ def run_test(url, expected_title, expected_text):
                     for form_index, form_data in enumerate(found_forms, start=1):
                         print(f"Prüfe Formulare... "f"0/{len(found_forms)}",end="")
 
-                    try:
-                        page.goto(form_data["url"],timeout=10000)
+                        try:
+                            page.goto(form_data["url"],timeout=10000)
 
-                        print(f"\rPrüfe Formulare... "f"{form_index}/{len(found_forms)}",end="")
-                        print()
+                            print(f"\rPrüfe Formulare... "f"{form_index}/{len(found_forms)}",end="")
+                            print()
 
-                        print(f"Formular {form_index}:")
-                        print(f"  URL: {form_data['url']}")
-                        print(f"  Button: {form_data.get('button')}")
-                        print(f"  Eingabefelder erwartet: {form_data['input_count']}")
+                            print(f"Formular {form_index}:")
+                            print(f"  URL: {form_data['url']}")
+                            print(f"  Button: {form_data.get('button')}")
+                            print(f"  Eingabefelder erwartet: {form_data['input_count']}")
 
-                        #eingabefelder suchen
-                        inputs = page.locator("input, textarea, select")
-                        print(f"  Eingabefelder gefunden: "f"{inputs.count()}")
+                            #eingabefelder suchen
+                            inputs = page.locator("input, textarea, select")
+                            print(f"  Eingabefelder gefunden: "f"{inputs.count()}")
 
-                        input_count = inputs.count()
+                            input_count = inputs.count()
 
-                        print(f"  Eingabefelder: {input_count}")
+                            print(f"  Eingabefelder: {input_count}")
 
-                        if input_count > 0:
-                            print("  Eingabefelder Vorhanden: JA")
-                        else:
-                            print("  Eingabefelder Vorhanden: NEIN")
+                            if input_count > 0:
+                                print("  Eingabefelder Vorhanden: JA")
+                            else:
+                                print("  Eingabefelder Vorhanden: NEIN")
 
 #Formulare ausfüllen
-                        test_value = "QA Test"                  #test text der in die Eingabefelder geschireben wird
+                            test_value = "QA Test"                  #test text der in die Eingabefelder geschireben wird
 
-                        try:
-                            for index in range(inputs.count()):
-                                field = inputs.nth(index)
+                            try:
+                                for index in range(inputs.count()):
+                                    field = inputs.nth(index)
 
-                                field_type = field.get_attribute("type")
+                                    field_type = field.get_attribute("type")
 
-                                #Checkboxen nicht mit Text befüllen
-                                if field_type == "checkbox":
-                                    continue
+                                    #Checkboxen nicht mit Text befüllen
+                                    if field_type == "checkbox":
+                                        continue
 
-                                #start
-                                field.fill(test_value)
+                                    #start
+                                    try:
+                                        field.fill(test_value)
 
-                                if field.input_value() == test_value:
-                                    continue
+                                        if field.input_value() != test_value:
+                                            raise Exception("Eingabe wurde nicht übernommen")
 
-                                raise Exception("Eingabe wurde nicht übernommen")
+                                        print(f"    Feld {index + 1}: PASS - beschreibbar")
 
-                            print("  Eingabefelder beschreibbar: JA")
+                                    except Exception as field_error:
+                                        print(f"    Feld {index + 1}: FAIL - "f"nicht beschreibbar: {field_error}")
+
+                            except Exception as error:
+                                print(f"    Eingabefelder beschreibbar: NEIN - {error}")
 
                         except Exception as error:
-                            print(f"  Eingabefelder beschreibbar: NEIN - {error}")
-
-                    except Exception as error:
-                        print(f"\rPrüfe Formulare... "f"{form_index}/{len(found_forms)} "f"- FAIL: {error}")
+                            print(f"\rPrüfe Formulare... "f"{form_index}/{len(found_forms)} "f"- FAIL: {error}")
 
                     print()
 
