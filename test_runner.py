@@ -506,10 +506,9 @@ def run_test(url, expected_title, expected_text):
             # -------------------------------------------------------------------
             #Formular der Startseite erkennen und speichern
             inputs = page.locator("input, textarea, select")
-            visible_inputs = inputs.locator(":visible")                     #nur sichtbare Felder berücksichtigen, damit versteckte Cookiefelder nicht erkannt werden
 
-            if visible_inputs.count() > 0:
-                form_data = {"url": page.url, "button": None, "input_count": visible_inputs.count()}
+            if inputs.count() > 0:
+                form_data = {"url": page.url, "button": None, "input_count": inputs.count()}
 
                 if form_data not in found_forms:
                     found_forms.append(form_data)
@@ -602,10 +601,9 @@ def run_test(url, expected_title, expected_text):
                     # -------------------------------------------------------------------
                     #Formular nach Klick auf normalen Button erkennen und speichern
                     inputs = page.locator("input, textarea, select")
-                    visible_inputs = inputs.locator(":visible")
 
-                    if visible_inputs.count() > 0:
-                        form_data = {"url": page.url,"button": button_name,"input_count": visible_inputs.count()}
+                    if inputs.count() > 0:
+                        form_data = {"url": page.url,"button": button_name,"input_count": inputs.count()}
                         found_forms.append(form_data)
 
                     # -------------------------------------------------------------------
@@ -812,10 +810,9 @@ def run_test(url, expected_title, expected_text):
                         #-------------------------------------------------------------------
                         #Formular nach dem Öffnen eines aufklappbaren Buttons erkennen und speichern
                         inputs = page.locator("input, textarea, select")
-                        visible_inputs = inputs.locator(":visible")
 
-                        if visible_inputs.count() > 0:
-                            form_data = {"url": page.url, "input_count": visible_inputs.count()}
+                        if inputs.count() > 0:
+                            form_data = {"url": page.url, "input_count": inputs.count()}
 
                             if form_data not in found_forms:
                                 found_forms.append(form_data)
@@ -910,10 +907,9 @@ def run_test(url, expected_title, expected_text):
                             # -------------------------------------------------------------------
                             #Formular nach dem Öffnen eines aufklappbaren Unterelements erkennen und speichern
                             inputs = page.locator("input, textarea, select")
-                            visible_inputs = inputs.locator(":visible")
 
-                            if visible_inputs.count() > 0:
-                                form_data = {"url": page.url, "button": None, "input_count": visible_inputs.count()}
+                            if inputs.count() > 0:
+                                form_data = {"url": page.url, "button": None, "input_count": inputs.count()}
 
                                 if form_data not in found_forms:
                                     found_forms.append(form_data)
@@ -1105,10 +1101,9 @@ def run_test(url, expected_title, expected_text):
                         # -------------------------------------------------------------------
                         #Formular nach dem Öffnen eines interaktiven Eltern-Elements erkennen und speichern
                         inputs = page.locator("input, textarea, select")
-                        visible_inputs = inputs.locator(":visible")
 
-                        if visible_inputs.count() > 0:
-                            form_data = {"url": page.url, "parent": parent_name,"button": None, "input_count": visible_inputs.count()}
+                        if inputs.count() > 0:
+                            form_data = {"url": page.url, "parent": parent_name,"button": None, "input_count": inputs.count()}
 
                             if form_data not in found_forms:
                                 found_forms.append(form_data)
@@ -1187,10 +1182,10 @@ def run_test(url, expected_title, expected_text):
                         # -------------------------------------------------------------------
                         #Formular nach dem Öffnen eines interaktiven Unterelements erkennen und speichern
                         inputs = page.locator("input, textarea, select")
-                        visible_inputs = inputs.locator(":visible")
 
-                        if visible_inputs.count() > 0:
-                            form_data = {"url": page.url,"parent": parent_name, "button": child_name, "input_count": visible_inputs.count()}
+
+                        if inputs.count() > 0:
+                            form_data = {"url": page.url,"parent": parent_name, "button": child_name, "input_count": inputs.count()}
 
                             if form_data not in found_forms:
                                 found_forms.append(form_data)
