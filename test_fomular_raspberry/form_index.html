@@ -1,0 +1,67 @@
+<!DOCTYPE html>                     <!-- DOCTYPE = Browser, dieses Dokument verwendet den HTML5-Standard -->
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hauptseite</title>
+
+    <!-- link = Verknüpfung mit einer externen Ressource
+     rel = relationship: gibt an, welche Beziehung die Ressource zum Dokument hat
+     href = gibt an welche Datei geladen werden soll -->
+    <link rel="stylesheet" href="form_style.css">
+</head>
+
+<body>
+
+<!-- Startseite für den Button- und Formular-Test -->
+    <div class="container">
+        <h1>Willkommen</h1>
+
+        <!-- Öffnet die Info-Box -->
+        <button onclick="zeigeInfo()">                  <!-- onclick = HTML-Event-Attribut wird ausgelöst wenn der Button angeklickt wird -->
+            Button 1 – Info
+        </button>
+
+        <!-- Öffnet die Formular-Testseite -->
+        <button onclick="weiterleitung()">
+            Button 2 – Formular
+        </button>
+    </div>
+
+
+    <!-- Info-Box -->
+    <div class="overlay" id="infoOverlay">
+        <div class="info-box">
+            <h2>Information</h2>
+
+            <p>
+                Hier kannst du deine Informationen eintragen.
+            </p>
+
+            <button class="close" onclick="schliesseInfo()">
+                Schließen
+            </button>
+        </div>
+    </div>
+
+
+    <script>                <!-- script = enthält JavaScript-Code -->
+
+        // Zeigt die versteckte Info-Box an
+        function zeigeInfo() {
+            document.getElementById("infoOverlay").style.display = "flex";
+        }
+
+        // Schließt die Info-Box wieder
+        function schliesseInfo() {
+            document.getElementById("infoOverlay").style.display = "none";
+        }
+
+        // Wechselt zur Formular-Testseite
+        function weiterleitung() {
+            window.location.href = "formular.php";
+        }
+    </script>
+
+</body>
+</html>
