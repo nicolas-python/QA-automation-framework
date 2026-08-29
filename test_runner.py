@@ -1240,16 +1240,45 @@ def run_test(url, expected_title, expected_text):
             print(f"  Unterelemente: {len(interactive_children)}")
             print(f"  Insgesamt: {interactive_total}")
 
-
-#Formulare anzeige
+# --------------------------------------------------
+# Browser Navigation ziel weiterführende Links auf Zielseiten prüfen und Formulare erkennen
+# --------------------------------------------------
             print()
-            print("Formulare:")
+            print("Browser Navigation:")
+            form_link_pages = []
+
+            try:
+                print(f"Prüfe Zielseiten auf mögliche Formulare... "f"0/{len(passed_links)}",end="")
+                for link_index, link in enumerate(passed_links, start=1):
+
+                    try:
+                        page.goto(link,timeout=10000)
+                        inputs = page.locator("input, textarea, select")
+                        visible_inputs = inputs.locator(":visible")
+
+                        if visible_inputs.count() > 0:
+                            form_link_pages.append({"source_url": url,"target_url": page.url,"input_count": visible_inputs.count()})
+
+                    except Exception:
+                        pass
+
+                    print(f"\rPrüfe Zielseiten auf mögliche Formulare... "f"{link_index}/{len(passed_links)}",end="")
+
+                print()
+
+            except Exception as error:
+                print("  Browser Navigation: "f"FAIL - konnte Zielseiten nicht prüfen: {error}")
+
+
+#Formulare anzeige (Knöpfe)
+            print()
+            print("Formulare über Knöpfe :")
             form_results = []
 
             try:
                 if not found_forms:
                     print()
-                    print("  Keine Formularstellen gefunden")
+                    print("  Keine Formularstellen über Knöpfe gefunden")
 
                 else:
                     print(f"Prüfe Formulare... "f"0/{len(found_forms)}",end="")
@@ -1261,37 +1290,41 @@ def run_test(url, expected_title, expected_text):
                             input_count = inputs.count()
                             field_results = []
 
-                            print(f"\rPrüfe Formulare... "f"{form_index}/{len(found_forms)}",end="")
+                            print(f"\rPrüfe Formulare Knöpfe... "f"{form_index}/{len(found_forms)}",end="")
 
-#Formulare ausfüllen
-                            test_value = "QA Test"                  #test text der in die Eingabefelder geschireben wird
+# Formulare ausfüllen (Knöpfe)
+                            test_value = "QA Test"  # test text der in die Eingabefelder geschireben wird
                             for index in range(inputs.count()):
 
                                 field = inputs.nth(index)
                                 field_type = field.get_attribute("type")
 
-                                #Checkboxen nicht mit Text befüllen
+                                # Checkboxen nicht mit Text befüllen
                                 if field_type == "checkbox":
                                     continue
 
-                                #start
+                                # start
                                 try:
-                                    field.fill(test_value)          #Testwert in das Eingabefeld schreiben
+                                    field.fill(test_value)  # Testwert in das Eingabefeld schreiben
 
                                     if field.input_value() != test_value:
                                         raise Exception("Eingabe wurde nicht übernommen")
 
-                                    #PASS-Ergebnis speichern
-                                    field_results.append({"index": index + 1,"status": "PASS","message": "beschreibbar"})
+                                    # PASS-Ergebnis speichern
+                                    field_results.append(
+                                        {"index": index + 1, "status": "PASS", "message": "beschreibbar"})
 
-                                #FAIL-Ergebnis speichern
+                                # FAIL-Ergebnis speichern
                                 except Exception as field_error:
-                                    field_results.append({"index": index + 1,"status": "FAIL","message": str(field_error)})
+                                    field_results.append(
+                                        {"index": index + 1, "status": "FAIL", "message": str(field_error)})
 
-                                #komplettes Formularergebnis speichern
-                            form_results.append({"form_index": form_index,"url": form_data["url"],"button": form_data.get("button"),"expected": form_data["input_count"],"found": input_count,"fields": field_results})
+                                # komplettes Formularergebnis speichern
+                            form_results.append(
+                                {"form_index": form_index, "url": form_data["url"], "button": form_data.get("button"),
+                                 "expected": form_data["input_count"], "found": input_count, "fields": field_results})
 
-                            print(f"\rPrüfe Formulare... "f"{form_index}/{len(found_forms)}",end="")
+                            print(f"\rPrüfe Formulare... "f"{form_index}/{len(found_forms)}", end="")
 
                             print()
                             print()
@@ -1310,28 +1343,60 @@ def run_test(url, expected_title, expected_text):
                                     print("  Eingabefelder Vorhanden: NEIN")
 
                                 for field_result in form_result["fields"]:
-                                    print(f"    Feld {field_result['index']}: "f"{field_result['status']} - "f"{field_result['message']}")
+                                    print(
+                                        f"    Feld {field_result['index']}: "f"{field_result['status']} - "f"{field_result['message']}")
 
                                 print()
 
                         except Exception as error:
-                            print(f"\rPrüfe Formulare... "f"{form_index}/{len(found_forms)} "f"- FAIL: {error}")
-
-#Formulare Gesamtübersicht
-                    total_forms = len(form_results)
-                    total_fields = sum(len(form_result["fields"])for form_result in form_results)
-
-                    passed_fields = sum(sum(1 for field in form_result["fields"] if field["status"] == "PASS")for form_result in form_results)
-                    failed_fields = sum(sum(1 for field in form_result["fields"] if field["status"] == "FAIL")for form_result in form_results)
-
-                    print("Formulare Gesamtübersicht:")
-                    print(f"  Formulare: {total_forms}")
-                    print(f"  Eingabefelder: {total_fields}")
-                    print(f"  Beschreibbar: {passed_fields}")
-                    print(f"  Nicht beschreibbar: {failed_fields}")
+                            print(f"\rPrüfe Formulare Knöpfe... "f"{form_index}/{len(found_forms)} "f"- FAIL: {error}")
 
             except Exception as error:
-                print("  Formulare: "f"FAIL - konnte nicht geprüft werden: {error}")
+                print("  Formulare über Knöpfe: "f"FAIL - konnte nicht geprüft werden: {error}")
+
+#Formulare anzeigen (Links)
+            print()
+            print("Prüfe Formulare (Links):")
+
+            try:
+                if not form_link_pages:
+                    print("  Keine Formularseiten über Links gefunden")
+
+                else:
+                    print(f"Prüfe Formulare Links... "f"0/{len(form_link_pages)}",end="")
+
+                    for form_index, form_data in enumerate(form_link_pages, start=1):
+                        try:
+                            page.goto(form_data["target_url"],timeout=10000)
+                            inputs = page.locator("input, textarea, select")
+                            input_count = inputs.count()
+
+                            print(f"\rPrüfe Formulare über Links... "f"{form_index}/{len(form_link_pages)}",end="")
+
+                        except Exception:
+                            print(f"\rPrüfe Formulare über Links... "f"{form_index}/{len(form_link_pages)}",end="")
+
+            except Exception as error:
+                print("  Formulare über Links: "f"FAIL - konnte nicht geprüft werden: {error}")
+
+# Formulare ausfüllen (Links)
+
+
+#Formulare Gesamtübersicht
+
+            total_forms = len(form_results)
+            total_fields = sum(len(form_result["fields"])for form_result in form_results)
+
+            passed_fields = sum(sum(1 for field in form_result["fields"] if field["status"] == "PASS")for form_result in form_results)
+            failed_fields = sum(sum(1 for field in form_result["fields"] if field["status"] == "FAIL")for form_result in form_results)
+
+            print()
+            print("Formulare Gesamtübersicht:")
+
+            print(f"  Formulare: {total_forms}")
+            print(f"  Eingabefelder: {total_fields}")
+            print(f"  Beschreibbar: {passed_fields}")
+            print(f"  Nicht beschreibbar: {failed_fields}")
 
     except Exception as error:
         print("  Browser Tests : FAIL - konnte nicht  vollständig geprüft werden:", error)
