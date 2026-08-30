@@ -22,11 +22,18 @@
             Button 1 – Info
         </button>
 
-        <!-- Öffnet die Formular-Testseite -->
+        <!-- Öffnet die Formular-Testseite(input felder) -->
         <button onclick="weiterleitung()">
             Button 2 – Formular
         </button>
+
+        <!-- Öffnet die Formular-Testseite (auswahl möglichkeit)-->
+        <button onclick="zeigeOptionsfeld()">
+            Button 3 – Optionsfeld
+        </button>
     </div>
+
+
 
 
     <!-- Info-Box -->
@@ -48,18 +55,27 @@
     <script>                <!-- script = enthält JavaScript-Code -->
 
         // Zeigt die versteckte Info-Box an
-        function zeigeInfo() {
+        function zeigeInfo()
+        {
             document.getElementById("infoOverlay").style.display = "flex";
         }
 
         // Schließt die Info-Box wieder
-        function schliesseInfo() {
+        function schliesseInfo()
+        {
             document.getElementById("infoOverlay").style.display = "none";
         }
 
         // Wechselt zur Formular-Testseite
-        function weiterleitung() {
+        function weiterleitung()
+        {
             window.location.href = "formular.php";
+        }
+
+        // Wechselt zur Optionsfeld-Testseite
+        function zeigeOptionsfeld()
+        {
+            window.location.href = "optionsfeld.php";
         }
     </script>
 
