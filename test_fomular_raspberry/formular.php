@@ -71,7 +71,7 @@ Die Datei verwendet deshalb die Endung .php, da sie auf dem Raspberry Pi über e
     </form>
 
     <button type="button" class="zurueck"
-            onclick="window.location.href='form_index.html'">
+            onclick="window.location.href='index.html'">
         Zurück zur Startseite
     </button>
 

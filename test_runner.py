@@ -1277,7 +1277,6 @@ def run_test(url, expected_title, expected_text):
 
             try:
                 if not found_forms:
-                    print()
                     print("  Keine Formularstellen über Knöpfe gefunden")
 
                 else:
@@ -1379,7 +1378,34 @@ def run_test(url, expected_title, expected_text):
             except Exception as error:
                 print("  Formulare über Links: "f"FAIL - konnte nicht geprüft werden: {error}")
 
-# Formulare ausfüllen (Links)
+#Formulare ausfüllen (Links)
+            field_results = []
+            test_value = "QA Test"
+
+            for index in range(inputs.count()):
+
+                field = inputs.nth(index)
+                field_type = field.get_attribute("type")
+
+                #Checkboxen nicht mit Text befüllen
+                if field_type == "checkbox":
+                    continue
+
+                try:
+                    field.fill(test_value)
+
+                    if field.input_value() != test_value:
+                        raise Exception("Eingabe wurde nicht übernommen")
+
+                    field_results.append({"index": index + 1,"status": "PASS","message": "beschreibbar"})
+
+                except Exception as field_error:
+                    field_results.append({"index": index + 1,"status": "FAIL","message": str(field_error)})
+
+            #komplettes Formularergebnis speichern
+            form_results.append({"form_index": form_index,"url": form_data["target_url"],"button": None,"expected": form_data["input_count"],"found": input_count,"fields": field_results})
+
+#Formulare Auswahlbare Inhalte
 
 
 #Formulare Gesamtübersicht
