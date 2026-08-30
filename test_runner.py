@@ -505,7 +505,7 @@ def run_test(url, expected_title, expected_text):
 
             # -------------------------------------------------------------------
             #Formular der Startseite erkennen und speichern
-            inputs = page.locator("input, textarea, select")
+            inputs = page.locator("input, textarea")
 
             if inputs.count() > 0:
                 form_data = {"url": page.url, "button": None, "input_count": inputs.count()}
@@ -600,7 +600,7 @@ def run_test(url, expected_title, expected_text):
 
                     # -------------------------------------------------------------------
                     #Formular nach Klick auf normalen Button erkennen und speichern
-                    inputs = page.locator("input, textarea, select")
+                    inputs = page.locator("input, textarea")
 
                     if inputs.count() > 0:
                         form_data = {"url": page.url,"button": button_name,"input_count": inputs.count()}
@@ -809,14 +809,14 @@ def run_test(url, expected_title, expected_text):
 
                         #-------------------------------------------------------------------
                         #Formular nach dem Öffnen eines aufklappbaren Buttons erkennen und speichern
-                        inputs = page.locator("input, textarea, select")
+                        inputs = page.locator("input, textarea")                   #"select" wird fälschlicherweise als Formular erkannt dadurch werden Optionsfelder als Formulare erkannt
 
                         if inputs.count() > 0:
                             form_data = {"url": page.url, "input_count": inputs.count()}
 
                             if form_data not in found_forms:
                                 found_forms.append(form_data)
-                        # -------------------------------------------------------------------
+                        #-------------------------------------------------------------------
 
                         #nur Buttons speichern, die durch genau durch Hauptbutton neu sichtbar wurden
                         for sub_button in page.locator("button:visible").all():
@@ -906,7 +906,7 @@ def run_test(url, expected_title, expected_text):
 
                             # -------------------------------------------------------------------
                             #Formular nach dem Öffnen eines aufklappbaren Unterelements erkennen und speichern
-                            inputs = page.locator("input, textarea, select")
+                            inputs = page.locator("input, textarea")
 
                             if inputs.count() > 0:
                                 form_data = {"url": page.url, "button": None, "input_count": inputs.count()}
@@ -1100,7 +1100,7 @@ def run_test(url, expected_title, expected_text):
 
                         # -------------------------------------------------------------------
                         #Formular nach dem Öffnen eines interaktiven Eltern-Elements erkennen und speichern
-                        inputs = page.locator("input, textarea, select")
+                        inputs = page.locator("input, textarea")
 
                         if inputs.count() > 0:
                             form_data = {"url": page.url, "parent": parent_name,"button": None, "input_count": inputs.count()}
@@ -1181,7 +1181,7 @@ def run_test(url, expected_title, expected_text):
 
                         # -------------------------------------------------------------------
                         #Formular nach dem Öffnen eines interaktiven Unterelements erkennen und speichern
-                        inputs = page.locator("input, textarea, select")
+                        inputs = page.locator("input, textarea")
 
 
                         if inputs.count() > 0:
@@ -1253,7 +1253,7 @@ def run_test(url, expected_title, expected_text):
 
                     try:
                         page.goto(link,timeout=10000)
-                        inputs = page.locator("input, textarea, select")
+                        inputs = page.locator("input, textarea")
                         visible_inputs = inputs.locator(":visible")
 
                         if visible_inputs.count() > 0:
@@ -1285,7 +1285,7 @@ def run_test(url, expected_title, expected_text):
                     for form_index, form_data in enumerate(found_forms, start=1):
                         try:
                             page.goto(form_data["url"],timeout=10000)
-                            inputs = page.locator("input, textarea, select")
+                            inputs = page.locator("input, textarea")
                             input_count = inputs.count()
                             field_results = []
 
@@ -1363,7 +1363,7 @@ def run_test(url, expected_title, expected_text):
                     for form_index, form_data in enumerate(form_link_pages, start=1):
                         try:
                             page.goto(form_data["target_url"],timeout=10000)
-                            inputs = page.locator("input, textarea, select")
+                            inputs = page.locator("input, textarea")
                             input_count = inputs.count()
 
                             print(f"\rPrüfe Formulare über Links... "f"{form_index}/{len(form_link_pages)}",end="")
@@ -1401,7 +1401,7 @@ def run_test(url, expected_title, expected_text):
             #komplettes Formularergebnis speichern
             form_results.append({"form_index": form_index,"url": form_data["target_url"],"button": None,"expected": form_data["input_count"],"found": input_count,"fields": field_results})
 
-#Formulare Auswahlbare Inhalte
+#Formulare Auswahlbare Inhalte/optionsfelder
 
 
 #Formulare Gesamtübersicht

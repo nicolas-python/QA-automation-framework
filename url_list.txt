@@ -2,3 +2,4 @@ https://weather-app-js-9phw.onrender.com/
 https://snake-web-0qoi.onrender.com/
 https://google.com/
 https://test.defafasfafas
+http://192.168.0.236/test/test_fomular_raspberry/index.html
