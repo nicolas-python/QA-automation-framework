@@ -1,0 +1,84 @@
+/* Grundgestaltung der gesamten Formularseite */
+body
+{
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    padding: 30px;
+}
+
+/* Gestaltung des Containers für das Formular */
+.formular
+{
+    max-width: 600px;
+    margin: auto;
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* Gestaltung der Überschrift */
+h2
+{
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+/* Gestaltung der Beschriftungen der Eingabefelder */
+label
+{
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-weight: bold;
+
+}
+
+/* Gestaltung der Eingabefelder */
+input,
+textarea,
+select
+{
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 15px;
+}
+
+/* Gestaltung des Nachrichtenfeldes */
+textarea
+{
+    height: 150px;
+    resize: vertical;
+}
+
+button
+{
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover
+{
+    background-color: #0056b3;
+}
+
+/* Zurück-Button */
+.zurueck
+{
+    background-color: #6c757d;
+}
+
+.zurueck:hover
+{
+    background-color: #545b62;
+}
