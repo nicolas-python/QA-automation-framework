@@ -1289,10 +1289,10 @@ def run_test(url, expected_title, expected_text):
                             input_count = inputs.count()
                             field_results = []
 
-                            print(f"\rPrüfe Formulare Knöpfe... "f"{form_index}/{len(found_forms)}",end="")
+                            print(f"\rPrüfe Formulare... {form_index}/{len(found_forms)}", end="")
 
 # Formulare ausfüllen (Knöpfe)
-                            test_value = "QA Test"  # test text der in die Eingabefelder geschireben wird
+                            test_value = "QA Test"       #test text der in die Eingabefelder geschireben wird
                             for index in range(inputs.count()):
 
                                 field = inputs.nth(index)
@@ -1318,37 +1318,33 @@ def run_test(url, expected_title, expected_text):
                                     field_results.append(
                                         {"index": index + 1, "status": "FAIL", "message": str(field_error)})
 
-                                # komplettes Formularergebnis speichern
+                            # komplettes Formularergebnis speichern
                             form_results.append(
                                 {"form_index": form_index, "url": form_data["url"], "button": form_data.get("button"),
                                  "expected": form_data["input_count"], "found": input_count, "fields": field_results})
 
                             print(f"\rPrüfe Formulare... "f"{form_index}/{len(found_forms)}", end="")
 
-                            print()
-                            print()
-
-                            for form_result in form_results:
-
-                                print(f"Formular {form_result['form_index']}:")
-                                print(f"  URL: {form_result['url']}")
-                                print(f"  Button: {form_result['button']}")
-                                print(f"  Eingabefelder erwartet: {form_result['expected']}")
-                                print(f"  Eingabefelder gefunden: {form_result['found']}")
-
-                                if form_result["found"] > 0:
-                                    print("  Eingabefelder Vorhanden: JA")
-                                else:
-                                    print("  Eingabefelder Vorhanden: NEIN")
-
-                                for field_result in form_result["fields"]:
-                                    print(
-                                        f"    Feld {field_result['index']}: "f"{field_result['status']} - "f"{field_result['message']}")
-
-                                print()
-
                         except Exception as error:
-                            print(f"\rPrüfe Formulare Knöpfe... "f"{form_index}/{len(found_forms)} "f"- FAIL: {error}")
+                            print(f"\rPrüfe Formulare... {form_index}/{len(found_forms)} - FAIL: {error}")
+
+                    print()
+                    for form_result in form_results:
+
+                        print(f"Formular {form_result['form_index']}:")
+                        print(f"  URL: {form_result['url']}")
+                        print(f"  Button: {form_result['button']}")
+                        print(f"  Eingabefelder erwartet: {form_result['expected']}")
+                        print(f"  Eingabefelder gefunden: {form_result['found']}")
+
+                        if form_result["found"] > 0:
+                            print("  Eingabefelder Vorhanden: JA")
+
+                        else:
+                            print("  Eingabefelder Vorhanden: NEIN")
+
+                        for field_result in form_result["fields"]:
+                            print(f"    Feld {field_result['index']}: "f"{field_result['status']} - "f"{field_result['message']}")
 
             except Exception as error:
                 print("  Formulare über Knöpfe: "f"FAIL - konnte nicht geprüft werden: {error}")
