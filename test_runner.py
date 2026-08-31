@@ -497,7 +497,7 @@ def run_test(url, expected_title, expected_text):
     failed_interactive_elements = []
 
     try:
-        with sync_playwright() as p:
+        with (sync_playwright() as p):
             browser = p.chromium.launch()               #startet einen Chromium-Browser über Python
             page = browser.new_page()                   #page= eine einzelne Browserseite bzw ein tap
             page.goto(url)                              # öffnet die geladene URL im automatisierten Browser
@@ -1247,15 +1247,31 @@ def run_test(url, expected_title, expected_text):
             print("Browser Navigation:")
             form_link_pages = []
 
+# -------------
+            print()
+            print("DEBUG passed_links:")
+            for link in passed_links:
+                print(f"  {link}")
+# -------------
+
+            #nur mögliche HTML-Zielseiten für die Browser-Navigation verwenden
+            html_links =[link for link in passed_links
+                         if not link.lower().endswith((".css", ".js", ".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp", ".ico",))]  #".pdf" ?`
+
             try:
-                print(f"Prüfe Zielseiten auf mögliche Formulare... "f"0/{len(passed_links)}",end="")
-                for link_index, link in enumerate(passed_links, start=1):
+                print(f"Prüfe Zielseiten auf mögliche Formulare... "f"0/{len(html_links)}",end="")
+                for link_index, link in enumerate(html_links, start=1):
 
                     try:
                         page.goto(link,timeout=10000)
-                        inputs = page.locator("input, textarea")
+                        inputs = page.locator("input, textarea, select")
                         visible_inputs = inputs.locator(":visible")
-
+#-------------
+                        print()
+                        print("LINK TEST:", link)
+                        print("ZIELSEITE:", page.url)
+                        print("INPUTS:", visible_inputs.count())
+# -------------
                         if visible_inputs.count() > 0:
                             form_link_pages.append({"source_url": url,"target_url": page.url,"input_count": visible_inputs.count()})
 
@@ -1368,46 +1384,53 @@ def run_test(url, expected_title, expected_text):
 
                             print(f"\rPrüfe Formulare über Links... "f"{form_index}/{len(form_link_pages)}",end="")
 
+#Formulare ausfüllen (Links)
+                            field_results = []
+                            test_value = "QA Test"
+
+                            for index in range(inputs.count()):
+
+                                field = inputs.nth(index)
+                                field_type = field.get_attribute("type")
+
+                                # Checkboxen nicht mit Text befüllen
+                                if field_type == "checkbox":
+                                    continue
+
+                                try:
+                                    field.fill(test_value)
+
+                                    if field.input_value() != test_value:
+                                        raise Exception("Eingabe wurde nicht übernommen")
+
+                                    field_results.append(
+                                        {"index": index + 1, "status": "PASS", "message": "beschreibbar"})
+
+                                except Exception as field_error:
+                                    field_results.append(
+                                        {"index": index + 1, "status": "FAIL", "message": str(field_error)})
+
+                            # komplettes Formularergebnis speichern
+                            form_results.append(
+                                {"form_index": form_index, "url": form_data["target_url"], "button": None,
+                                 "expected": form_data["input_count"], "found": input_count, "fields": field_results})
+
                         except Exception:
                             print(f"\rPrüfe Formulare über Links... "f"{form_index}/{len(form_link_pages)}",end="")
 
             except Exception as error:
                 print("  Formulare über Links: "f"FAIL - konnte nicht geprüft werden: {error}")
 
-#Formulare ausfüllen (Links)
-            field_results = []
-            test_value = "QA Test"
-
-            for index in range(inputs.count()):
-
-                field = inputs.nth(index)
-                field_type = field.get_attribute("type")
-
-                #Checkboxen nicht mit Text befüllen
-                if field_type == "checkbox":
-                    continue
-
-                try:
-                    field.fill(test_value)
-
-                    if field.input_value() != test_value:
-                        raise Exception("Eingabe wurde nicht übernommen")
-
-                    field_results.append({"index": index + 1,"status": "PASS","message": "beschreibbar"})
-
-                except Exception as field_error:
-                    field_results.append({"index": index + 1,"status": "FAIL","message": str(field_error)})
-
-            #komplettes Formularergebnis speichern
-            form_results.append({"form_index": form_index,"url": form_data["target_url"],"button": None,"expected": form_data["input_count"],"found": input_count,"fields": field_results})
-
 #Formulare Auswahlbare Inhalte/optionsfelder
 
 
 #Formulare Gesamtübersicht
-
             total_forms = len(form_results)
-            total_fields = sum(len(form_result["fields"])for form_result in form_results)
+            total_fields = sum(len(form_result["fields"]) for form_result in form_results)
+
+            button_forms = sum(1 for form_result in form_results if form_result.get("button") is not None)
+            link_forms = sum(1 for form_result in form_results if form_result.get("button") is None)
+
 
             passed_fields = sum(sum(1 for field in form_result["fields"] if field["status"] == "PASS")for form_result in form_results)
             failed_fields = sum(sum(1 for field in form_result["fields"] if field["status"] == "FAIL")for form_result in form_results)
@@ -1415,7 +1438,8 @@ def run_test(url, expected_title, expected_text):
             print()
             print("Formulare Gesamtübersicht:")
 
-            print(f"  Formulare: {total_forms}")
+            print(f"  Formulare über Buttons: {button_forms}")
+            print(f"  Formulare über Links: {link_forms}")
             print(f"  Eingabefelder: {total_fields}")
             print(f"  Beschreibbar: {passed_fields}")
             print(f"  Nicht beschreibbar: {failed_fields}")

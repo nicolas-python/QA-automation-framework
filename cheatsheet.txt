@@ -211,6 +211,20 @@ QA Test Bewertung:
 
                         Playwright, startet einen Chromium-Browser für den automatisierten Test
 
+                            Formular-Auswahl für Browser Navigation:
+
+                            .css    Design/Optik       ❌
+                            .js     Programmcode       ❌
+                            .png    Bild               ❌
+                            .jpg    Bild               ❌
+                            .svg    Grafik             ❌
+                            .ico    Icon               ❌
+                            .webp   Bild               ❌
+                            .pdf    Dokument           ❌
+                            .html   Webseite          ✅
+                            .htm    Webseite          ✅
+                            .php    kann HTML liefern  ✅
+
 11. Test Report
     Speichert Ergebnisse und macht sie übersichtlich.
 
