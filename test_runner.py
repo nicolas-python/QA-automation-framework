@@ -1364,7 +1364,7 @@ def run_test(url, expected_title, expected_text):
 
                             # komplettes Formularergebnis speichern
                             form_results.append(
-                                {"form_index": form_index, "url": form_data["url"], "button": form_data.get("button"),
+                                {"form_index": form_index, "url": form_data["target_url"], "button": None,"source": "link",
                                  "expected": form_data["input_count"], "found": input_count, "fields": field_results})
 
                             print(f"\rPrüfe Formulare... "f"{form_index}/{len(found_forms)}", end="")
@@ -1440,7 +1440,7 @@ def run_test(url, expected_title, expected_text):
 
                             # komplettes Formularergebnis speichern
                             form_results.append(
-                                {"form_index": form_index, "url": form_data["target_url"], "button": None,
+                                {"form_index": form_index, "url": form_data["target_url"], "button": None,"source": "link",
                                  "expected": form_data["input_count"], "found": input_count, "fields": field_results})
 
                         except Exception:
@@ -1456,8 +1456,8 @@ def run_test(url, expected_title, expected_text):
             total_forms = len(form_results)
             total_fields = sum(len(form_result["fields"]) for form_result in form_results)
 
-            button_forms = sum(1 for form_result in form_results if form_result.get("button") is not None)
-            link_forms = sum(1 for form_result in form_results if form_result.get("button") is None)
+            button_forms = sum(1 for form_result in form_results if form_result.get("source") == "button")  #source = gibt an, ob das Formular über einen Button oder einen Link gefunden wurde
+            link_forms = sum(1 for form_result in form_results if form_result.get("source") == "link")
 
 
             passed_fields = sum(sum(1 for field in form_result["fields"] if field["status"] == "PASS")for form_result in form_results)
