@@ -206,6 +206,11 @@ def run_test(url, expected_title, expected_text):
         print("Broken Links Prüfung")
         links = re.findall(r'href=["\'](.*?)["\']', response.text)          #re.findall(...) =Der durchsucht response.text nach Stellen wie:
                                                                                    #r'href=["\'](.*?)["\']' = sucht href-Attribute und liest den Inhalt zwischen den Anführungszeichen aus
+
+        #sucht JavaScript-Navigationen über window.location.href und fügt die gefundenen Zielseiten zur Linkliste hinzu, z. B. beim Test von Button 4
+        onclick_links = re.findall(r'window\.location\.href\s*=\s*["\'](.*?)["\']',response.text)
+        links.extend(onclick_links)
+
         if not links:
             print("  Keine Links gefunden")
 
@@ -682,7 +687,7 @@ def run_test(url, expected_title, expected_text):
                     if button_name and button_name not in expandable_buttons:
                         expandable_buttons.append(button_name)
 
-#---2 test fals website aufklappbare buttons kein aria label haben
+                #2 test fals website aufklappbare buttons kein aria label haben
                 #zusätzliche Elternbuttons erkennen, die neue Buttons erst nach dem Klick anzeigen
                 for button_index, button_name in filtered_buttons:
 
@@ -751,7 +756,7 @@ def run_test(url, expected_title, expected_text):
 
                     except Exception:
                         continue
-#---
+
                 print(f"Prüfe Aufklappbare Buttons... "f"0/{len(expandable_buttons)}",end="")
 
             except Exception as error:
@@ -1247,13 +1252,6 @@ def run_test(url, expected_title, expected_text):
             print("Browser Navigation:")
             form_link_pages = []
 
-# -------------
-            print()
-            print("DEBUG passed_links:")
-            for link in passed_links:
-                print(f"  {link}")
-# -------------
-
             #nur mögliche HTML-Zielseiten für die Browser-Navigation verwenden
             html_links =[link for link in passed_links
                          if not link.lower().endswith((".css", ".js", ".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp", ".ico",))]  #".pdf" ?`
@@ -1266,19 +1264,49 @@ def run_test(url, expected_title, expected_text):
                         page.goto(link,timeout=10000)
                         inputs = page.locator("input, textarea, select")
                         visible_inputs = inputs.locator(":visible")
-#-------------
-                        print()
-                        print("LINK TEST:", link)
-                        print("ZIELSEITE:", page.url)
-                        print("INPUTS:", visible_inputs.count())
-# -------------
+
                         if visible_inputs.count() > 0:
                             form_link_pages.append({"source_url": url,"target_url": page.url,"input_count": visible_inputs.count()})
 
-                    except Exception:
-                        pass
+                        else:
+                            #keine Eingabefelder auf der Zielseite gefunden prüfen ob die Zielseite weitere HTML-Links zu möglichen Formularseiten enthält.
+                            page_links_all = page.locator("a[href]").all()
+                            collected_hrefs = []
+                            for pl in page_links_all:
+                                href = pl.get_attribute("href")
+                                if href:
+                                    collected_hrefs.append(href)
 
-                    print(f"\rPrüfe Zielseiten auf mögliche Formulare... "f"{link_index}/{len(passed_links)}",end="")
+                            current_page_url = page.url  #Basis-URL vor Navigation sichern
+
+                            for target_link in collected_hrefs:
+                                if not target_link:
+                                    continue
+
+                                try:
+                                    target_url = urljoin(current_page_url, target_link)
+
+                                    #zielseite öffnen
+                                    try:
+                                        page.goto(target_url, timeout=10000)
+                                        target_inputs = page.locator("input, textarea, select")
+                                        target_visible_inputs = target_inputs.locator(":visible")
+
+                                        #formular gefunden
+                                        if target_visible_inputs.count() > 0:
+                                            form_link_pages.append({"source_url": link,"target_url": target_url,"input_count": target_visible_inputs.count()})
+
+                                    except Exception:
+                                        pass
+
+                                except Exception as error:
+                                    print("FEHLER BEI WEITERER ZIELSEITE:", error)
+
+                    except Exception as error:
+                        print(f"\n    Link konnte nicht geöffnet werden: {link}")
+                        print(f"    Fehler: {error}")
+
+                    print(f"\rPrüfe Zielseiten auf mögliche Formulare... "f"{link_index}/{len(html_links)}",end="")
 
                 print()
 
