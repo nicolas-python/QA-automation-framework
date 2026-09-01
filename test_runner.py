@@ -608,7 +608,7 @@ def run_test(url, expected_title, expected_text):
                     inputs = page.locator("input, textarea")
 
                     if inputs.count() > 0:
-                        form_data = {"url": page.url,"button": button_name,"input_count": inputs.count()}
+                        form_data = {"url": page.url,"button": button_name,"input_count": inputs.count(),"source": "button"}
                         found_forms.append(form_data)
 
                     # -------------------------------------------------------------------
@@ -817,7 +817,7 @@ def run_test(url, expected_title, expected_text):
                         inputs = page.locator("input, textarea")                   #"select" wird fälschlicherweise als Formular erkannt dadurch werden Optionsfelder als Formulare erkannt
 
                         if inputs.count() > 0:
-                            form_data = {"url": page.url, "input_count": inputs.count()}
+                            form_data = {"url": page.url, "input_count": inputs.count(), "source": "button"}
 
                             if form_data not in found_forms:
                                 found_forms.append(form_data)
@@ -914,7 +914,7 @@ def run_test(url, expected_title, expected_text):
                             inputs = page.locator("input, textarea")
 
                             if inputs.count() > 0:
-                                form_data = {"url": page.url, "button": None, "input_count": inputs.count()}
+                                form_data = {"url": page.url,"button": button_name,"input_count": inputs.count(),"source": "button"}
 
                                 if form_data not in found_forms:
                                     found_forms.append(form_data)
@@ -1364,8 +1364,8 @@ def run_test(url, expected_title, expected_text):
 
                             # komplettes Formularergebnis speichern
                             form_results.append(
-                                {"form_index": form_index, "url": form_data["target_url"], "button": None,"source": "link",
-                                 "expected": form_data["input_count"], "found": input_count, "fields": field_results})
+                                {"form_index": form_index,"url": form_data["url"],"button": form_data.get("button"),
+                                 "source": "button","expected": form_data["input_count"],"found": input_count,"fields": field_results})
 
                             print(f"\rPrüfe Formulare... "f"{form_index}/{len(found_forms)}", end="")
 
