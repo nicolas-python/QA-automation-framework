@@ -1252,9 +1252,15 @@ def run_test(url, expected_title, expected_text):
             print("Browser Navigation:")
             form_link_pages = []
 
+            print("DEBUG 1 - form_link_pages erstellt:", form_link_pages)
+
             #nur mögliche HTML-Zielseiten für die Browser-Navigation verwenden
             html_links =[link for link in passed_links
                          if not link.lower().endswith((".css", ".js", ".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp", ".ico",))]  #".pdf" ?`
+
+            print("DEBUG 2 - html_links:", html_links)
+            print("DEBUG 2 - Anzahl html_links:", len(html_links))
+            print("DEBUG 2 - form_link_pages:", form_link_pages)
 
             try:
                 print(f"Prüfe Zielseiten auf mögliche Formulare... "f"0/{len(html_links)}",end="")
@@ -1262,8 +1268,20 @@ def run_test(url, expected_title, expected_text):
 
                     try:
                         page.goto(link,timeout=10000)
+
+                        print("DEBUG 8 - target page.url:", page.url)
+                        print("DEBUG 8 - target Titel:", page.title())
+
+                        print("DEBUG 5 - page.url:", page.url)
+                        print("DEBUG 5 - Seitentitel:", page.title())
+                        print("DEBUG 5 - HTML Länge:", len(page.content()))
+
                         inputs = page.locator("input, textarea, select")
                         visible_inputs = inputs.locator(":visible")
+
+                        print("DEBUG 3 - nach Zielseite:", link)
+                        print("DEBUG 3 - gefundene Eingabefelder:", visible_inputs.count())
+                        print("DEBUG 3 - form_link_pages:", form_link_pages)
 
                         if visible_inputs.count() > 0:
                             form_link_pages.append({"source_url": url,"target_url": page.url,"input_count": visible_inputs.count()})
@@ -1279,6 +1297,9 @@ def run_test(url, expected_title, expected_text):
 
                             current_page_url = page.url  #Basis-URL vor Navigation sichern
 
+                            print("DEBUG 6 - Unter-Links auf Zielseite:", collected_hrefs)
+                            print("DEBUG 6 - Anzahl Unter-Links:", len(collected_hrefs))
+
                             for target_link in collected_hrefs:
                                 if not target_link:
                                     continue
@@ -1286,21 +1307,41 @@ def run_test(url, expected_title, expected_text):
                                 try:
                                     target_url = urljoin(current_page_url, target_link)
 
+                                    print("DEBUG 7 - Unter-Link:", target_link)
+                                    print("DEBUG 7 - daraus target_url:", target_url)
+
                                     #zielseite öffnen
                                     try:
                                         page.goto(target_url, timeout=10000)
-                                        target_inputs = page.locator("input, textarea, select")
+                                        #target_inputs = page.locator("input, textarea, select")
+                                        target_inputs = page.locator("input, textarea")
                                         target_visible_inputs = target_inputs.locator(":visible")
 
-                                        #formular gefunden
+                                        #print("DEBUG 9 - Eingabefelder auf Unterseite:", target_visible_inputs.count())
+                                        print("DEBUG 9 - Eingabefelder auf Unterseite:", target_inputs.count())
+
                                         if target_visible_inputs.count() > 0:
-                                            form_link_pages.append({"source_url": link,"target_url": target_url,"input_count": target_visible_inputs.count()})
+                                            print("DEBUG 10 - FORMULAR GEFUNDEN!")
+                                            form_link_pages.append(
+                                                {"source_url": url,"via_url": link,"target_url": target_url,"input_count": target_visible_inputs.count()})
+
+                                            print("DEBUG 10 - form_link_pages NACH append:", form_link_pages)
+
+                                        #formular gefunden
+                                        #if target_visible_inputs.count() > 0:
+                                            #form_link_pages.append({"source_url": url,"via_url":link,"target_url": target_url,"input_count": target_visible_inputs.count()})
+
+                                            #print("DEBUG 10 - Formular zu form_link_pages hinzugefügt:")
+                                            #print(form_link_pages)
 
                                     except Exception:
                                         pass
 
                                 except Exception as error:
                                     print("FEHLER BEI WEITERER ZIELSEITE:", error)
+
+                                print("DEBUG 4 - nach kompletter Zielseitenprüfung:", form_link_pages)
+                                print("DEBUG 4 - Anzahl gefundene Formulare:", len(form_link_pages))
 
                     except Exception as error:
                         print(f"\n    Link konnte nicht geöffnet werden: {link}")
@@ -1397,12 +1438,15 @@ def run_test(url, expected_title, expected_text):
             print()
             print("Prüfe Formulare (Links):")
 
+            print(form_link_pages)
+
             try:
                 if not form_link_pages:
                     print("  Keine Formularseiten über Links gefunden")
 
                 else:
                     print(f"Prüfe Formulare Links... "f"0/{len(form_link_pages)}",end="")
+                    link_form_results = []
 
                     for form_index, form_data in enumerate(form_link_pages, start=1):
                         try:
@@ -1431,20 +1475,31 @@ def run_test(url, expected_title, expected_text):
                                     if field.input_value() != test_value:
                                         raise Exception("Eingabe wurde nicht übernommen")
 
-                                    field_results.append(
-                                        {"index": index + 1, "status": "PASS", "message": "beschreibbar"})
+                                    field_results.append({"index": index + 1, "status": "PASS", "message": "beschreibbar"})
 
                                 except Exception as field_error:
                                     field_results.append(
                                         {"index": index + 1, "status": "FAIL", "message": str(field_error)})
 
-                            # komplettes Formularergebnis speichern
-                            form_results.append(
-                                {"form_index": form_index, "url": form_data["target_url"], "button": None,"source": "link",
-                                 "expected": form_data["input_count"], "found": input_count, "fields": field_results})
+                            #komplettes Formularergebnis speichern
+                            link_form_results.append(
+                                {"form_index": form_index,"url": form_data["target_url"],"via_url": form_data.get("via_url", "-"),"button": None,
+                                 "source": "link","expected": form_data["input_count"],"found": input_count,"fields": field_results})
 
                         except Exception:
                             print(f"\rPrüfe Formulare über Links... "f"{form_index}/{len(form_link_pages)}",end="")
+                    print()
+
+                    for form_result in link_form_results:
+                        print(f"Formular {form_result['form_index']} (via Link):")
+                        print(f"  URL:            {form_result['url']}")
+                        print(f"  Gefunden über:  {form_result['via_url']}")
+                        print(f"  Eingabefelder erwartet: {form_result['expected']}")
+                        print(f"  Eingabefelder gefunden: {form_result['found']}")
+                        print(f"  Eingabefelder Vorhanden: {'JA' if form_result['found'] > 0 else 'NEIN'}")
+
+                        for field_result in form_result["fields"]:
+                            print(f"    Feld {field_result['index']}: {field_result['status']} - {field_result['message']}")
 
             except Exception as error:
                 print("  Formulare über Links: "f"FAIL - konnte nicht geprüft werden: {error}")
