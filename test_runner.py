@@ -1266,7 +1266,7 @@ def run_test(url, expected_title, expected_text):
                         visible_inputs = inputs.locator(":visible")
 
                         if visible_inputs.count() > 0:
-                            form_link_pages.append({"source_url": url,"target_url": page.url,"input_count": visible_inputs.count()})
+                            form_link_pages.append({"source_url": url,"via_url": link,"target_url": page.url,"input_count": visible_inputs.count()})
 
                         else:
                             #keine Eingabefelder auf der Zielseite gefunden prüfen ob die Zielseite weitere HTML-Links zu möglichen Formularseiten enthält.
@@ -1289,21 +1289,18 @@ def run_test(url, expected_title, expected_text):
                                     #zielseite öffnen
                                     try:
                                         page.goto(target_url, timeout=10000)
-                                        target_inputs = page.locator("input, textarea, select")
-                                        target_visible_inputs = target_inputs.locator(":visible")
+                                        inputs = page.locator("input, textarea")
 
-
-                                        if target_visible_inputs.count() >= 0:
-                                            form_link_pages.append(
-                                                {"source_url": url,"via_url": link,"target_url": target_url,"input_count": target_visible_inputs.count()})
+                                        #Eingabefelder der Zielseite zählen, damit die Anzahl als Erwartungswert für die spätere Formularprüfung gespeichert werden kann
+                                        input_count = inputs.count()
 
                                         #formular gefunden
-                                        if target_visible_inputs.count() > 0:
-                                            form_link_pages.append({"source_url": url,"via_url":link,"target_url": target_url,"input_count": target_visible_inputs.count()})
+                                        if input_count > 0:
+                                            form_link_pages.append(
+                                                {"source_url": url,"via_url": link,"target_url": target_url,"input_count": input_count})
 
-
-                                    except Exception:
-                                        pass
+                                    except Exception as error:
+                                        print(f"\n    Fehler bei Zielseite {target_url}: {error}")
 
                                 except Exception as error:
                                     print("FEHLER BEI WEITERER ZIELSEITE:", error)
@@ -1454,7 +1451,7 @@ def run_test(url, expected_title, expected_text):
                     print()
 
                     for form_result in link_form_results:
-                        print(f"Formular {form_result['form_index']} (via Link):")
+                        print(f"Formular {form_result['form_index']} (Link):")
                         print(f"  URL:            {form_result['url']}")
                         print(f"  Gefunden über:  {form_result['via_url']}")
                         print(f"  Eingabefelder erwartet: {form_result['expected']}")
