@@ -605,6 +605,9 @@ def run_test(url, expected_title, expected_text):
 
                     # -------------------------------------------------------------------
                     #Formular nach Klick auf normalen Button erkennen und speichern
+                    print(f"\nDEBUG FORM CHECK: {button_name}")
+                    print(f"DEBUG FORM URL: {page.url}")
+
                     inputs = page.locator("input, textarea")
 
                     if inputs.count() > 0:
@@ -860,7 +863,6 @@ def run_test(url, expected_title, expected_text):
                     print("Neue Buttons:")
 
                     for index, (parent_name, new_button_name) in enumerate(new_buttons, start=1):
-
                         try:
                             page.goto(url)
 
@@ -887,9 +889,7 @@ def run_test(url, expected_title, expected_text):
 
                             #unterbutton suchen
                             current_button = None
-
                             for button in page.locator("button:visible").all():
-
                                 current_name = button.inner_text().strip()
 
                                 if not current_name:
@@ -914,7 +914,7 @@ def run_test(url, expected_title, expected_text):
                             inputs = page.locator("input, textarea")
 
                             if inputs.count() > 0:
-                                form_data = {"url": page.url,"button": button_name,"input_count": inputs.count(),"source": "button"}
+                                form_data = {"url": page.url,"button": new_button_name,"input_count": inputs.count(),"source": "button"}
 
                                 if form_data not in found_forms:
                                     found_forms.append(form_data)
@@ -923,18 +923,15 @@ def run_test(url, expected_title, expected_text):
                             passed_new_buttons.append((parent_name, new_button_name))
 
                         except Exception as error:
-
                             failed_new_buttons.append((parent_name,new_button_name,str(error)))
 
                     print(f"Prüfe neue Buttons... "f"{len(passed_new_buttons) + len(failed_new_buttons)}"f"/{len(new_buttons)}")
-
                     print(f"  Neue Buttons: "f"{len(passed_new_buttons)} PASS - "f"{len(failed_new_buttons)} FAIL")
 
                     for parent, button, error in failed_new_buttons:
                         print(f"      FAIL: {parent} -> "f"{button} - {error}")
 
                 except Exception as error:
-
                     print("  Neue Buttons: "f"FAIL - konnte nicht geprüft werden: {error}")
 
             except Exception as error:
