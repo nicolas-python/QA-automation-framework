@@ -1062,7 +1062,6 @@ def run_test(url, expected_title, expected_text):
 
                         #eltern-Element suchen
                         elements = page.locator('button[aria-expanded]:visible, ''a[aria-expanded]:visible, ''[role="button"][aria-expanded]:visible, ''[aria-haspopup="true"]:visible, ''summary:visible')
-
                         parent_element = None
 
                         for element in elements.all():
@@ -1081,7 +1080,6 @@ def run_test(url, expected_title, expected_text):
 
                         #vorher sichtbare interaktive Elemente merken
                         before_elements = set()
-
                         elements = page.locator('button:visible, a:visible, [role="button"]:visible')
 
                         for index in range(elements.count()):
@@ -1200,7 +1198,6 @@ def run_test(url, expected_title, expected_text):
                         child_element = None
 
                         for element in page.locator('button:visible, a:visible, [role="button"]:visible').all():
-
                             current_name = element.inner_text().strip()
 
                             if not current_name:
@@ -1468,19 +1465,22 @@ def run_test(url, expected_title, expected_text):
 
 
 #Formulare Gesamtübersicht
+            #Formulare aus Buttons und Links für die Gesamtübersicht zusammenführen
+            all_form_results = form_results + link_form_results
+
             total_forms = len(form_results)
-            total_fields = sum(len(form_result["fields"]) for form_result in form_results)
+            total_fields = sum(len(form_result["fields"]) for form_result in all_form_results)
 
-            button_forms = sum(1 for form_result in form_results if form_result.get("source") == "button")  #source = gibt an, ob das Formular über einen Button oder einen Link gefunden wurde
-            link_forms = sum(1 for form_result in form_results if form_result.get("source") == "link")
+            button_forms = sum(1 for form_result in all_form_results if form_result.get("source") == "button")  #source = gibt an, ob das Formular über einen Button oder einen Link gefunden wurde
+            link_forms = sum(1 for form_result in all_form_results if form_result.get("source") == "link")
 
-
-            passed_fields = sum(sum(1 for field in form_result["fields"] if field["status"] == "PASS")for form_result in form_results)
-            failed_fields = sum(sum(1 for field in form_result["fields"] if field["status"] == "FAIL")for form_result in form_results)
+            passed_fields = sum(sum(1 for field in form_result["fields"] if field["status"] == "PASS") for form_result in all_form_results)
+            failed_fields = sum(sum(1 for field in form_result["fields"] if field["status"] == "FAIL") for form_result in all_form_results)
 
             print()
             print("Formulare Gesamtübersicht:")
 
+            print(f"  Formulare Gesamt: {total_forms}")
             print(f"  Formulare über Buttons: {button_forms}")
             print(f"  Formulare über Links: {link_forms}")
             print(f"  Eingabefelder: {total_fields}")
