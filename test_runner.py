@@ -605,9 +605,6 @@ def run_test(url, expected_title, expected_text):
 
                     # -------------------------------------------------------------------
                     #Formular nach Klick auf normalen Button erkennen und speichern
-                    print(f"\nDEBUG FORM CHECK: {button_name}")
-                    print(f"DEBUG FORM URL: {page.url}")
-
                     inputs = page.locator("input, textarea")
 
                     if inputs.count() > 0:
@@ -914,7 +911,7 @@ def run_test(url, expected_title, expected_text):
                             inputs = page.locator("input, textarea")
 
                             if inputs.count() > 0:
-                                form_data = {"url": page.url,"button": new_button_name,"input_count": inputs.count(),"source": "button"}
+                                form_data = {"url": page.url,"button": f"{parent_name} - {new_button_name}","input_count": inputs.count(),"source": "button"}
 
                                 if form_data not in found_forms:
                                     found_forms.append(form_data)
