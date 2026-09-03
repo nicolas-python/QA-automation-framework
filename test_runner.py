@@ -1148,11 +1148,6 @@ def run_test(url, expected_title, expected_text):
 
                 interactive_children_checked = 0  #zählt, wie viele Unterelemente tatsächlich geprüft wurden
 
-                #prüfen, ob überhaupt Unterelemente gefunden wurden
-                if not interactive_children:
-                    print()
-                    print("  Interaktive Unterelemente: ""0 PASS - 0 FAIL")
-
                 #gefundene Unterelemente separat prüfen
                 for parent_name, child_name in interactive_children:
 
