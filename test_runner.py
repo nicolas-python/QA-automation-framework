@@ -1463,7 +1463,7 @@ def run_test(url, expected_title, expected_text):
             #Formulare aus Buttons und Links für die Gesamtübersicht zusammenführen
             all_form_results = form_results + link_form_results
 
-            total_forms = len(form_results)
+            total_forms = len(all_form_results)
             total_fields = sum(len(form_result["fields"]) for form_result in all_form_results)
 
             button_forms = sum(1 for form_result in all_form_results if form_result.get("source") == "button")  #source = gibt an, ob das Formular über einen Button oder einen Link gefunden wurde
@@ -1474,7 +1474,6 @@ def run_test(url, expected_title, expected_text):
 
             print()
             print("Formulare Gesamtübersicht:")
-
             print(f"  Formulare Gesamt: {total_forms}")
             print(f"  Formulare über Buttons: {button_forms}")
             print(f"  Formulare über Links: {link_forms}")
