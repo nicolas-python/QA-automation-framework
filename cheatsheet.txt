@@ -198,6 +198,12 @@ QA Test Bewertung:
     Prüfen:
     - Buttons klicken    ----> PASS = Der Klick löst eine erkennbare Browser-Aktion aus / nur auf der Homepage des aktuellen URL-links⚠️
     - Formulare ausfüllen ---> PASS = Formularfelder lassen sich ausfüllen und das Formular akzeptiert die Eingaben -->Felder finden, Felder ausfüllen,prüfen ob Werte übernommen wurden
+
+        Radio-Felder sind etwas anderes: Das sind mehrere runde Auswahlknöpfe, bei denen normalerweise nur eine Option gleichzeitig ausgewählt werden kann.
+               z.b  ○ Mann
+                    ○ Frau
+                    ○ Divers
+
     (- Login testen        -----> PASS = Der Login funktioniert mit gültigen Testdaten-->eingeloggt / Fehlermeldung / Weiterleitung)
 
 

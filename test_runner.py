@@ -486,11 +486,14 @@ def run_test(url, expected_title, expected_text):
     #gefundene Formulare/Eingabefelder speichern
     found_forms = []
 
+    #gefundene Formulare auswählbare Felder speichern
+    option_forms = []
+
     #Buttons klicken
     print()
     print("Browser Tests")
 
-    #sesamtstatistik buttons
+    #gsesamtstatistik buttons
     all_button_results = {}
 
     passed_buttons = []
@@ -517,6 +520,15 @@ def run_test(url, expected_title, expected_text):
 
                 if form_data not in found_forms:
                     found_forms.append(form_data)
+
+            #Auswahlbare Felder nach dem Button-Klick erkennen und speichern
+            radio_fields = page.locator('input[type="radio"]')       #Radio-Felder = runde Auswahlfelder, meist nur eine Option gleichzeitig auswählbar
+            select_fields = page.locator("select")                   #Select-Felder = Dropdown-Auswahl mit mehreren Optionen
+            if radio_fields.count() > 0 or select_fields.count() > 0:
+                option_data = {"url": page.url,"button": None,"radio_count": radio_fields.count(),"select_count": select_fields.count(),"source": "button"}
+
+                if option_data not in option_forms:
+                    option_forms.append(option_data)
             # -------------------------------------------------------------------
 
             #beginn des tests
@@ -611,6 +623,15 @@ def run_test(url, expected_title, expected_text):
                         form_data = {"url": page.url,"button": button_name,"input_count": inputs.count(),"source": "button"}
                         found_forms.append(form_data)
 
+                    #Auswahlbare Felder nach dem Button-Klick erkennen und speichern
+                    radio_fields = page.locator('input[type="radio"]')
+                    select_fields = page.locator("select")
+
+                    if radio_fields.count() > 0 or select_fields.count() > 0:
+                        option_data = {"url": page.url, "button": button_name, "radio_count": radio_fields.count(),"select_count": select_fields.count(), "source": "button"}
+
+                        if option_data not in option_forms:
+                            option_forms.append(option_data)
                     # -------------------------------------------------------------------
 
                     #neue interaktive Elemente nach dem Button-Klick suchen
@@ -814,13 +835,23 @@ def run_test(url, expected_title, expected_text):
 
                         #-------------------------------------------------------------------
                         #Formular nach dem Öffnen eines aufklappbaren Buttons erkennen und speichern
-                        inputs = page.locator("input, textarea")                   #"select" wird fälschlicherweise als Formular erkannt dadurch werden Optionsfelder als Formulare erkannt
+                        inputs = page.locator("input, textarea")
 
                         if inputs.count() > 0:
                             form_data = {"url": page.url, "input_count": inputs.count(), "source": "button"}
 
                             if form_data not in found_forms:
                                 found_forms.append(form_data)
+
+                        #Auswahlbare Felder nach dem Button-Klick erkennen und speichern
+                        radio_fields = page.locator('input[type="radio"]')
+                        select_fields = page.locator("select")
+
+                        if radio_fields.count() > 0 or select_fields.count() > 0:
+                            option_data = {"url": page.url, "button": button_name,"radio_count": radio_fields.count(),"select_count": select_fields.count(), "source": "button"}
+
+                            if option_data not in option_forms:
+                                option_forms.append(option_data)
                         #-------------------------------------------------------------------
 
                         #nur Buttons speichern, die durch genau durch Hauptbutton neu sichtbar wurden
@@ -915,6 +946,16 @@ def run_test(url, expected_title, expected_text):
 
                                 if form_data not in found_forms:
                                     found_forms.append(form_data)
+
+                            #Auswahlbare Felder nach dem Button-Klick erkennen und speichern
+                            radio_fields = page.locator('input[type="radio"]')
+                            select_fields = page.locator("select")
+
+                            if radio_fields.count() > 0 or select_fields.count() > 0:
+                                option_data = {"url": page.url, "button": f"{parent_name} - {new_button_name}","radio_count": radio_fields.count(),"select_count": select_fields.count(), "source": "button"}
+
+                                if option_data not in option_forms:
+                                    option_forms.append(option_data)
                             # -------------------------------------------------------------------
 
                             passed_new_buttons.append((parent_name, new_button_name))
@@ -1104,6 +1145,16 @@ def run_test(url, expected_title, expected_text):
 
                             if form_data not in found_forms:
                                 found_forms.append(form_data)
+
+                        #Auswahlbare Felder nach dem Button-Klick erkennen und speichern
+                        radio_fields = page.locator('input[type="radio"]')
+                        select_fields = page.locator("select")
+
+                        if radio_fields.count() > 0 or select_fields.count() > 0:
+                            option_data = {"url": page.url, "parent": parent_name,"button": None,"radio_count": radio_fields.count(),"select_count": select_fields.count(), "source": "button"}
+
+                            if option_data not in option_forms:
+                                option_forms.append(option_data)
                         # -------------------------------------------------------------------
 
                         #neue interaktive Unterelemente suchen
@@ -1152,9 +1203,7 @@ def run_test(url, expected_title, expected_text):
                         elements = page.locator('button[aria-expanded]:visible, ''a[aria-expanded]:visible, ''[role="button"][aria-expanded]:visible, ''[aria-haspopup="true"]:visible, ''summary:visible')
 
                         parent_element = None
-
                         for element in elements.all():
-
                             current_name = element.inner_text().strip()
 
                             if not current_name:
@@ -1181,6 +1230,16 @@ def run_test(url, expected_title, expected_text):
 
                             if form_data not in found_forms:
                                 found_forms.append(form_data)
+
+                        #Auswahlbare Felder nach dem Button-Klick erkennen und speichern
+                        radio_fields = page.locator('input[type="radio"]')
+                        select_fields = page.locator("select")
+
+                        if radio_fields.count() > 0 or select_fields.count() > 0:
+                            option_data = {"url": page.url, "button": parent_name,"radio_count": radio_fields.count(),"select_count": select_fields.count(), "source": "button"}
+
+                            if option_data not in option_forms:
+                                option_forms.append(option_data)
                         # -------------------------------------------------------------------
 
                         #unterelement suchen
@@ -1353,8 +1412,14 @@ def run_test(url, expected_title, expected_text):
 
                             # komplettes Formularergebnis speichern
                             form_results.append(
-                                {"form_index": form_index,"url": form_data["url"],"button": form_data.get("button"),
-                                 "source": "button","expected": form_data["input_count"],"found": input_count,"fields": field_results})
+                                {"form_index": form_index,
+                                 "url": form_data["url"],
+                                 "button": form_data.get("button"),
+                                 "source": "button",
+                                 "expected": form_data["input_count"],
+                                 "found": input_count,
+                                 "fields": field_results
+                                 })
 
                             print(f"\rPrüfe Formulare... "f"{form_index}/{len(found_forms)}", end="")
 
@@ -1429,8 +1494,15 @@ def run_test(url, expected_title, expected_text):
 
                             #komplettes Formularergebnis speichern
                             link_form_results.append(
-                                {"form_index": form_index,"url": form_data["target_url"],"via_url": form_data.get("via_url", "-"),"button": None,
-                                 "source": "link","expected": form_data["input_count"],"found": input_count,"fields": field_results})
+                                {"form_index": form_index,
+                                 "url": form_data["target_url"],
+                                 "via_url": form_data.get("via_url", "-"),
+                                 "button": None,
+                                 "source": "link",
+                                 "expected": form_data["input_count"],
+                                 "found": input_count,
+                                 "fields": field_results
+                                 })
 
                         except Exception:
                             print(f"\rPrüfe Formulare über Links... "f"{form_index}/{len(form_link_pages)}",end="")
@@ -1451,6 +1523,59 @@ def run_test(url, expected_title, expected_text):
                 print("  Formulare über Links: "f"FAIL - konnte nicht geprüft werden: {error}")
 
 #Formulare Auswahlbare Inhalte/optionsfelder
+            print()
+            print("Formulare Auswahlbare Inhalte / Optionsfelder:")
+
+            try:
+                if not option_forms:
+                    print("  Keine auswählbaren Inhalte gefunden")
+
+                else:
+                    print(f"Prüfe Auswahlfelder... 0/{len(option_forms)}", end="")
+
+                    option_results = []
+
+                    for option_index, option_data in enumerate(option_forms, start=1):
+
+                        try:
+                            page.goto(option_data["url"], timeout=10000)
+
+                            radio_fields = page.locator('input[type="radio"]')
+                            select_fields = page.locator("select")
+
+                            radio_count = radio_fields.count()
+                            select_count = select_fields.count()
+
+                            option_results.append(
+                                {
+                                    "form_index": option_index,
+                                    "url": option_data["url"],
+                                    "button": option_data.get("button"),
+                                    "source": option_data.get("source"),
+                                    "radio_expected": option_data["radio_count"],
+                                    "radio_found": radio_count,
+                                    "select_expected": option_data["select_count"],
+                                    "select_found": select_count
+                                })
+
+                            print(f"\rPrüfe Auswahlfelder... "f"{option_index}/{len(option_forms)}",end="")
+
+                        except Exception as error:
+                            print(f"\rPrüfe Auswahlfelder... "f"{option_index}/{len(option_forms)} - FAIL: {error}",end="")
+
+                    print()
+
+                    for option_result in option_results:
+                        print(f"Formular {option_result['form_index']}:")
+                        print(f"  URL: {option_result['url']}")
+                        print(f"  Button: {option_result['button']}")
+                        print(f"  Radio-Felder erwartet: "f"{option_result['radio_expected']}")
+                        print(f"  Radio-Felder gefunden: "f"{option_result['radio_found']}")
+                        print(f"  Select-Felder erwartet: "f"{option_result['select_expected']}")
+                        print(f"  Select-Felder gefunden: "f"{option_result['select_found']}")
+
+            except Exception as error:
+                print("  Auswahlfelder: FAIL - "f"konnte nicht geprüft werden: {error}")
 
 
 #Formulare Gesamtübersicht
