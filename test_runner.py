@@ -1546,6 +1546,60 @@ def run_test(url, expected_title, expected_text):
                             radio_count = radio_fields.count()
                             select_count = select_fields.count()
 
+                            #Select-Felder einzeln prüfen
+                            select_results = []
+
+                            for select_index in range(select_count):
+
+                                select = select_fields.nth(select_index)
+                                options = select.locator("option")
+
+                                option_count = options.count()
+                                selectable_count = 0
+                                passed_options = 0
+                                failed_options = 0
+
+                                individual_option_results = []
+                                for option_index_inner in range(option_count):
+
+                                    option = options.nth(option_index_inner)
+
+                                    if option.is_disabled():
+                                        continue
+
+                                    selectable_count += 1
+
+                                    try:
+                                        option_value = option.get_attribute("value")
+
+                                        #Option auswählen
+                                        select.select_option(index=option_index_inner)
+
+                                        #Prüfen, ob die Auswahl übernommen wurde
+                                        selected_value = select.input_value()
+
+                                        if selected_value == option_value:
+                                            passed_options += 1
+                                            individual_option_results.append({"option_index": option_index_inner + 1,"status": "PASS","message": "auswählbar"})
+
+                                        else:
+                                            failed_options += 1
+                                            individual_option_results.append({"option_index": option_index_inner + 1,"status": "FAIL","message": "Auswahl wurde nicht übernommen"})
+
+                                    except Exception as error:
+                                        failed_options += 1
+                                        individual_option_results.append({"option_index": option_index_inner + 1,"status": "FAIL","message": str(error)})
+
+                                select_results.append(
+                                    {
+                                        "select_index": select_index + 1,
+                                        "option_count": option_count,
+                                        "selectable_count": selectable_count,
+                                        "passed": passed_options,
+                                        "failed": failed_options,
+                                        "options": individual_option_results
+                                    })
+
                             option_results.append(
                                 {
                                     "form_index": option_index,
@@ -1555,8 +1609,10 @@ def run_test(url, expected_title, expected_text):
                                     "radio_expected": option_data["radio_count"],
                                     "radio_found": radio_count,
                                     "select_expected": option_data["select_count"],
-                                    "select_found": select_count
-                                })
+                                    "select_found": select_count,
+                                    "select_results": select_results
+                                }
+                            )
 
                             print(f"\rPrüfe Auswahlfelder... "f"{option_index}/{len(option_forms)}",end="")
 
@@ -1573,6 +1629,16 @@ def run_test(url, expected_title, expected_text):
                         print(f"  Radio-Felder gefunden: "f"{option_result['radio_found']}")
                         print(f"  Select-Felder erwartet: "f"{option_result['select_expected']}")
                         print(f"  Select-Felder gefunden: "f"{option_result['select_found']}")
+
+                        for select_result in option_result["select_results"]:
+                            print()
+                            print(f"  Select-Feld {select_result['select_index']}:")
+                            print(f"    Optionen gefunden: {select_result['option_count']}")
+                            print(f"    Auswahloptionen: {select_result['selectable_count']}")
+                            print(f"    Funktionieren: "f"{select_result['passed']} PASS - "f"{select_result['failed']} FAIL")
+
+                            for option_result in select_result["options"]:
+                                print(f"      Option {option_result['option_index']}: "f"{option_result['status']} - "f"{option_result['message']}")
 
             except Exception as error:
                 print("  Auswahlfelder: FAIL - "f"konnte nicht geprüft werden: {error}")
