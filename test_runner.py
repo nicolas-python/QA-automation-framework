@@ -1647,8 +1647,6 @@ def run_test(url, expected_title, expected_text):
 #Formulare Gesamtübersicht
             #Formulare aus Buttons und Links für die Gesamtübersicht zusammenführen
             all_form_results = form_results + link_form_results
-
-            total_forms = len(all_form_results)
             total_fields = sum(len(form_result["fields"]) for form_result in all_form_results)
 
             button_forms = sum(1 for form_result in all_form_results if form_result.get("source") == "button")  #source = gibt an, ob das Formular über einen Button oder einen Link gefunden wurde
@@ -1657,14 +1655,35 @@ def run_test(url, expected_title, expected_text):
             passed_fields = sum(sum(1 for field in form_result["fields"] if field["status"] == "PASS") for form_result in all_form_results)
             failed_fields = sum(sum(1 for field in form_result["fields"] if field["status"] == "FAIL") for form_result in all_form_results)
 
+            #Auswahlfelder Gesamtübersicht
+            option_forms_total = len(option_results)
+
+            total_selects = sum(option_result["select_found"] for option_result in option_results)
+            total_options = sum(select_result["option_count"] for option_result in option_results for select_result in option_result["select_results"])
+
+            passed_options_total = sum(select_result["passed"] for option_result in option_results for select_result in option_result["select_results"])
+            failed_options_total = sum(select_result["failed"] for option_result in option_results for select_result in option_result["select_results"])
+
+            # Gesamtzahl aller Formulare
+            total_forms = len(all_form_results) + option_forms_total
+
             print()
             print("Formulare Gesamtübersicht:")
             print(f"  Formulare Gesamt: {total_forms}")
             print(f"  Formulare über Buttons: {button_forms}")
             print(f"  Formulare über Links: {link_forms}")
+            print(f"  Formulare mit Auswahlfeldern: {option_forms_total}")
+
+            print()
             print(f"  Eingabefelder: {total_fields}")
             print(f"  Beschreibbar: {passed_fields}")
             print(f"  Nicht beschreibbar: {failed_fields}")
+
+            print()
+            print(f"  Select-Felder: {total_selects}")
+            print(f"  Auswahloptionen: {total_options}")
+            print(f"  Auswählbar: {passed_options_total}")
+            print(f"  Nicht auswählbar: {failed_options_total}")
 
     except Exception as error:
         print("  Browser Tests : FAIL - konnte nicht  vollständig geprüft werden:", error)
