@@ -1410,7 +1410,32 @@ def run_test(url, expected_title, expected_text):
                                     field_results.append(
                                         {"index": index + 1, "status": "FAIL", "message": str(field_error)})
 
-                            # komplettes Formularergebnis speichern
+                            #Formular absenden und Ergebnis prüfen
+                            submit_result = {"status": "FAIL","message": "Formular konnte nicht abgeschickt werden"}
+
+                            try:
+                                #Submit-Button des Formulars suchen
+                                submit_button = page.locator('button[type="submit"]')
+
+                                if submit_button.count() == 0:
+                                    raise Exception("Submit-Button nicht gefunden")
+
+                                submit_button.first.click(timeout=3000)
+                                page.wait_for_load_state("domcontentloaded", timeout=10000)
+                                success_message = page.get_by_text("Nachricht wurde erfolgreich übermittelt.",exact=True)
+
+                                if success_message.count() == 0:
+                                    raise Exception("Erfolgsmeldung nicht gefunden")
+
+                                if not success_message.first.is_visible():
+                                    raise Exception("Erfolgsmeldung nicht sichtbar")
+
+                                submit_result = {"status": "PASS","message": "Formular erfolgreich übermittelt"}
+
+                            except Exception as submit_error:
+                                submit_result = {"status": "FAIL","message": str(submit_error)}
+
+                            #komplettes Formularergebnis speichern
                             form_results.append(
                                 {"form_index": form_index,
                                  "url": form_data["url"],
@@ -1418,7 +1443,8 @@ def run_test(url, expected_title, expected_text):
                                  "source": "button",
                                  "expected": form_data["input_count"],
                                  "found": input_count,
-                                 "fields": field_results
+                                 "fields": field_results,
+                                 "submit": submit_result
                                  })
 
                             print(f"\rPrüfe Formulare... "f"{form_index}/{len(found_forms)}", end="")
@@ -1443,6 +1469,9 @@ def run_test(url, expected_title, expected_text):
 
                         for field_result in form_result["fields"]:
                             print(f"    Feld {field_result['index']}: "f"{field_result['status']} - "f"{field_result['message']}")
+
+                        print(f"  Absenden: "f"{form_result['submit']['status']} - "f"{form_result['submit']['message']}")
+                        print()
 
             except Exception as error:
                 print("  Formulare über Knöpfe: "f"FAIL - konnte nicht geprüft werden: {error}")
@@ -1492,6 +1521,34 @@ def run_test(url, expected_title, expected_text):
                                     field_results.append(
                                         {"index": index + 1, "status": "FAIL", "message": str(field_error)})
 
+                                    # Formular absenden und Ergebnis prüfen
+                                    submit_result = {"status": "FAIL",
+                                                     "message": "Formular konnte nicht abgeschickt werden"}
+
+                                    try:
+                                        # Submit-Button des Formulars suchen
+                                        submit_button = page.locator('button[type="submit"]')
+
+                                        if submit_button.count() == 0:
+                                            raise Exception("Submit-Button nicht gefunden")
+
+                                        submit_button.first.click(timeout=3000)
+                                        page.wait_for_load_state("domcontentloaded", timeout=10000)
+                                        success_message = page.get_by_text("Nachricht wurde erfolgreich übermittelt.",
+                                                                           exact=True)
+
+                                        if success_message.count() == 0:
+                                            raise Exception("Erfolgsmeldung nicht gefunden")
+
+                                        if not success_message.first.is_visible():
+                                            raise Exception("Erfolgsmeldung nicht sichtbar")
+
+                                        submit_result = {"status": "PASS",
+                                                         "message": "Formular erfolgreich übermittelt"}
+
+                                    except Exception as submit_error:
+                                        submit_result = {"status": "FAIL", "message": str(submit_error)}
+
                             #komplettes Formularergebnis speichern
                             link_form_results.append(
                                 {"form_index": form_index,
@@ -1501,7 +1558,8 @@ def run_test(url, expected_title, expected_text):
                                  "source": "link",
                                  "expected": form_data["input_count"],
                                  "found": input_count,
-                                 "fields": field_results
+                                 "fields": field_results,
+                                 "submit": submit_result
                                  })
 
                         except Exception:
@@ -1518,6 +1576,9 @@ def run_test(url, expected_title, expected_text):
 
                         for field_result in form_result["fields"]:
                             print(f"    Feld {field_result['index']}: {field_result['status']} - {field_result['message']}")
+
+                        print(f"  Absenden: "f"{form_result['submit']['status']} - " f"{form_result['submit']['message']}")
+                        print()
 
             except Exception as error:
                 print("  Formulare über Links: "f"FAIL - konnte nicht geprüft werden: {error}")
