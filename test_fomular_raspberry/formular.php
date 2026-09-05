@@ -7,6 +7,29 @@ Die Datei verwendet deshalb die Endung .php, da sie auf dem Raspberry Pi über e
 <!-- CSS  → beschreibt das Aussehen -->
 <!-- PHP  → wird auf dem Server ausgeführt und kann Daten verarbeiten -->
 
+<?php                       //<?php = PHP-Code = Jetzt PHP ausführen    (In PHP beginnen Variablen immer mit $)
+
+// Variable, die merkt, ob das Formular bereits abgeschickt wurde ,false = Formular wurde noch nicht abgeschickt.
+$form_submitted = false;
+
+// GET  = Seite normal aufrufen
+// POST = Formular wurde abgeschickt
+// $_SERVER["REQUEST_METHOD"] enthält die verwendete Methode.
+if ($_SERVER["REQUEST_METHOD"] === "POST")
+{                                                       //?? "" bedeutet: Falls kein Wert vorhanden ist, verwende stattdessen einen leeren Text
+                                                        //$_POST["name"] bedeutet:Hole den Wert des Formularfeldes mit name="name"
+    $name = $_POST["name"] ?? "";
+    $adresse = $_POST["adresse"] ?? "";
+    $plz = $_POST["plz"] ?? "";
+    $ort = $_POST["ort"] ?? "";
+    $telefon = $_POST["telefon"] ?? "";
+    $email = $_POST["email"] ?? "";
+    $betreff = $_POST["betreff"] ?? "";
+    $nachricht = $_POST["nachricht"] ?? "";
+    $form_submitted = true;                         //true = Formular wurde abgeschickt
+}
+?>                                  <!-- ?> = Hier endet der PHP-Code -->
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -24,7 +47,13 @@ Die Datei verwendet deshalb die Endung .php, da sie auf dem Raspberry Pi über e
 
     <h2>Kontaktformular</h2>
 
-    <form action="#" method="post">
+    <form action="" method="post">                  <!-- action=""= Gibt an, wohin die Formulardaten geschickt werden, Ein leerer Wert bedeutet hier:wir wieder an selbe seite geschickt(formular.php) -->
+
+     <?php if ($form_submitted): ?>          <!-- Formular abgeschickt -->
+
+        <p class="erfolg"> Nachricht wurde erfolgreich übermittelt </p>
+
+     <?php endif; ?>     <!-- endif = Ende der if-Bedingung -->
 
         <!-- Pflichtfeld: Name -->
         <label for="name">Name *</label>                        <!-- * und required = Pflichtfeld -->
