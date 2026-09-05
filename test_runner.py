@@ -1390,13 +1390,13 @@ def run_test(url, expected_title, expected_text):
                                 field = inputs.nth(index)
                                 field_type = field.get_attribute("type")
 
-                                # Checkboxen nicht mit Text befüllen
+                                #Checkboxen nicht mit Text befüllen
                                 if field_type == "checkbox":
                                     continue
 
-                                # start
+                                #start
                                 try:
-                                    field.fill(test_value)  # Testwert in das Eingabefeld schreiben
+                                    field.fill(test_value)  #Testwert in das Eingabefeld schreiben
 
                                     if field.input_value() != test_value:
                                         raise Exception("Eingabe wurde nicht übernommen")
@@ -1508,6 +1508,12 @@ def run_test(url, expected_title, expected_text):
                                 # Checkboxen nicht mit Text befüllen
                                 if field_type == "checkbox":
                                     continue
+
+                                #Testwert abhängig vom Feldtyp(email)    #test
+                                if field_type == "email":
+                                    test_value = "qa-test@example.com"
+                                else:
+                                    test_value = "QA Test"
 
                                 try:
                                     field.fill(test_value)
