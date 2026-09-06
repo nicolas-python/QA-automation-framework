@@ -13,7 +13,7 @@ from playwright.sync_api import expect              #expect zum Prüfen, ob ein 
 # --------------------------------------------------
 # HTML-Testreport erstellen
 # --------------------------------------------------
-def create_report(report_file, test_start):
+def create_report(report_file, test_start, url):
     #strf = string format
     # %d → Tag %m → Monat %Y → Jahr
     # %H → Stunde %M → Minute %S → Sekunde
@@ -35,7 +35,8 @@ def create_report(report_file, test_start):
     <h3>Anfrage QA-Test:</h3>
                                                                 
     <p>Datum: {test_start.strftime("%d.%m.%Y")}</p>             
-    <p>Uhrzeit: {test_start.strftime("%H:%M:%S")}</p>           
+    <p>Uhrzeit: {test_start.strftime("%H:%M:%S")}</p>      
+    <p>URL: {url}</p>     
 
 </body>
 
@@ -57,8 +58,7 @@ def run_test(url, expected_title, expected_text):
     print("URL:", url)
 
     report_file = "qa_test_report.html"
-    create_report(report_file, test_start)
-
+    create_report(report_file, test_start, url)
 
 # --------------------------------------------------
 # HTTP-Anfrage
