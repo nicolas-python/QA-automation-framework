@@ -192,7 +192,7 @@ QA Test Bewertung:
             -author = Angabe des Autors sinvolle info ?
 
 
-10. Browser Tests
+10. Browser Tests✅
     Testet das Verhalten aus Sicht eines Benutzers.
 
     Prüfen:
@@ -237,8 +237,32 @@ QA Test Bewertung:
     Prüfen:
     - PASS / FAIL Übersicht✅
     - Fehler speichern✅
-    - Datum/Uhrzeit
+    - Datum/Uhrzeit✅
+
+HTML-Report:
+Der test_runner.py erzeugt den HTML-Code als Text und speichert ihn anschließend in einer .html-Datei
+Deshalb steht der HTML-Code in der Python-Datei:
+-Python kann dadurch die Testergebnisse automatisch in den HTML-Code einsetzen
+-Danach wird die erzeugte qa_test_report.html vom Browser als normale Webseite geöffnet und dargestellt
+
+Warum html als Variable?
+-Der komplette HTML-Code wird in der Variable html gespeichert. Dadurch kann Python den erzeugten HTML-Code später mit file.write(html) in die qa_test_report.html schreiben.
+
+Warum ein f-String (f"""...""")?
+-f = f-String
+-""" =  mehrzeiliger Python-String
+-Das f ermöglicht es, Python-Variablen und Python-Ausdrücke direkt in den Text einzusetzen. Dadurch können die Testergebnisse später automatisch in den HTML-Code eingefügt werden.
+-(Dadurch können die Testergebnisse, das Datum, die Uhrzeit usw. automatisch in den HTML-Code eingefügt werden.)
 
 Momentan nur starterseite am Testen
 # ⚠️ TODO: Browser-Tests optimieren zusammenfassen – Aufklappbare Buttons auf großen Seiten zu langsam  → Elemente nur einmal testen und Ergebnisse speichern, anschließend nur noch ausgeben
 # ⚠️ TODO: Weiterführende Seiten/URLs im Browser-Test ebenfalls prüfen
+
+
+QA Automation Test Report
+Testinformationen
+
+Anfrage QA-Test:
+
+Datum: 06.09.2026
+Uhrzeit: 14:37:20

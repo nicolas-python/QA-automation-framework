@@ -10,6 +10,44 @@ from playwright.sync_api import sync_playwright     #playwright für Browser-Aut
 from playwright.sync_api import expect              #expect zum Prüfen, ob ein erwarteter Zustand eingetreten ist(speziell für Browser-Elemente und Browser-Zustände)
 
 
+# --------------------------------------------------
+# HTML-Testreport erstellen
+# --------------------------------------------------
+def create_report(report_file, test_start):
+    #strf = string format
+    # %d → Tag %m → Monat %Y → Jahr
+    # %H → Stunde %M → Minute %S → Sekunde
+
+    html = f"""<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <title>QA Automation Test Report</title>
+</head>
+
+<body>
+
+    <h1>QA Automation Test Report</h1>
+
+    <h2>Testinformationen</h2>
+    
+    <h3>Anfrage QA-Test:</h3>
+                                                                
+    <p>Datum: {test_start.strftime("%d.%m.%Y")}</p>             
+    <p>Uhrzeit: {test_start.strftime("%H:%M:%S")}</p>           
+
+</body>
+
+</html>
+"""
+
+    with open(report_file, "w", encoding="utf-8") as file:
+        file.write(html)
+
+# --------------------------------------------------
+# Zeitabfrage / Teststart
+# --------------------------------------------------
 def run_test(url, expected_title, expected_text):
     test_start = datetime.now()
 
@@ -17,6 +55,9 @@ def run_test(url, expected_title, expected_text):
     print(f"Uhrzeit: {test_start.strftime('%H:%M:%S')}")
     print()
     print("URL:", url)
+
+    report_file = "qa_test_report.html"
+    create_report(report_file, test_start)
 
 
 # --------------------------------------------------
