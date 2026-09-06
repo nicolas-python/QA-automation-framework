@@ -1394,6 +1394,12 @@ def run_test(url, expected_title, expected_text):
                                 if field_type == "checkbox":
                                     continue
 
+                                #Testwert abhängig vom Feldtyp(email)    #test
+                                if field_type == "email":
+                                    test_value = "qa-test@example.com"
+                                else:
+                                    test_value = "QA Test"
+
                                 #start
                                 try:
                                     field.fill(test_value)  #Testwert in das Eingabefeld schreiben
@@ -1423,7 +1429,10 @@ def run_test(url, expected_title, expected_text):
                                 submit_button.first.click(timeout=3000)
                                 page.wait_for_load_state("domcontentloaded", timeout=10000)
                                 success_message = page.get_by_text("Nachricht wurde erfolgreich übermittelt.",exact=True)
-
+#--
+                                print("  Aktuelle URL nach Submit:", page.url)
+                                print("  Erfolgsmeldung vorhanden:", success_message.count())
+#--
                                 if success_message.count() == 0:
                                     raise Exception("Erfolgsmeldung nicht gefunden")
 
@@ -1527,33 +1536,32 @@ def run_test(url, expected_title, expected_text):
                                     field_results.append(
                                         {"index": index + 1, "status": "FAIL", "message": str(field_error)})
 
-                                    # Formular absenden und Ergebnis prüfen
-                                    submit_result = {"status": "FAIL",
-                                                     "message": "Formular konnte nicht abgeschickt werden"}
+                            # Formular absenden und Ergebnis prüfen
+                            submit_result = {"status": "FAIL","message": "Formular konnte nicht abgeschickt werden"}
 
-                                    try:
-                                        # Submit-Button des Formulars suchen
-                                        submit_button = page.locator('button[type="submit"]')
+                            try:
+                                #Submit-Button des Formulars suchen
+                                submit_button = page.locator('button[type="submit"]')
 
-                                        if submit_button.count() == 0:
-                                            raise Exception("Submit-Button nicht gefunden")
+                                if submit_button.count() == 0:
+                                    raise Exception("Submit-Button nicht gefunden")
 
-                                        submit_button.first.click(timeout=3000)
-                                        page.wait_for_load_state("domcontentloaded", timeout=10000)
-                                        success_message = page.get_by_text("Nachricht wurde erfolgreich übermittelt.",
-                                                                           exact=True)
+                                submit_button.first.click(timeout=3000)
+                                page.wait_for_load_state("domcontentloaded", timeout=10000)
+                                success_message = page.get_by_text("Nachricht wurde erfolgreich übermittelt",
+                                                                   exact=True)
 
-                                        if success_message.count() == 0:
-                                            raise Exception("Erfolgsmeldung nicht gefunden")
+                                if success_message.count() == 0:
+                                    raise Exception("Erfolgsmeldung nicht gefunden")
 
-                                        if not success_message.first.is_visible():
-                                            raise Exception("Erfolgsmeldung nicht sichtbar")
+                                if not success_message.first.is_visible():
+                                    raise Exception("Erfolgsmeldung nicht sichtbar")
 
-                                        submit_result = {"status": "PASS",
-                                                         "message": "Formular erfolgreich übermittelt"}
+                                submit_result = {"status": "PASS",
+                                                 "message": "Formular erfolgreich übermittelt"}
 
-                                    except Exception as submit_error:
-                                        submit_result = {"status": "FAIL", "message": str(submit_error)}
+                            except Exception as submit_error:
+                                submit_result = {"status": "FAIL", "message": str(submit_error)}
 
                             #komplettes Formularergebnis speichern
                             link_form_results.append(
