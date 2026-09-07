@@ -13,7 +13,7 @@ from playwright.sync_api import expect              #expect zum Prüfen, ob ein 
 # --------------------------------------------------
 # HTML-Testreport erstellen
 # --------------------------------------------------
-def create_report(report_file, test_start, url):
+def create_report(report_file, test_start, url, status_code, response_time):
     #strf = string format
     # %d → Tag %m → Monat %Y → Jahr
     # %H → Stunde %M → Minute %S → Sekunde
@@ -37,6 +37,11 @@ def create_report(report_file, test_start, url):
     <p>Datum: {test_start.strftime("%d.%m.%Y")}</p>             
     <p>Uhrzeit: {test_start.strftime("%H:%M:%S")}</p>      
     <p>URL: {url}</p>     
+    
+    <h3>HTTP-Test</h3>
+
+    <p>Statuscode: {status_code}</p>
+    <p>Antwortzeit: {response_time} Sekunden</p>
 
 </body>
 
@@ -58,7 +63,6 @@ def run_test(url, expected_title, expected_text):
     print("URL:", url)
 
     report_file = "qa_test_report.html"
-    create_report(report_file, test_start, url)
 
 # --------------------------------------------------
 # HTTP-Anfrage
@@ -67,6 +71,8 @@ def run_test(url, expected_title, expected_text):
         start = time.time()
         response = requests.get(url, timeout=10)
         end = time.time()
+
+        status_code = response.status_code
 
     except requests.exceptions.Timeout as error:
         print("HTTP-Anfrage")
@@ -1799,3 +1805,5 @@ def run_test(url, expected_title, expected_text):
 
     except Exception as error:
         print("  Browser Tests : FAIL - konnte nicht  vollständig geprüft werden:", error)
+
+    create_report(report_file, test_start, url, status_code, response_time)
