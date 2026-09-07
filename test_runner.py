@@ -13,7 +13,7 @@ from playwright.sync_api import expect              #expect zum Prüfen, ob ein 
 # --------------------------------------------------
 # HTML-Testreport erstellen
 # --------------------------------------------------
-def create_report(report_file, test_start, url, status_code, response_time):
+def create_report(report_file, test_start, url, report_results):
     #strf = string format
     # %d → Tag %m → Monat %Y → Jahr
     # %H → Stunde %M → Minute %S → Sekunde
@@ -23,6 +23,7 @@ def create_report(report_file, test_start, url, status_code, response_time):
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="2">
     <title>QA Automation Test Report</title>
 </head>
 
@@ -38,16 +39,14 @@ def create_report(report_file, test_start, url, status_code, response_time):
     <p>Uhrzeit: {test_start.strftime("%H:%M:%S")}</p>      
     <p>URL: {url}</p>     
     
-    <h3>HTTP-Test</h3>
-
-    <p>Statuscode: {status_code}</p>
-    <p>Antwortzeit: {response_time} Sekunden</p>
+    {''.join(report_results)}
 
 </body>
 
 </html>
 """
 
+    #Neuen HTML-Report mit den Testergebnissen schreiben
     with open(report_file, "w", encoding="utf-8") as file:
         file.write(html)
 
@@ -63,6 +62,7 @@ def run_test(url, expected_title, expected_text):
     print("URL:", url)
 
     report_file = "qa_test_report.html"
+    report_results = []
 
 # --------------------------------------------------
 # HTTP-Anfrage
@@ -103,9 +103,15 @@ def run_test(url, expected_title, expected_text):
         else:
             print("  HTTPS: FAIL", response.url)
 
+        report_results.append(f"""
+        <h3>HTTPS Prüfung</h3>
+        <p>  HTTPS: {"PASS - " if response.url.startswith("https://") else "FAIL "}{response.url}</p>
+        """)
+
+        create_report(report_file, test_start, url, report_results)
+
     except Exception as error:
         print("  HTTPS: FAIL - konnte nicht geprüft werden: ", error)
-
 
 # --------------------------------------------------
 # SSL/TLS + Zertifikat
@@ -1805,5 +1811,3 @@ def run_test(url, expected_title, expected_text):
 
     except Exception as error:
         print("  Browser Tests : FAIL - konnte nicht  vollständig geprüft werden:", error)
-
-    create_report(report_file, test_start, url, status_code, response_time)
