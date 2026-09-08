@@ -478,13 +478,23 @@ def run_test(url, expected_title, expected_text):
         if lang:
             language_code = lang.group(1).lower()
             language_name = lang_names.get(language_code, "Unbekannte Sprache")
-
             print(f"    Lang: PASS - {language_code} = {language_name}")
+            language_result = f"Lang: PASS - {language_code} = {language_name}"
+
         else:
             print("    Lang: FAIL - kein Sprachattribut gefunden")
+            language_result = "Lang: FAIL - kein Sprachattribut gefunden"
 
     except Exception as error:
         print("  HTML/Struktur: FAIL - konnte nicht prüfen:", error)
+        language_result = "Lang: FAIL - konnte nicht geprüft werden"
+
+    report_results.append(f"""
+    <h3>HTML-Struktur Prüfung</h3>
+    <p>{language_result}</p>
+    """)
+
+    create_report(report_file, test_start, url, report_results)
 
 
     #Grundstruktur <head>,<body>
