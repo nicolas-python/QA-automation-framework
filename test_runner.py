@@ -253,16 +253,26 @@ def run_test(url, expected_title, expected_text):
 
         if response_time < 2:
             print("  Ladezeit: PASS -", response_time, "Sekunden")
+            performance_result = f"Ladezeit: PASS - {response_time} Sekunden"
 
         elif response_time <= 3:
             print("  Ladezeit: WARNING -", response_time, "Sekunden")
+            performance_result = f"Ladezeit: WARNING - {response_time} Sekunden"
 
         else:
             print("  Ladezeit: FAIL -", response_time, "Sekunden")
+            performance_result = f"Ladezeit: FAIL - {response_time} Sekunden"
 
     except Exception as error:
         print("  Ladezeit: FAIL - konnte nicht geprüft werden: ", error)
+        performance_result = "Ladezeit: FAIL - konnte nicht geprüft werden"
 
+    report_results.append(f"""
+    <h3>Performance Prüfung</h3>
+    <p>{performance_result}</p>
+    """)
+
+    create_report(report_file, test_start, url, report_results)
 
 # --------------------------------------------------
 # Content Check
