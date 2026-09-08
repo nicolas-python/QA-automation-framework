@@ -288,17 +288,30 @@ def run_test(url, expected_title, expected_text):
 
         if expected_title.strip().lower() == actual_title.strip().lower():
             print("  Title: PASS -", actual_title)
+            title_result = f"Title: PASS - {actual_title}"
         else:
             print("  Title: FAIL - erwartet:", expected_title, "| gefunden:", actual_title)
+            title_result = f"Title: FAIL - erwartet: {expected_title} | gefunden: {actual_title}"
 
         if expected_text.strip().lower() in response.text.strip().lower():
             print("  Content: PASS - erwarteter Text gefunden:", expected_text)
+            content_result = f"Content: PASS - erwarteter Text gefunden: {expected_text}"
         else:
             print("  Content: FAIL - erwarteter Text nicht gefunden:", expected_text)
+            content_result = f"Content: FAIL - erwarteter Text nicht gefunden: {expected_text}"
 
     except Exception as error:
         print("  Content Check: FAIL - konnte nicht geprüft werden:", error)
+        title_result = "Title: FAIL - konnte nicht geprüft werden"
+        content_result = "Content: FAIL - konnte nicht geprüft werden"
 
+    report_results.append(f"""
+    <h3>Content Check Prüfung</h3>
+    <p>{title_result}</p>
+    <p>{content_result}</p>
+    """)
+
+    create_report(report_file, test_start, url, report_results)
 
 # --------------------------------------------------
 # Broken Links
