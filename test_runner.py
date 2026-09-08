@@ -407,6 +407,7 @@ def run_test(url, expected_title, expected_text):
 
         if not images:
             print("  Keine Bilder gefunden")
+            images_result = "Bilder: Keine Bilder gefunden"
 
         else:
             filtered_images = []
@@ -441,13 +442,25 @@ def run_test(url, expected_title, expected_text):
             print()
 
             print(f"  Bilder: {len(passed_images)} PASS - {len(failed_images)} FAIL")
+            images_result = (
+                f"Bilder: {len(passed_images)} PASS - "
+                f"{len(failed_images)} FAIL<br>"
+                f"<small>Hinweis: Fehlgeschlagene Bilder siehe Konsole</small>"
+            )
 
             for image in failed_images:
                 print("  FAIL:", image)
 
     except Exception as error:
         print("  Bilder: FAIL - konnte Bilder nicht prüfen:", error)
+        images_result = "Bilder: FAIL - konnte Bilder nicht prüfen"
 
+    report_results.append(f"""
+    <h3>Bilder / Dateien Prüfung</h3>
+    <p>{images_result}</p>
+    """)
+
+    create_report(report_file, test_start, url, report_results)
 
 # --------------------------------------------------
 # HTML-Struktur
