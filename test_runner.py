@@ -100,12 +100,15 @@ def run_test(url, expected_title, expected_text):
 
         if response.url.startswith("https://"):
             print("  HTTPS: PASS -", response.url)
+            https_result = f"HTTPS: PASS {response.url}"
+
         else:
             print("  HTTPS: FAIL", response.url)
+            https_result = f"HTTPS: FAIL {response.url}"
 
         report_results.append(f"""
         <h3>HTTPS Prüfung</h3>
-        <p>  HTTPS: {"PASS - " if response.url.startswith("https://") else "FAIL "}{response.url}</p>
+        <p>{https_result}</p>
         """)
 
         create_report(report_file, test_start, url, report_results)
@@ -137,21 +140,38 @@ def run_test(url, expected_title, expected_text):
 
         if expiration_date > current_date:
             print("  Certificate: PASS - gültig bis:", expiration_date)
+            ssl_result = f"""
+            <p>SSL/TLS: PASS</p>
+            <p>Certificate: PASS - gültig bis: {expiration_date}</p>
+            """
         else:
             print("  Certificate: FAIL - expired", expiration_date)
+            ssl_result = f"""
+            <p>SSL/TLS: PASS</p>
+            <p>Certificate: FAIL - expired {expiration_date}</p>
+            """
 
     except ssl.SSLCertVerificationError:        #fängt Zertifikatsfehler bei der direkten SSL/TLS-Verbindung mit socket ab
         print("SSL/TLS Prüfung")
         print("  SSL/TLS: FAIL - certificate error")
+        ssl_result = "<p>SSL/TLS: FAIL - certificate error</p>"
 
     except requests.exceptions.SSLError:        #fängt SSL/TLS-Fehler ab, die bei requests auftreten
         print("SSL/TLS Prüfung")
         print("  SSL/TLS: FAIL - certificate error")
+        ssl_result = "<p>SSL/TLS: FAIL - certificate error</p>"
 
     except ConnectionRefusedError as error:  # fängt Fehler ab, wenn der Server die Verbindung ablehnt
         print("SSL/TLS Prüfung")
         print("  SSL/TLS: FAIL - connection refused:", error)
+        ssl_result = "<p>SSL/TLS: FAIL - connection refused</p>"
 
+    report_results.append(f"""
+    <h3>SSL/TLS Prüfung</h3>
+    {ssl_result}
+    """)
+
+    create_report(report_file, test_start, url, report_results)
 
 # --------------------------------------------------
 # Domain
