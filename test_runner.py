@@ -187,12 +187,21 @@ def run_test(url, expected_title, expected_text):
 
         if start_domain == final_domain:         #hostname gibt den Hostnamen der URL zurück
             print("  Domain: PASS -", start_domain, "→", final_domain)
+            domain_result = f"Domain: PASS - {start_domain} → {final_domain}"
         else:
             print("  Domain: WARNING - different domain", start_domain, "→", final_domain)
+            domain_result = f"Domain: WARNING - different domain {start_domain} → {final_domain}"
 
     except Exception as error:                                                     #fängt Fehler innerhalb dieses try-Blocks ab und führt danach den nächsten Code aus
         print("  Domain: FAIL - konnte nicht geprüft werden: ", error)
+        domain_result = "Domain: FAIL - konnte nicht geprüft werden"
 
+    report_results.append(f"""
+    <h3>Domain Prüfung</h3>
+    <p>{domain_result}</p>
+    """)
+
+    create_report(report_file, test_start, url, report_results)
 
 # --------------------------------------------------
 # Status
