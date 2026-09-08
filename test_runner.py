@@ -212,21 +212,34 @@ def run_test(url, expected_title, expected_text):
 
         if 200 <= response.status_code < 300:
             print("  Status: PASS -", response.status_code)
+            status_result = f"Status: PASS - {response.status_code}"
 
         elif 300 <= response.status_code < 400:
             print("  Status: REDIRECT", response.status_code)
+            status_result = f"Status: REDIRECT {response.status_code}"
 
         elif 400 <= response.status_code < 500:
             print("  Status: FAIL - Client Fehler", response.status_code)
+            status_result = f"Status: FAIL - Client Fehler {response.status_code}"
 
         elif 500 <= response.status_code < 600:
             print("  Status: FAIL - Server Fehler", response.status_code)
+            status_result = f"Status: FAIL - Server Fehler {response.status_code}"
 
         else:
             print("  Status: Unbekannter Status", response.status_code)
+            status_result = f"Status: Unbekannter Status {response.status_code}"
 
     except Exception as error:
         print("  Status: FAIL - konnte nicht geprüft werden: ", error)
+        status_result = "Status: FAIL - konnte nicht geprüft werden"
+
+    report_results.append(f"""
+    <h3>Status Prüfung</h3>
+    <p>{status_result}</p>
+    """)
+
+    create_report(report_file, test_start, url, report_results)
 
 
 # --------------------------------------------------
