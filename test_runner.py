@@ -374,13 +374,25 @@ def run_test(url, expected_title, expected_text):
             print()
 
             print(f"  Broken Links: {len(passed_links)} PASS - {len(failed_links)} FAIL")
+            broken_links_result = (
+                f"Broken Links: {len(passed_links)} PASS - "
+                f"{len(failed_links)} FAIL<br>"
+                f"<small>Hinweis: Fehlgeschlagene Links siehe Konsole.</small>"
+            )
 
             for link in failed_links:
                 print("FAIL:", link)
 
     except Exception as error:
         print(" Broken Links: FAIL - konnte Links nicht finden:", error)
+        broken_links_result = "Broken Links: FAIL - konnte Links nicht finden"
 
+    report_results.append(f"""
+    <h3>Broken Links Prüfung</h3>
+    <p>{broken_links_result}</p>
+    """)
+
+    create_report(report_file, test_start, url, report_results)
 
 # --------------------------------------------------
 # Bilder / Dateien
