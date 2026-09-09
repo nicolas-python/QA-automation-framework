@@ -493,9 +493,10 @@ def run_test(url, expected_title, expected_text):
         print("  HTML/Struktur: FAIL - konnte nicht prüfen:", error)
         language_result = "Lang: FAIL - konnte nicht geprüft werden"
 
+    # &nbsp = 1 Leerzeichen in html
     html_structure_result += f"""
     <h4>Sprache:</h4>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;{language_result}</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;{language_result}</p>                            
     """
 
     report_results.append(html_structure_result)
@@ -617,17 +618,32 @@ def run_test(url, expected_title, expected_text):
         if viewport:
             viewport_value = viewport.group(1).lower()
             print(f"    Viewport: PASS - {viewport_value}")
+            viewport_result = f"Viewport: PASS - {viewport_value}"
 
             if "width=device-width" in viewport_value:              #device-width= Behandle die Breite der Webseite so, als wäre sie so breit wie das Gerät
                 print(f"    Mobile Darstellung: PASS - width=device-width")
+                mobile_result = "Mobile Darstellung: PASS - width=device-width"
             else:
                 print(f"    Mobile Darstellung: FAIL - width=device-width fehlt - {viewport_value}")
+                mobile_result = f"Mobile Darstellung: FAIL - width=device-width fehlt - {viewport_value}"
 
         else:
             print("    Viewport: FAIL - nicht vorhanden")
+            mobile_result = "Mobile Darstellung: FAIL - Viewport nicht vorhanden"
 
     except Exception as error:
         print("  Meta-Informationen Viewport: FAIL - konnte nicht geprüft werden:", error)
+        viewport_result = "Viewport: FAIL - konnte nicht geprüft werden"
+        mobile_result = "Mobile Darstellung: FAIL - konnte nicht geprüft werden"
+
+    html_structure_result += f"""
+    <h4>Viewport:</h4>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;{viewport_result}</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;{mobile_result}</p>
+    """
+
+    report_results[-1] = html_structure_result
+    create_report(report_file, test_start, url, report_results)
 
     #description = Beschreibung der Seite für Suchmaschinen
     try:
