@@ -657,15 +657,26 @@ def run_test(url, expected_title, expected_text):
 
             if description_value:
                 print(f"    Description: PASS - {description_value}")
+                description_result = f"Description: PASS - {description_value}"
             else:
                 print("    Description: FAIL - Beschreibung ist leer")
+                description_result = "Description: FAIL - Beschreibung ist leer"
 
         else:
             print("    Description: FAIL - nicht vorhanden")
-
+            description_result = "Description: FAIL - nicht vorhanden"
 
     except Exception as error:
         print("  Meta-Informationen description: FAIL - konnte nicht geprüft werden:", error)
+        description_result = "Description: FAIL - konnte nicht geprüft werden"
+
+    html_structure_result += f"""
+    <h4>Description:</h4>
+    <p>{description_result}</p>
+    """
+
+    report_results[-1] = html_structure_result
+    create_report(report_file, test_start, url, report_results)
 
 
     #robots = Anweisungen für Suchmaschinen-Crawler
