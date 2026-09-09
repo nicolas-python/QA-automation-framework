@@ -551,14 +551,30 @@ def run_test(url, expected_title, expected_text):
         print("Überschriften:")
         if not headings_by_level["h1"]:
             print("  H1: FAIL - keine H1 gefunden")
+            h1_result = "H1: FAIL - keine H1 gefunden"
         else:
             print(f"  H1: PASS - {len(headings_by_level['h1'])} gefunden")
+            h1_result = f"H1: PASS - {len(headings_by_level['h1'])} gefunden"
 
         for level in ["h2", "h3", "h4", "h5", "h6"]:
             print(f"    {level.upper()}: INFO - {len(headings_by_level[level])} gefunden")
 
     except Exception as error:
         print("  HTML/Struktur: FAIL - konnte nicht prüfen:", error)
+        h1_result = "H1: FAIL - konnte nicht geprüft werden"
+
+    html_structure_result += f"""
+    <h4>Überschriften:</h4>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;{h1_result}</p>
+    """
+
+    for level in ["h2", "h3", "h4", "h5", "h6"]:
+        html_structure_result += f"""
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;{level.upper()}: INFO - {len(headings_by_level[level])} gefunden</p>
+        """
+
+    report_results[-1] = html_structure_result
+    create_report(report_file, test_start, url, report_results)
 
 
     #Meta Informationen
