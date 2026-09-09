@@ -468,6 +468,10 @@ def run_test(url, expected_title, expected_text):
     print()
     print("HTML-Struktur Prüfung")
 
+    html_structure_result = """
+    <h3>HTML-Struktur Prüfung</h3>
+    """
+
     #Sprachprüfung
     try:
         lang_names = {"de": "Deutsch","en": "Englisch","fr": "Französisch","es": "Spanisch","it": "Italienisch"}
@@ -489,11 +493,12 @@ def run_test(url, expected_title, expected_text):
         print("  HTML/Struktur: FAIL - konnte nicht prüfen:", error)
         language_result = "Lang: FAIL - konnte nicht geprüft werden"
 
-    report_results.append(f"""
-    <h3>HTML-Struktur Prüfung</h3>
-    <p>{language_result}</p>
-    """)
+    html_structure_result += f"""
+    <h4>Sprache:</h4>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;{language_result}</p>
+    """
 
+    report_results.append(html_structure_result)
     create_report(report_file, test_start, url, report_results)
 
     #Grundstruktur <head>,<body>
@@ -506,17 +511,31 @@ def run_test(url, expected_title, expected_text):
 
         if head:
             print("  HEAD: PASS - vorhanden")
+            head_result = "HEAD: PASS - vorhanden"
         else:
             print("  HEAD: FAIL - nicht vorhanden")
+            head_result = "HEAD: FAIL - nicht vorhanden"
 
         if body:
             print("  BODY: PASS - vorhanden")
+            body_result = "BODY: PASS - vorhanden"
         else:
             print("  BODY: FAIL - nicht vorhanden")
+            body_result = "BODY: FAIL - nicht vorhanden"
 
     except Exception as error:
         print("  Grundstruktur: FAIL - konnte nicht geprüft werden:", error)
+        head_result = "HEAD: FAIL - konnte nicht geprüft werden"
+        body_result = "BODY: FAIL - konnte nicht geprüft werden"
 
+    html_structure_result += f"""
+    <h4>Grundstruktur:</h4>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;{head_result}</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;{body_result}</p>
+    """
+
+    report_results[-1] = html_structure_result
+    create_report(report_file, test_start, url, report_results)
 
     #Überschriften H1 check
     try:
