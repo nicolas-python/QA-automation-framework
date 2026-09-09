@@ -589,12 +589,23 @@ def run_test(url, expected_title, expected_text):
         if charset:
             charset_value = charset.group(1).lower()
             print(f"    Charset: PASS - {charset_value}")
+            charset_result = f"Charset: PASS - {charset_value}"
         else:
             print("    Charset: FAIL - nicht vorhanden")
+            charset_result = "Charset: FAIL - nicht vorhanden"
 
     except Exception as error:
         print("  Meta-Informationen Charset: FAIL - konnte nicht geprüft werden:", error)
+        charset_result = "Charset: FAIL - konnte nicht geprüft werden"
 
+    html_structure_result += f"""
+    <h3>Meta-Informationen Prüfung</h3>
+    <h4>Charset:</h4>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;{charset_result}</p>
+    """
+
+    report_results[-1] = html_structure_result
+    create_report(report_file, test_start, url, report_results)
 
     #viewport prüfen --> für vernünftige Darstellung auf mobilen Geräten
     try:
@@ -617,7 +628,6 @@ def run_test(url, expected_title, expected_text):
 
     except Exception as error:
         print("  Meta-Informationen Viewport: FAIL - konnte nicht geprüft werden:", error)
-
 
     #description = Beschreibung der Seite für Suchmaschinen
     try:
