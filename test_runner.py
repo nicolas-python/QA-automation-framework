@@ -496,7 +496,6 @@ def run_test(url, expected_title, expected_text):
 
     create_report(report_file, test_start, url, report_results)
 
-
     #Grundstruktur <head>,<body>
     try:
         head = re.search(r"<head\b[^>]*>", response.text, re.IGNORECASE)        #\b = Wortgrenze, damit nur das Tag "head" bzw. "body" erkannt wird
