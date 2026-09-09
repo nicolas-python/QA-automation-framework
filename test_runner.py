@@ -691,14 +691,26 @@ def run_test(url, expected_title, expected_text):
 
             if robots_value:
                 print(f"    Robots: PASS - {robots_value}")
+                robots_result = f"Robots: PASS - {robots_value}"
             else:
                 print("     Robots: FAIL - Wert ist leer")
+                robots_result = "Robots: FAIL - Wert ist leer"
 
         else:
             print("    Robots: FAIL - nicht vorhanden")
+            robots_result = "Robots: FAIL - nicht vorhanden"
 
     except Exception as error:
         print("  Meta-Informationen robots: FAIL - konnte nicht geprüft werden:", error)
+        robots_result = "Robots: FAIL - konnte nicht geprüft werden"
+
+    html_structure_result += f"""
+    <h4>Robots:</h4>
+    <p>{robots_result}</p>
+    """
+
+    report_results[-1] = html_structure_result
+    create_report(report_file, test_start, url, report_results)
 
     #og:title, og:image = Social-Media-Vorschauen
     #author = Angabe des Autors sinvolle info ?
