@@ -1829,6 +1829,44 @@ def run_test(url, expected_title, expected_text):
             except Exception as error:
                 print("  Formulare über Knöpfe: "f"FAIL - konnte nicht geprüft werden: {error}")
 
+            browser_test_result += """
+            <h4>Formulare über Knöpfe:</h4>
+            """
+
+            if not found_forms:
+                browser_test_result += """
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;Keine Formularstellen über Knöpfe gefunden</p>
+                """
+            else:
+                for form_result in form_results:
+
+                    if form_result["found"] > 0:
+                        inputs_present = "JA"
+                    else:
+                        inputs_present = "NEIN"
+
+                    browser_test_result += f"""
+                    <p>Formular {form_result["form_index"]}:</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;URL: {form_result["url"]}</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Button: {form_result["button"]}</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Eingabefelder erwartet: {form_result["expected"]}</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Eingabefelder gefunden: {form_result["found"]}</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Eingabefelder Vorhanden: {inputs_present}</p>
+                    """
+
+                    for field_result in form_result["fields"]:
+                        browser_test_result += f"""
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Feld {field_result["index"]}: {field_result["status"]} - {field_result["message"]}</p>
+                        """
+
+                    browser_test_result += f"""
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Absenden: {form_result["submit"]["status"]} - {form_result["submit"]["message"]}</p>
+                    """
+
+            report_results[-1] = browser_test_result
+            create_report(report_file, test_start, url, report_results)
+
+
 #Formulare anzeigen (Links)
             print()
             print("Prüfe Formulare (Links):")
