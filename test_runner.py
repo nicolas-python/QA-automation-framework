@@ -1139,6 +1139,20 @@ def run_test(url, expected_title, expected_text):
                 for button, error in failed_expandable_buttons:
                     print(f"      FAIL: {button} - {error}")
 
+                expandable_buttons_result = (
+                    f"Aufklappbare Buttons: "
+                    f"{len(passed_expandable_buttons)} PASS - "
+                    f"{len(failed_expandable_buttons)} FAIL"
+                )
+
+                browser_test_result += f"""
+                <h4>Aufklappbare Buttons:</h4>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;{expandable_buttons_result}</p>
+                """
+
+                report_results[-1] = browser_test_result
+                create_report(report_file, test_start, url, report_results)
+
                 #neue Buttons separat prüfen
                 try:
                     print()
