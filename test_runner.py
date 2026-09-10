@@ -1267,6 +1267,19 @@ def run_test(url, expected_title, expected_text):
             print(f"  Neue Buttons: {len(new_buttons)}")
             print(f"  Insgesamt: {button_total}")
 
+            button_total_result = f"""
+            <h4>Buttons Gesamtübersicht:</h4>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;Normale Buttons: {len(filtered_buttons)}</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;Aufklappbare Buttons: {len(expandable_buttons)}</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;Neue Buttons: {len(new_buttons)}</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;Insgesamt: {button_total}</p>
+            """
+
+            browser_test_result += button_total_result
+
+            report_results[-1] = browser_test_result
+            create_report(report_file, test_start, url, report_results)
+
 #Interaktive DOM Elemente
             try:
                 print()
