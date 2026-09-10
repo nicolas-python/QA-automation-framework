@@ -19,7 +19,7 @@
     <h3>Anfrage QA-Test:</h3>
                                                                 
     <p>Datum: 10.09.2026</p>             
-    <p>Uhrzeit: 14:12:35</p>      
+    <p>Uhrzeit: 14:17:45</p>      
     <p>URL: http://192.168.0.236/test/test_fomular_raspberry/index.html</p>     
     
     
@@ -36,7 +36,7 @@
     <p>&nbsp;&nbsp;&nbsp;&nbsp;Status: PASS - 200</p>
     
     <h3>Performance Prüfung</h3>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;Ladezeit: PASS - 0.33 Sekunden</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;Ladezeit: PASS - 0.13 Sekunden</p>
     
     <h3>Content Check Prüfung</h3>
     <p>&nbsp;&nbsp;&nbsp;&nbsp;Title: FAIL - erwartet:  | gefunden: Hauptseite</p>
@@ -194,6 +194,31 @@
                                     
                                     <p>&nbsp;&nbsp;&nbsp;&nbsp;Absenden: PASS - Formular erfolgreich übermittelt - HTTP 200</p>
                                     
+            <h4>Formulare Auswahlbare Inhalte / Optionsfelder:</h4>
+            
+                    <p>Formular 1:</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;URL: http://192.168.0.236/test/test_fomular_raspberry/optionsfeld.php</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Button: Button 3 – Optionsfeld</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Radio-Felder gefunden: 0</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Select-Felder gefunden: 1</p>
+                    
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;Select-Feld 1:</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Optionen gefunden: 4</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Auswahloptionen: 4</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Funktionieren: 4 PASS - 0 FAIL</p>
+                        
+                            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Option 1:
+                            PASS - auswählbar</p>
+                            
+                            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Option 2:
+                            PASS - auswählbar</p>
+                            
+                            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Option 3:
+                            PASS - auswählbar</p>
+                            
+                            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Option 4:
+                            PASS - auswählbar</p>
+                            
 
 </body>
 

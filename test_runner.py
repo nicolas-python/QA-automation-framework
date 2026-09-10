@@ -2134,6 +2134,42 @@ def run_test(url, expected_title, expected_text):
             except Exception as error:
                 print("  Auswahlfelder: FAIL - "f"konnte nicht geprüft werden: {error}")
 
+            browser_test_result += """
+            <h4>Formulare Auswahlbare Inhalte / Optionsfelder:</h4>
+            """
+
+            if not option_forms:
+                browser_test_result += """
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;Keine auswählbaren Inhalte gefunden</p>
+                """
+            else:
+                for option_result in option_results:
+
+                    browser_test_result += f"""
+                    <p>Formular {option_result["form_index"]}:</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;URL: {option_result["url"]}</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Button: {option_result["button"]}</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Radio-Felder gefunden: {option_result["radio_found"]}</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Select-Felder gefunden: {option_result["select_found"]}</p>
+                    """
+
+                    for select_result in option_result["select_results"]:
+                        browser_test_result += f"""
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;Select-Feld {select_result["select_index"]}:</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Optionen gefunden: {select_result["option_count"]}</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Auswahloptionen: {select_result["selectable_count"]}</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Funktionieren: {select_result["passed"]} PASS - {select_result["failed"]} FAIL</p>
+                        """
+
+                        for option_result_inner in select_result["options"]:
+                            browser_test_result += f"""
+                            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Option {option_result_inner["option_index"]}:
+                            {option_result_inner["status"]} - {option_result_inner["message"]}</p>
+                            """
+
+            report_results[-1] = browser_test_result
+            create_report(report_file, test_start, url, report_results)
+
 
 #Formulare Gesamtübersicht
             #Formulare aus Buttons und Links für die Gesamtübersicht zusammenführen
