@@ -1609,6 +1609,18 @@ def run_test(url, expected_title, expected_text):
             print(f"  Unterelemente: {len(interactive_children)}")
             print(f"  Insgesamt: {interactive_total}")
 
+            interactive_total_result = f"""
+            <h4>Interaktive Elemente Gesamtübersicht:</h4>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;Starterseite: {len(interactive_elements)}</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;Unterelemente: {len(interactive_children)}</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;Insgesamt: {interactive_total}</p>
+            """
+
+            browser_test_result += interactive_total_result
+
+            report_results[-1] = browser_test_result
+            create_report(report_file, test_start, url, report_results)
+
 # --------------------------------------------------
 # Browser Navigation ziel weiterführende Links auf Zielseiten prüfen und Formulare erkennen
 # --------------------------------------------------
