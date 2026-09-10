@@ -1348,9 +1348,6 @@ def run_test(url, expected_title, expected_text):
                 interactive_elements_result = f"""
                 <h4>Interaktive Elemente:</h4>
                 <p>&nbsp;&nbsp;&nbsp;&nbsp;Interaktive Elemente: {len(passed_interactive_elements)} PASS - {len(failed_interactive_elements)} FAIL</p>
-                <p>&nbsp;&nbsp;&nbsp;&nbsp;DOM Referenz: {dom_interactive_count}</p>
-                <p>&nbsp;&nbsp;&nbsp;&nbsp;Eindeutig geprüft: {len(interactive_elements)}</p>
-                <p>&nbsp;&nbsp;&nbsp;&nbsp;Duplikate: {interactive_duplicates}</p>
                 """
 
                 browser_test_result += interactive_elements_result
@@ -1582,6 +1579,20 @@ def run_test(url, expected_title, expected_text):
 
                 print()
                 print(f"  Interaktive Unterelemente: "f"{len(passed_interactive_children)} PASS - "f"{len(failed_interactive_children)} FAIL")
+
+                interactive_children_result = (
+                    f"Interaktive Unterelemente: "
+                    f"{len(passed_interactive_children)} PASS - "
+                    f"{len(failed_interactive_children)} FAIL"
+                )
+
+                browser_test_result += f"""
+                <h4>Interaktive Unterelemente:</h4>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;{interactive_children_result}</p>
+                """
+
+                report_results[-1] = browser_test_result
+                create_report(report_file, test_start, url, report_results)
 
                 for parent, child, error in failed_interactive_children:
                     print(f"    FAIL: {parent} -> {child} - {error}")
