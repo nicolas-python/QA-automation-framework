@@ -1237,6 +1237,20 @@ def run_test(url, expected_title, expected_text):
                     for parent, button, error in failed_new_buttons:
                         print(f"      FAIL: {parent} -> "f"{button} - {error}")
 
+                    new_buttons_result = (
+                        f"Neue Buttons: "
+                        f"{len(passed_new_buttons)} PASS - "
+                        f"{len(failed_new_buttons)} FAIL"
+                    )
+
+                    browser_test_result += f"""
+                    <h4>Neue Buttons:</h4>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;{new_buttons_result}</p>
+                    """
+
+                    report_results[-1] = browser_test_result
+                    create_report(report_file, test_start, url, report_results)
+
                 except Exception as error:
                     print("  Neue Buttons: "f"FAIL - konnte nicht geprüft werden: {error}")
 
