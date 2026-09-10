@@ -1956,6 +1956,44 @@ def run_test(url, expected_title, expected_text):
 
                         except Exception:
                             print(f"\rPrüfe Formulare über Links... "f"{form_index}/{len(form_link_pages)}",end="")
+
+                        browser_test_result += """
+                                    <h4>Formulare über Links:</h4>
+                                    """
+
+                        if not form_link_pages:
+                            browser_test_result += """
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Keine Formularseiten über Links gefunden</p>
+                                    """
+                        else:
+                            for form_result in link_form_results:
+
+                                if form_result["found"] > 0:
+                                    inputs_present = "JA"
+                                else:
+                                    inputs_present = "NEIN"
+
+                                browser_test_result += f"""
+                                    <p>Formular {form_result["form_index"]}:</p>
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;URL: {form_result["url"]}</p>
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Über Link: {form_result["via_url"]}</p>
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Eingabefelder erwartet: {form_result["expected"]}</p>
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Eingabefelder gefunden: {form_result["found"]}</p>
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Eingabefelder Vorhanden: {inputs_present}</p>
+                                    """
+
+                                for field_result in form_result["fields"]:
+                                    browser_test_result += f"""
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Feld {field_result["index"]}: {field_result["status"]} - {field_result["message"]}</p>
+                                    """
+
+                                browser_test_result += f"""
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Absenden: {form_result["submit"]["status"]} - {form_result["submit"]["message"]}</p>
+                                    """
+
+                        report_results[-1] = browser_test_result
+                        create_report(report_file, test_start, url, report_results)
+
                     print()
 
                     for form_result in link_form_results:
