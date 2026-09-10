@@ -1345,6 +1345,19 @@ def run_test(url, expected_title, expected_text):
                 for tag_name, element_name, error in failed_interactive_elements:
                     print(f"    FAIL: {tag_name} | "f"{element_name} - {error}")
 
+                interactive_elements_result = f"""
+                <h4>Interaktive Elemente:</h4>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;Interaktive Elemente: {len(passed_interactive_elements)} PASS - {len(failed_interactive_elements)} FAIL</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;DOM Referenz: {dom_interactive_count}</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;Eindeutig geprüft: {len(interactive_elements)}</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;Duplikate: {interactive_duplicates}</p>
+                """
+
+                browser_test_result += interactive_elements_result
+
+                report_results[-1] = browser_test_result
+                create_report(report_file, test_start, url, report_results)
+
             except Exception as error:
                 print("  Interaktive Elemente: "f"FAIL - konnte nicht erkannt werden: {error}")
 
