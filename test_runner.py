@@ -30,6 +30,9 @@ def create_report(report_file, test_start, url, report_results):
 <body>
 
     <h1>QA Automation Test Report</h1>
+    <p style="text-align: right; font-size: 12px;">
+        Hinweis: Genauere Fehlerdetails werden in der Konsole angezeigt.
+    </p>
 
     <h2>Testinformationen</h2>
     
@@ -108,7 +111,7 @@ def run_test(url, expected_title, expected_text):
 
         report_results.append(f"""
         <h3>HTTPS Prüfung</h3>
-        <p>{https_result}</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;{https_result}</p>
         """)
 
         create_report(report_file, test_start, url, report_results)
@@ -168,7 +171,7 @@ def run_test(url, expected_title, expected_text):
 
     report_results.append(f"""
     <h3>SSL/TLS Prüfung</h3>
-    {ssl_result}
+    <p>{ssl_result}</p>
     """)
 
     create_report(report_file, test_start, url, report_results)
@@ -198,7 +201,7 @@ def run_test(url, expected_title, expected_text):
 
     report_results.append(f"""
     <h3>Domain Prüfung</h3>
-    <p>{domain_result}</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;{domain_result}</p>
     """)
 
     create_report(report_file, test_start, url, report_results)
@@ -236,7 +239,7 @@ def run_test(url, expected_title, expected_text):
 
     report_results.append(f"""
     <h3>Status Prüfung</h3>
-    <p>{status_result}</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;{status_result}</p>
     """)
 
     create_report(report_file, test_start, url, report_results)
@@ -269,7 +272,7 @@ def run_test(url, expected_title, expected_text):
 
     report_results.append(f"""
     <h3>Performance Prüfung</h3>
-    <p>{performance_result}</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;{performance_result}</p>
     """)
 
     create_report(report_file, test_start, url, report_results)
@@ -307,8 +310,8 @@ def run_test(url, expected_title, expected_text):
 
     report_results.append(f"""
     <h3>Content Check Prüfung</h3>
-    <p>{title_result}</p>
-    <p>{content_result}</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;{title_result}</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;{content_result}</p>
     """)
 
     create_report(report_file, test_start, url, report_results)
@@ -377,7 +380,6 @@ def run_test(url, expected_title, expected_text):
             broken_links_result = (
                 f"Broken Links: {len(passed_links)} PASS - "
                 f"{len(failed_links)} FAIL<br>"
-                f"<small>Hinweis: Fehlgeschlagene Links siehe Konsole.</small>"
             )
 
             for link in failed_links:
@@ -389,7 +391,7 @@ def run_test(url, expected_title, expected_text):
 
     report_results.append(f"""
     <h3>Broken Links Prüfung</h3>
-    <p>{broken_links_result}</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;{broken_links_result}</p>
     """)
 
     create_report(report_file, test_start, url, report_results)
@@ -445,7 +447,6 @@ def run_test(url, expected_title, expected_text):
             images_result = (
                 f"Bilder: {len(passed_images)} PASS - "
                 f"{len(failed_images)} FAIL<br>"
-                f"<small>Hinweis: Fehlgeschlagene Bilder siehe Konsole</small>"
             )
 
             for image in failed_images:
@@ -457,7 +458,7 @@ def run_test(url, expected_title, expected_text):
 
     report_results.append(f"""
     <h3>Bilder / Dateien Prüfung</h3>
-    <p>{images_result}</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;{images_result}</p>
     """)
 
     create_report(report_file, test_start, url, report_results)
@@ -672,7 +673,7 @@ def run_test(url, expected_title, expected_text):
 
     html_structure_result += f"""
     <h4>Description:</h4>
-    <p>{description_result}</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;{description_result}</p>
     """
 
     report_results[-1] = html_structure_result
@@ -706,7 +707,7 @@ def run_test(url, expected_title, expected_text):
 
     html_structure_result += f"""
     <h4>Robots:</h4>
-    <p>{robots_result}</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;{robots_result}</p>
     """
 
     report_results[-1] = html_structure_result
@@ -728,6 +729,10 @@ def run_test(url, expected_title, expected_text):
     #Buttons klicken
     print()
     print("Browser Tests")
+
+    browser_test_result = """
+    <h3>Browser Tests</h3>
+    """
 
     #gsesamtstatistik buttons
     all_button_results = {}
@@ -915,8 +920,21 @@ def run_test(url, expected_title, expected_text):
             for button, error in failed_buttons:
                 print(f"    FAIL: {button} - {error}")
 
-                #damit sie nicht nochmal als aufklappbare Buttons getestet werden
-                visible_button_names = {name for index, name in filtered_buttons}
+            buttons_result = (
+                f"Buttons: {len(passed_buttons)} PASS - "
+                f"{len(failed_buttons)} FAIL"
+            )
+
+            browser_test_result += f"""
+            <h4>Button test sichtbar:</h4>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;{buttons_result}</p>
+            """
+
+            report_results.append(browser_test_result)
+            create_report(report_file, test_start, url, report_results)
+
+            #damit sie nicht nochmal als aufklappbare Buttons getestet werden
+            visible_button_names = {name for index, name in filtered_buttons}
 
 
 #aufklappbare Buttons
