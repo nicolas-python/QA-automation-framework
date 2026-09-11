@@ -40,8 +40,15 @@ def create_report(report_file, test_start, url, report_results):
                                                                 
     <p>Datum: {test_start.strftime("%d.%m.%Y")}</p>             
     <p>Uhrzeit: {test_start.strftime("%H:%M:%S")}</p>      
-    <p>URL: {url}</p>     
+    <p>URL: {url}</p>
     
+    <h3>Testfortschritt</h3>
+
+    <div class="progress-container">
+        <div class="progress-bar" style="width: 50%;">
+            50 %
+        </div>   
+    </div>
     {''.join(report_results)}
 
 </body>
