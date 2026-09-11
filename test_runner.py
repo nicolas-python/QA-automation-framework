@@ -17,12 +17,12 @@ def create_report(report_file, test_start, url, report_results):
     #strf = string format
     # %d → Tag %m → Monat %Y → Jahr
     # %H → Stunde %M → Minute %S → Sekunde
-
     html = f"""<!DOCTYPE html>
 <html lang="de">
 
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="qa_test_report.css">
     <meta http-equiv="refresh" content="2">
     <title>QA Automation Test Report</title>
 </head>
@@ -1698,7 +1698,7 @@ def run_test(url, expected_title, expected_text):
             )
 
             browser_test_result += f"""
-            <h4>Browser Navigation:</h4>
+            <h3>Browser Navigation:</3>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;{browser_navigation_result}</p>
             """
 
@@ -1846,6 +1846,7 @@ def run_test(url, expected_title, expected_text):
                         inputs_present = "NEIN"
 
                     browser_test_result += f"""
+                    <div class="formular-block">
                     <p>Formular {form_result["form_index"]}:</p>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;URL: {form_result["url"]}</p>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;Button: {form_result["button"]}</p>
@@ -1861,6 +1862,7 @@ def run_test(url, expected_title, expected_text):
 
                     browser_test_result += f"""
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;Absenden: {form_result["submit"]["status"]} - {form_result["submit"]["message"]}</p>
+                    </div>
                     """
 
             report_results[-1] = browser_test_result
@@ -1974,6 +1976,7 @@ def run_test(url, expected_title, expected_text):
                                     inputs_present = "NEIN"
 
                                 browser_test_result += f"""
+                                    <div class="formular-block">
                                     <p>Formular {form_result["form_index"]}:</p>
                                     <p>&nbsp;&nbsp;&nbsp;&nbsp;URL: {form_result["url"]}</p>
                                     <p>&nbsp;&nbsp;&nbsp;&nbsp;Über Link: {form_result["via_url"]}</p>
@@ -1988,8 +1991,9 @@ def run_test(url, expected_title, expected_text):
                                     """
 
                                 browser_test_result += f"""
-                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Absenden: {form_result["submit"]["status"]} - {form_result["submit"]["message"]}</p>
-                                    """
+                                <p>&nbsp;&nbsp;&nbsp;&nbsp;Absenden: {form_result["submit"]["status"]} - {form_result["submit"]["message"]}</p>
+                                </div>
+                                """
 
                         report_results[-1] = browser_test_result
                         create_report(report_file, test_start, url, report_results)
@@ -2146,6 +2150,7 @@ def run_test(url, expected_title, expected_text):
                 for option_result in option_results:
 
                     browser_test_result += f"""
+                    <div class="formular-block">
                     <p>Formular {option_result["form_index"]}:</p>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;URL: {option_result["url"]}</p>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;Button: {option_result["button"]}</p>
@@ -2155,6 +2160,7 @@ def run_test(url, expected_title, expected_text):
 
                     for select_result in option_result["select_results"]:
                         browser_test_result += f"""
+                        <div class="formular-block">
                         <p>&nbsp;&nbsp;&nbsp;&nbsp;Select-Feld {select_result["select_index"]}:</p>
                         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Optionen gefunden: {select_result["option_count"]}</p>
                         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Auswahloptionen: {select_result["selectable_count"]}</p>

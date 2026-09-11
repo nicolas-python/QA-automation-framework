@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="qa_test_report.css">
     <meta http-equiv="refresh" content="2">
     <title>QA Automation Test Report</title>
 </head>
@@ -19,7 +20,7 @@
     <h3>Anfrage QA-Test:</h3>
                                                                 
     <p>Datum: 11.09.2026</p>             
-    <p>Uhrzeit: 14:34:23</p>      
+    <p>Uhrzeit: 15:07:23</p>      
     <p>URL: http://192.168.0.236/test/test_fomular_raspberry/index.html</p>     
     
     
@@ -36,7 +37,7 @@
     <p>&nbsp;&nbsp;&nbsp;&nbsp;Status: PASS - 200</p>
     
     <h3>Performance Prüfung</h3>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;Ladezeit: PASS - 0.16 Sekunden</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;Ladezeit: PASS - 0.32 Sekunden</p>
     
     <h3>Content Check Prüfung</h3>
     <p>&nbsp;&nbsp;&nbsp;&nbsp;Title: FAIL - erwartet:  | gefunden: Hauptseite</p>
@@ -112,11 +113,12 @@
             <p>&nbsp;&nbsp;&nbsp;&nbsp;Unterelemente: 1</p>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;Insgesamt: 2</p>
             
-            <h4>Browser Navigation:</h4>
+            <h3>Browser Navigation:</3>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;Browser Navigation: Prüfe Zielseiten auf mögliche Formulare... 3/3</p>
             
             <h4>Formulare über Knöpfe:</h4>
             
+                    <div class="formular-block">
                     <p>Formular 1:</p>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;URL: http://192.168.0.236/test/test_fomular_raspberry/formular.php</p>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;Button: Button 2 – Formular</p>
@@ -141,7 +143,9 @@
                         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Feld 8: PASS - beschreibbar</p>
                         
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;Absenden: FAIL - Erfolgsmeldung nicht gefunden</p>
+                    </div>
                     
+                    <div class="formular-block">
                     <p>Formular 2:</p>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;URL: http://192.168.0.236/test/test_fomular_raspberry/formular.php</p>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;Button: Button 5 – Untermenü - Unterelement – Formular</p>
@@ -166,9 +170,11 @@
                         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Feld 8: PASS - beschreibbar</p>
                         
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;Absenden: FAIL - Erfolgsmeldung nicht gefunden</p>
+                    </div>
                     
                                     <h4>Formulare über Links:</h4>
                                     
+                                    <div class="formular-block">
                                     <p>Formular 1:</p>
                                     <p>&nbsp;&nbsp;&nbsp;&nbsp;URL: http://192.168.0.236/test/test_fomular_raspberry/formular.php</p>
                                     <p>&nbsp;&nbsp;&nbsp;&nbsp;Über Link: http://192.168.0.236/test/test_fomular_raspberry/link.php</p>
@@ -192,16 +198,19 @@
                                     
                                     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Feld 8: PASS - beschreibbar</p>
                                     
-                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Absenden: PASS - Formular erfolgreich übermittelt - HTTP 200</p>
-                                    
+                                <p>&nbsp;&nbsp;&nbsp;&nbsp;Absenden: PASS - Formular erfolgreich übermittelt - HTTP 200</p>
+                                </div>
+                                
             <h4>Formulare Auswahlbare Inhalte / Optionsfelder:</h4>
             
+                    <div class="formular-block">
                     <p>Formular 1:</p>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;URL: http://192.168.0.236/test/test_fomular_raspberry/optionsfeld.php</p>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;Button: Button 3 – Optionsfeld</p>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;Radio-Felder gefunden: 0</p>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;Select-Felder gefunden: 1</p>
                     
+                        <div class="formular-block">
                         <p>&nbsp;&nbsp;&nbsp;&nbsp;Select-Feld 1:</p>
                         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Optionen gefunden: 4</p>
                         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Auswahloptionen: 4</p>
