@@ -2212,5 +2212,28 @@ def run_test(url, expected_title, expected_text):
             print(f"  Auswählbar: {passed_options_total}")
             print(f"  Nicht auswählbar: {failed_options_total}")
 
+            browser_test_result += """
+            <h4>Formulare Gesamtübersicht:</h4>
+            """
+
+            browser_test_result += f"""
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;Formulare Gesamt: {total_forms}</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;Formulare über Buttons: {button_forms}</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;Formulare über Links: {link_forms}</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;Formulare mit Auswahlfeldern: {option_forms_total}</p>
+
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;Eingabefelder: {total_fields}</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;Beschreibbar: {passed_fields}</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;Nicht beschreibbar: {failed_fields}</p>
+
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;Select-Felder: {total_selects}</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;Auswahloptionen: {total_options}</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;Auswählbar: {passed_options_total}</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;Nicht auswählbar: {failed_options_total}</p>
+            """
+
+            report_results[-1] = browser_test_result
+            create_report(report_file, test_start, url, report_results)
+
     except Exception as error:
         print("  Browser Tests : FAIL - konnte nicht  vollständig geprüft werden:", error)
