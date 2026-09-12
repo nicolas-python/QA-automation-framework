@@ -13,7 +13,7 @@ from playwright.sync_api import expect              #expect zum Prüfen, ob ein 
 # --------------------------------------------------
 # HTML-Testreport erstellen
 # --------------------------------------------------
-def create_report(report_file, test_start, url, report_results):
+def create_report(report_file, test_start, url, report_results, test_progress):
     #strf = string format
     # %d → Tag %m → Monat %Y → Jahr
     # %H → Stunde %M → Minute %S → Sekunde
@@ -43,11 +43,9 @@ def create_report(report_file, test_start, url, report_results):
     <p>URL: {url}</p>
     
     <h3>Testfortschritt</h3>
-
     <div class="progress-container">
-        <div class="progress-bar" style="width: 50%;">
-            50 %
-        </div>   
+        <div class="progress-bar" style="width: {test_progress}%;">{test_progress} %
+        </div>  
     </div>
     {''.join(report_results)}
 
@@ -64,6 +62,7 @@ def create_report(report_file, test_start, url, report_results):
 # Zeitabfrage / Teststart
 # --------------------------------------------------
 def run_test(url, expected_title, expected_text):
+    test_progress = 0
     test_start = datetime.now()
 
     print(f"Datum: {test_start.strftime('%d.%m.%Y')}")
@@ -121,7 +120,8 @@ def run_test(url, expected_title, expected_text):
         <p>&nbsp;&nbsp;&nbsp;&nbsp;{https_result}</p>
         """)
 
-        create_report(report_file, test_start, url, report_results)
+        test_progress = 5
+        create_report(report_file, test_start, url, report_results, test_progress)
 
     except Exception as error:
         print("  HTTPS: FAIL - konnte nicht geprüft werden: ", error)
@@ -181,7 +181,8 @@ def run_test(url, expected_title, expected_text):
     <p>{ssl_result}</p>
     """)
 
-    create_report(report_file, test_start, url, report_results)
+    test_progress = 10
+    create_report(report_file, test_start, url, report_results, test_progress)
 
 # --------------------------------------------------
 # Domain
@@ -211,7 +212,8 @@ def run_test(url, expected_title, expected_text):
     <p>&nbsp;&nbsp;&nbsp;&nbsp;{domain_result}</p>
     """)
 
-    create_report(report_file, test_start, url, report_results)
+    test_progress = 15
+    create_report(report_file, test_start, url, report_results, test_progress)
 
 # --------------------------------------------------
 # Status
@@ -249,7 +251,8 @@ def run_test(url, expected_title, expected_text):
     <p>&nbsp;&nbsp;&nbsp;&nbsp;{status_result}</p>
     """)
 
-    create_report(report_file, test_start, url, report_results)
+    test_progress = 20
+    create_report(report_file, test_start, url, report_results, test_progress)
 
 
 # --------------------------------------------------
@@ -282,7 +285,8 @@ def run_test(url, expected_title, expected_text):
     <p>&nbsp;&nbsp;&nbsp;&nbsp;{performance_result}</p>
     """)
 
-    create_report(report_file, test_start, url, report_results)
+    test_progress = 25
+    create_report(report_file, test_start, url, report_results, test_progress)
 
 # --------------------------------------------------
 # Content Check
@@ -321,7 +325,8 @@ def run_test(url, expected_title, expected_text):
     <p>&nbsp;&nbsp;&nbsp;&nbsp;{content_result}</p>
     """)
 
-    create_report(report_file, test_start, url, report_results)
+    test_progress = 30
+    create_report(report_file, test_start, url, report_results, test_progress)
 
 # --------------------------------------------------
 # Broken Links
@@ -401,7 +406,8 @@ def run_test(url, expected_title, expected_text):
     <p>&nbsp;&nbsp;&nbsp;&nbsp;{broken_links_result}</p>
     """)
 
-    create_report(report_file, test_start, url, report_results)
+    test_progress = 34
+    create_report(report_file, test_start, url, report_results, test_progress)
 
 # --------------------------------------------------
 # Bilder / Dateien
@@ -468,7 +474,8 @@ def run_test(url, expected_title, expected_text):
     <p>&nbsp;&nbsp;&nbsp;&nbsp;{images_result}</p>
     """)
 
-    create_report(report_file, test_start, url, report_results)
+    test_progress = 38
+    create_report(report_file, test_start, url, report_results, test_progress)
 
 # --------------------------------------------------
 # HTML-Struktur
@@ -507,8 +514,8 @@ def run_test(url, expected_title, expected_text):
     <p>&nbsp;&nbsp;&nbsp;&nbsp;{language_result}</p>                            
     """
 
-    report_results.append(html_structure_result)
-    create_report(report_file, test_start, url, report_results)
+    test_progress = 42
+    create_report(report_file, test_start, url, report_results, test_progress)
 
     #Grundstruktur <head>,<body>
     try:
@@ -544,7 +551,8 @@ def run_test(url, expected_title, expected_text):
     """
 
     report_results[-1] = html_structure_result
-    create_report(report_file, test_start, url, report_results)
+    test_progress = 43
+    create_report(report_file, test_start, url, report_results, test_progress)
 
     #Überschriften H1 check
     try:
@@ -583,7 +591,8 @@ def run_test(url, expected_title, expected_text):
         """
 
     report_results[-1] = html_structure_result
-    create_report(report_file, test_start, url, report_results)
+    test_progress = 44
+    create_report(report_file, test_start, url, report_results, test_progress)
 
 
     #Meta Informationen
@@ -614,7 +623,8 @@ def run_test(url, expected_title, expected_text):
     """
 
     report_results[-1] = html_structure_result
-    create_report(report_file, test_start, url, report_results)
+    test_progress = 45
+    create_report(report_file, test_start, url, report_results, test_progress)
 
     #viewport prüfen --> für vernünftige Darstellung auf mobilen Geräten
     try:
@@ -651,7 +661,8 @@ def run_test(url, expected_title, expected_text):
     """
 
     report_results[-1] = html_structure_result
-    create_report(report_file, test_start, url, report_results)
+    test_progress = 46
+    create_report(report_file, test_start, url, report_results, test_progress)
 
     #description = Beschreibung der Seite für Suchmaschinen
     try:
@@ -684,7 +695,8 @@ def run_test(url, expected_title, expected_text):
     """
 
     report_results[-1] = html_structure_result
-    create_report(report_file, test_start, url, report_results)
+    test_progress = 47
+    create_report(report_file, test_start, url, report_results, test_progress)
 
 
     #robots = Anweisungen für Suchmaschinen-Crawler
@@ -718,7 +730,8 @@ def run_test(url, expected_title, expected_text):
     """
 
     report_results[-1] = html_structure_result
-    create_report(report_file, test_start, url, report_results)
+    test_progress = 48
+    create_report(report_file, test_start, url, report_results, test_progress)
 
     #og:title, og:image = Social-Media-Vorschauen
     #author = Angabe des Autors sinvolle info ?
@@ -938,7 +951,8 @@ def run_test(url, expected_title, expected_text):
             """
 
             report_results.append(browser_test_result)
-            create_report(report_file, test_start, url, report_results)
+            test_progress = 54
+            create_report(report_file, test_start, url, report_results, test_progress)
 
             #damit sie nicht nochmal als aufklappbare Buttons getestet werden
             visible_button_names = {name for index, name in filtered_buttons}
@@ -1158,7 +1172,8 @@ def run_test(url, expected_title, expected_text):
                 """
 
                 report_results[-1] = browser_test_result
-                create_report(report_file, test_start, url, report_results)
+                test_progress = 59
+                create_report(report_file, test_start, url, report_results, test_progress)
 
                 #neue Buttons separat prüfen
                 try:
@@ -1256,7 +1271,8 @@ def run_test(url, expected_title, expected_text):
                     """
 
                     report_results[-1] = browser_test_result
-                    create_report(report_file, test_start, url, report_results)
+                    test_progress = 64
+                    create_report(report_file, test_start, url, report_results, test_progress)
 
                 except Exception as error:
                     print("  Neue Buttons: "f"FAIL - konnte nicht geprüft werden: {error}")
@@ -1285,7 +1301,8 @@ def run_test(url, expected_title, expected_text):
             browser_test_result += button_total_result
 
             report_results[-1] = browser_test_result
-            create_report(report_file, test_start, url, report_results)
+            test_progress = 67
+            create_report(report_file, test_start, url, report_results, test_progress)
 
 #Interaktive DOM Elemente
             try:
@@ -1360,7 +1377,8 @@ def run_test(url, expected_title, expected_text):
                 browser_test_result += interactive_elements_result
 
                 report_results[-1] = browser_test_result
-                create_report(report_file, test_start, url, report_results)
+                test_progress = 72
+                create_report(report_file, test_start, url, report_results, test_progress)
 
             except Exception as error:
                 print("  Interaktive Elemente: "f"FAIL - konnte nicht erkannt werden: {error}")
@@ -1599,7 +1617,8 @@ def run_test(url, expected_title, expected_text):
                 """
 
                 report_results[-1] = browser_test_result
-                create_report(report_file, test_start, url, report_results)
+                test_progress = 77
+                create_report(report_file, test_start, url, report_results, test_progress)
 
                 for parent, child, error in failed_interactive_children:
                     print(f"    FAIL: {parent} -> {child} - {error}")
@@ -1626,7 +1645,8 @@ def run_test(url, expected_title, expected_text):
             browser_test_result += interactive_total_result
 
             report_results[-1] = browser_test_result
-            create_report(report_file, test_start, url, report_results)
+            test_progress = 80
+            create_report(report_file, test_start, url, report_results, test_progress)
 
 # --------------------------------------------------
 # Browser Navigation ziel weiterführende Links auf Zielseiten prüfen und Formulare erkennen
@@ -1710,7 +1730,8 @@ def run_test(url, expected_title, expected_text):
             """
 
             report_results[-1] = browser_test_result
-            create_report(report_file, test_start, url, report_results)
+            test_progress = 84
+            create_report(report_file, test_start, url, report_results, test_progress)
 
 
 #Formulare anzeige (Knöpfe)
@@ -1873,7 +1894,8 @@ def run_test(url, expected_title, expected_text):
                     """
 
             report_results[-1] = browser_test_result
-            create_report(report_file, test_start, url, report_results)
+            test_progress = 89
+            create_report(report_file, test_start, url, report_results, test_progress)
 
 
 #Formulare anzeigen (Links)
@@ -2003,7 +2025,8 @@ def run_test(url, expected_title, expected_text):
                                 """
 
                         report_results[-1] = browser_test_result
-                        create_report(report_file, test_start, url, report_results)
+                        test_progress = 94
+                        create_report(report_file, test_start, url, report_results, test_progress)
 
                     print()
 
@@ -2181,7 +2204,8 @@ def run_test(url, expected_title, expected_text):
                             """
 
             report_results[-1] = browser_test_result
-            create_report(report_file, test_start, url, report_results)
+            test_progress = 98
+            create_report(report_file, test_start, url, report_results, test_progress)
 
 
 #Formulare Gesamtübersicht
@@ -2246,7 +2270,8 @@ def run_test(url, expected_title, expected_text):
             """
 
             report_results[-1] = browser_test_result
-            create_report(report_file, test_start, url, report_results)
+            test_progress = 100
+            create_report(report_file, test_start, url, report_results, test_progress)
 
     except Exception as error:
         print("  Browser Tests : FAIL - konnte nicht  vollständig geprüft werden:", error)
