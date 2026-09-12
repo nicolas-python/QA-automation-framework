@@ -254,15 +254,97 @@ Warum ein f-String (f"""...""")?
 -Das f ermöglicht es, Python-Variablen und Python-Ausdrücke direkt in den Text einzusetzen. Dadurch können die Testergebnisse später automatisch in den HTML-Code eingefügt werden.
 -(Dadurch können die Testergebnisse, das Datum, die Uhrzeit usw. automatisch in den HTML-Code eingefügt werden.)
 
+
+
+##Test Report Ladebalken auf HTML seite aufteilung
+0 %   Teststart
+
+5 %   HTTPS
+10 %  SSL/TLS
+15 %  Domain
+20 %  Status
+25 %  Performance
+30 %  Content
+34 %  Broken Links
+38 %  Bilder / Dateien
+
+42 %  Sprache
+43 %  Grundstruktur
+44 %  Überschriften
+45 %  Charset
+46 %  Viewport
+47 %  Description
+48 %  Robots
+
+54 %  Buttons sichtbar
+59 %  Aufklappbare Buttons
+64 %  Neue Buttons
+67 %  Button-Gesamtübersicht
+
+72 %  Interaktive Elemente
+77 %  Interaktive Unterelemente
+80 %  Interaktive Gesamtübersicht
+
+84 %  Browser Navigation
+
+89 %  Formulare über Buttons
+94 %  Formulare über Links
+98 %  Auswahlfelder / Optionsfelder
+
+100 % Formulare Gesamtübersicht
+
+
+##Fortschrittsplan nach Testbereichen:
+
++5% schritte :
+Testbereich - Fortschritt - Begründung
+Teststart - 0% - Der Test wurde gestartet, aber noch kein Prüfschritt abgeschlossen
+HTTPS - 5% - Erster eigener technischer Prüfschritt
+SSL/TLS - 10% - Prüfung der SSL/TLS-Verbindung abgeschlossen
+Domain - 15% - Prüfung der Domain abgeschlossen
+Status - 20% - HTTP-Status der Webseite wurde geprüft
+Performance - 25% - Ladezeit wurde geprüft
+Content - 30% - Titel und erwarteter Inhalt wurden geprüft
+
+Button-Gesamtübersicht - 67% - Alle Button-Ergebnisse wurden zusammengefasst
+Interaktive Elemente - 72% - Interaktive Elemente wurden geprüft
+Interaktive Unterelemente - 77% - Unterelemente der interaktiven Elemente wurden geprüft
+
+Formulare über Buttons - 89% - Formulare, die über Buttons erreichbar sind, wurden geprüft
+Formulare über Links - 94% - Formulare, die über Links erreichbar sind, wurden geprüft
+
++4% schritte:
+Broken Link - 34% - Links wurden auf Erreichbarkeit geprüft
+Bilder / Dateien - 38 %	Bilder und Dateien wurden geprüft
+
+Browser Navigation - 84% - Zielseiten der Links wurden geprüft
+
+Auswahlfelder / Optionsfelder - 98% - Selects und deren Optionen wurden geprüft
+
++3% schritte:
+Interaktive Gesamtübersicht - 80% - Die interaktiven Ergebnisse wurden zusammengefasst
+
++1% schritte
+Sprache - 42% - HTML-Sprache wurde geprüft
+Grundstruktur - 43% - HEAD und BODY wurden geprüft
+Überschriften - 44% - H1–H6 wurden geprüft
+Charset - 45% - Zeichencodierung wurde geprüft
+Viewport - 46% - Viewport und mobile Darstellung wurden geprüft
+Description - 47% - Meta-Description wurde geprüft
+Robots - 48% - Meta-Robots wurde geprüft
+
+Buttons sichtbar - 54% - Sichtbare Buttons wurden geprüft
+Aufklappbare Buttons - 59% - Aufklappbare Buttons wurden geprüft
+Neue Buttons - 64% - Dynamisch auftauchende Buttons wurden geprüft
+
+
++2% Abschlussschritt
+Formulare Gesamtübersicht - 100% - Alle Formularergebnisse wurden zusammengefasst. Der komplette Test ist fertig
+
+Wichtig!
+Der Fortschrittsbalken zeigt nicht wie viele Tests bestanden wurden sondern nur wo der test ungefähren ist bzw das er noch läuft das man ungefähren bescheid weiß
+Test in mehrere kleine bereiche einteilen das man einfachere zahlen hat bzw weiß wo der test hängt und eine aktuelle ausgabe hat bei längerem laden
+
 Momentan nur starterseite am Testen
 # ⚠️ TODO: Browser-Tests optimieren zusammenfassen – Aufklappbare Buttons auf großen Seiten zu langsam  → Elemente nur einmal testen und Ergebnisse speichern, anschließend nur noch ausgeben
 # ⚠️ TODO: Weiterführende Seiten/URLs im Browser-Test ebenfalls prüfen
-
-
-QA Automation Test Report
-Testinformationen
-
-Anfrage QA-Test:
-
-Datum: 06.09.2026
-Uhrzeit: 14:37:20
