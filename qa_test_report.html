@@ -5,9 +5,24 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="qa_test_report.css">
     <meta http-equiv="refresh" content="1">
+    <style>
+        .loading-dots::after 
+        {                             
+            content: ".";
+            font-size: 20px;   
+            animation: none;
+        }
+
+        @keyframes loading 
+        {
+            0%   { content: "."; }
+            33%  { content: ".."; }
+            66%  { content: "..."; }
+            100% { content: "."; }
+        }
+    </style>
     <title>QA Automation Test Report</title>
 </head>
-
 <body>
 
     <h1>QA Automation Test Report</h1>
@@ -20,7 +35,7 @@
     <h3>Anfrage QA-Test:</h3>
                                                                 
     <p>Datum: 13.09.2026</p>             
-    <p>Uhrzeit: 11:24:35</p>      
+    <p>Uhrzeit: 12:20:14</p>      
     <p>URL: http://192.168.0.236/test/test_fomular_raspberry/index.html</p>
     
     <h3>Testfortschritt</h3>
@@ -28,6 +43,9 @@
         <div class="progress-bar" style="width: 100%;">100 %
         </div>  
     </div>
+    <p id="loading-status">
+        Test läuft<span class="loading-dots"></span>    
+    </p>
     
         <h3>HTTPS Prüfung</h3>
         <p>&nbsp;&nbsp;&nbsp;&nbsp;HTTPS: FAIL http://192.168.0.236/test/test_fomular_raspberry/index.html</p>
@@ -42,7 +60,7 @@
     <p>&nbsp;&nbsp;&nbsp;&nbsp;Status: PASS - 200</p>
     
     <h3>Performance Prüfung</h3>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;Ladezeit: PASS - 0.23 Sekunden</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;Ladezeit: PASS - 0.39 Sekunden</p>
     
     <h3>Content Check Prüfung</h3>
     <p>&nbsp;&nbsp;&nbsp;&nbsp;Title: FAIL - erwartet:  | gefunden: Hauptseite</p>

@@ -14,9 +14,16 @@ from playwright.sync_api import expect              #expect zum Prüfen, ob ein 
 # HTML-Testreport erstellen
 # --------------------------------------------------
 def create_report(report_file, test_start, url, report_results, test_progress):
+
+    if test_progress >= 100:
+        loading_animation = "none"
+    else:
+        loading_animation = "loading 1.5s infinite"
+
     #strf = string format
     # %d → Tag %m → Monat %Y → Jahr
     # %H → Stunde %M → Minute %S → Sekunde
+    # ::after = füge den Inhalt hinter dem span ein
     html = f"""<!DOCTYPE html>
 <html lang="de">
 
@@ -24,9 +31,24 @@ def create_report(report_file, test_start, url, report_results, test_progress):
     <meta charset="UTF-8">
     <link rel="stylesheet" href="qa_test_report.css">
     <meta http-equiv="refresh" content="1">
+    <style>
+        .loading-dots::after 
+        {{                             
+            content: ".";
+            font-size: 20px;   
+            animation: {loading_animation};
+        }}
+
+        @keyframes loading 
+        {{
+            0%   {{ content: "."; }}
+            33%  {{ content: ".."; }}
+            66%  {{ content: "..."; }}
+            100% {{ content: "."; }}
+        }}
+    </style>
     <title>QA Automation Test Report</title>
 </head>
-
 <body>
 
     <h1>QA Automation Test Report</h1>
@@ -47,12 +69,16 @@ def create_report(report_file, test_start, url, report_results, test_progress):
         <div class="progress-bar" style="width: {test_progress}%;">{test_progress} %
         </div>  
     </div>
+    <p id="loading-status">
+        Test läuft<span class="loading-dots"></span>    
+    </p>
     {''.join(report_results)}
 
 </body>
 
 </html>
 """
+#span= markiert einen kleinen Bereich innerhalb des Textes damit nur die Ladepunkte separat per CSS animiert werden können
 
     #Neuen HTML-Report mit den Testergebnissen schreiben
     with open(report_file, "w", encoding="utf-8") as file:
@@ -826,6 +852,7 @@ def run_test(url, expected_title, expected_text):
 
             # Button-Namen einmal aus der Startseite sammeln
             buttons = page.locator("button")            #.locator() = suche Elemente auf dieser Seite
+
             filtered_buttons = []
 
             #nur sichtbare Buttons für den Test

@@ -348,3 +348,4 @@ Test in mehrere kleine bereiche einteilen das man einfachere zahlen hat bzw wei�
 Momentan nur starterseite am Testen
 # ⚠️ TODO: Browser-Tests optimieren zusammenfassen – Aufklappbare Buttons auf großen Seiten zu langsam  → Elemente nur einmal testen und Ergebnisse speichern, anschließend nur noch ausgeben
 # ⚠️ TODO: Weiterführende Seiten/URLs im Browser-Test ebenfalls prüfen
+# ?  TODO: Testfortschritt anpassen das es cleaner durchläuft
