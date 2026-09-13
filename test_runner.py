@@ -23,7 +23,7 @@ def create_report(report_file, test_start, url, report_results, test_progress):
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="qa_test_report.css">
-    <meta http-equiv="refresh" content="2">
+    <meta http-equiv="refresh" content="1">
     <title>QA Automation Test Report</title>
 </head>
 
@@ -72,6 +72,7 @@ def run_test(url, expected_title, expected_text):
 
     report_file = "qa_test_report.html"
     report_results = []
+
 
 # --------------------------------------------------
 # HTTP-Anfrage
@@ -122,6 +123,8 @@ def run_test(url, expected_title, expected_text):
 
         test_progress = 5
         create_report(report_file, test_start, url, report_results, test_progress)
+
+        time.sleep(1)
 
     except Exception as error:
         print("  HTTPS: FAIL - konnte nicht geprüft werden: ", error)
@@ -184,6 +187,8 @@ def run_test(url, expected_title, expected_text):
     test_progress = 10
     create_report(report_file, test_start, url, report_results, test_progress)
 
+    time.sleep(1)
+
 # --------------------------------------------------
 # Domain
 # --------------------------------------------------
@@ -214,6 +219,8 @@ def run_test(url, expected_title, expected_text):
 
     test_progress = 15
     create_report(report_file, test_start, url, report_results, test_progress)
+
+    time.sleep(1)
 
 # --------------------------------------------------
 # Status
@@ -254,6 +261,8 @@ def run_test(url, expected_title, expected_text):
     test_progress = 20
     create_report(report_file, test_start, url, report_results, test_progress)
 
+    time.sleep(1)
+
 
 # --------------------------------------------------
 # Performance
@@ -287,6 +296,8 @@ def run_test(url, expected_title, expected_text):
 
     test_progress = 25
     create_report(report_file, test_start, url, report_results, test_progress)
+
+    time.sleep(1)
 
 # --------------------------------------------------
 # Content Check
@@ -327,6 +338,8 @@ def run_test(url, expected_title, expected_text):
 
     test_progress = 30
     create_report(report_file, test_start, url, report_results, test_progress)
+
+    time.sleep(1)
 
 # --------------------------------------------------
 # Broken Links
@@ -409,6 +422,8 @@ def run_test(url, expected_title, expected_text):
     test_progress = 34
     create_report(report_file, test_start, url, report_results, test_progress)
 
+    time.sleep(1)
+
 # --------------------------------------------------
 # Bilder / Dateien
 # --------------------------------------------------
@@ -476,6 +491,8 @@ def run_test(url, expected_title, expected_text):
 
     test_progress = 38
     create_report(report_file, test_start, url, report_results, test_progress)
+
+    time.sleep(1)
 
 # --------------------------------------------------
 # HTML-Struktur
@@ -554,6 +571,8 @@ def run_test(url, expected_title, expected_text):
     test_progress = 43
     create_report(report_file, test_start, url, report_results, test_progress)
 
+    time.sleep(1)
+
     #Überschriften H1 check
     try:
         headings = re.findall(r"<(h[1-6])[^>]*>(.*?)</\1>",response.text,re.IGNORECASE | re.DOTALL) #re.IGNORECASE = Ignoriert Groß-/Kleinschreibung
@@ -594,6 +613,8 @@ def run_test(url, expected_title, expected_text):
     test_progress = 44
     create_report(report_file, test_start, url, report_results, test_progress)
 
+    time.sleep(1)
+
 
     #Meta Informationen
     #Charset prüfen --> damit Zeichen korrekt interpretiert werden
@@ -625,6 +646,8 @@ def run_test(url, expected_title, expected_text):
     report_results[-1] = html_structure_result
     test_progress = 45
     create_report(report_file, test_start, url, report_results, test_progress)
+
+    time.sleep(1)
 
     #viewport prüfen --> für vernünftige Darstellung auf mobilen Geräten
     try:
@@ -664,6 +687,8 @@ def run_test(url, expected_title, expected_text):
     test_progress = 46
     create_report(report_file, test_start, url, report_results, test_progress)
 
+    time.sleep(1)
+
     #description = Beschreibung der Seite für Suchmaschinen
     try:
         description = re.search(r'<meta[^>]*name=["\']description["\'][^>]*content=["\'](.*?)["\']',response.text,re.IGNORECASE)
@@ -697,6 +722,8 @@ def run_test(url, expected_title, expected_text):
     report_results[-1] = html_structure_result
     test_progress = 47
     create_report(report_file, test_start, url, report_results, test_progress)
+
+    time.sleep(1)
 
 
     #robots = Anweisungen für Suchmaschinen-Crawler
@@ -732,6 +759,8 @@ def run_test(url, expected_title, expected_text):
     report_results[-1] = html_structure_result
     test_progress = 48
     create_report(report_file, test_start, url, report_results, test_progress)
+
+    time.sleep(1)
 
     #og:title, og:image = Social-Media-Vorschauen
     #author = Angabe des Autors sinvolle info ?
@@ -954,6 +983,8 @@ def run_test(url, expected_title, expected_text):
             test_progress = 54
             create_report(report_file, test_start, url, report_results, test_progress)
 
+            time.sleep(1)
+
             #damit sie nicht nochmal als aufklappbare Buttons getestet werden
             visible_button_names = {name for index, name in filtered_buttons}
 
@@ -1175,6 +1206,8 @@ def run_test(url, expected_title, expected_text):
                 test_progress = 59
                 create_report(report_file, test_start, url, report_results, test_progress)
 
+                time.sleep(1)
+
                 #neue Buttons separat prüfen
                 try:
                     print()
@@ -1274,6 +1307,8 @@ def run_test(url, expected_title, expected_text):
                     test_progress = 64
                     create_report(report_file, test_start, url, report_results, test_progress)
 
+                    time.sleep(1)
+
                 except Exception as error:
                     print("  Neue Buttons: "f"FAIL - konnte nicht geprüft werden: {error}")
 
@@ -1303,6 +1338,8 @@ def run_test(url, expected_title, expected_text):
             report_results[-1] = browser_test_result
             test_progress = 67
             create_report(report_file, test_start, url, report_results, test_progress)
+
+            time.sleep(1)
 
 #Interaktive DOM Elemente
             try:
@@ -1379,6 +1416,8 @@ def run_test(url, expected_title, expected_text):
                 report_results[-1] = browser_test_result
                 test_progress = 72
                 create_report(report_file, test_start, url, report_results, test_progress)
+
+                time.sleep(1)
 
             except Exception as error:
                 print("  Interaktive Elemente: "f"FAIL - konnte nicht erkannt werden: {error}")
@@ -1620,6 +1659,8 @@ def run_test(url, expected_title, expected_text):
                 test_progress = 77
                 create_report(report_file, test_start, url, report_results, test_progress)
 
+                time.sleep(1)
+
                 for parent, child, error in failed_interactive_children:
                     print(f"    FAIL: {parent} -> {child} - {error}")
 
@@ -1647,6 +1688,8 @@ def run_test(url, expected_title, expected_text):
             report_results[-1] = browser_test_result
             test_progress = 80
             create_report(report_file, test_start, url, report_results, test_progress)
+
+            time.sleep(1)
 
 # --------------------------------------------------
 # Browser Navigation ziel weiterführende Links auf Zielseiten prüfen und Formulare erkennen
@@ -1732,6 +1775,8 @@ def run_test(url, expected_title, expected_text):
             report_results[-1] = browser_test_result
             test_progress = 84
             create_report(report_file, test_start, url, report_results, test_progress)
+
+            time.sleep(1)
 
 
 #Formulare anzeige (Knöpfe)
@@ -1897,6 +1942,8 @@ def run_test(url, expected_title, expected_text):
             test_progress = 89
             create_report(report_file, test_start, url, report_results, test_progress)
 
+            time.sleep(1)
+
 
 #Formulare anzeigen (Links)
             print()
@@ -2027,6 +2074,8 @@ def run_test(url, expected_title, expected_text):
                         report_results[-1] = browser_test_result
                         test_progress = 94
                         create_report(report_file, test_start, url, report_results, test_progress)
+
+                        time.sleep(1)
 
                     print()
 
@@ -2206,6 +2255,8 @@ def run_test(url, expected_title, expected_text):
             report_results[-1] = browser_test_result
             test_progress = 98
             create_report(report_file, test_start, url, report_results, test_progress)
+
+            time.sleep(1)
 
 
 #Formulare Gesamtübersicht
