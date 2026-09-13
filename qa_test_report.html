@@ -10,7 +10,7 @@
         {                             
             content: ".";
             font-size: 20px;   
-            animation: none;
+            animation: loading 1.5s infinite;
         }
 
         @keyframes loading 
@@ -35,7 +35,7 @@
     <h3>Anfrage QA-Test:</h3>
                                                                 
     <p>Datum: 13.09.2026</p>             
-    <p>Uhrzeit: 12:20:14</p>      
+    <p>Uhrzeit: 12:23:39</p>      
     <p>URL: http://192.168.0.236/test/test_fomular_raspberry/index.html</p>
     
     <h3>Testfortschritt</h3>
@@ -43,9 +43,7 @@
         <div class="progress-bar" style="width: 100%;">100 %
         </div>  
     </div>
-    <p id="loading-status">
-        Test läuft<span class="loading-dots"></span>    
-    </p>
+    <p id="loading-status"></p>
     
         <h3>HTTPS Prüfung</h3>
         <p>&nbsp;&nbsp;&nbsp;&nbsp;HTTPS: FAIL http://192.168.0.236/test/test_fomular_raspberry/index.html</p>
@@ -60,7 +58,7 @@
     <p>&nbsp;&nbsp;&nbsp;&nbsp;Status: PASS - 200</p>
     
     <h3>Performance Prüfung</h3>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;Ladezeit: PASS - 0.39 Sekunden</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;Ladezeit: PASS - 0.24 Sekunden</p>
     
     <h3>Content Check Prüfung</h3>
     <p>&nbsp;&nbsp;&nbsp;&nbsp;Title: FAIL - erwartet:  | gefunden: Hauptseite</p>

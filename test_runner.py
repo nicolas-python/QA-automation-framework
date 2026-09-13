@@ -14,11 +14,10 @@ from playwright.sync_api import expect              #expect zum Prüfen, ob ein 
 # HTML-Testreport erstellen
 # --------------------------------------------------
 def create_report(report_file, test_start, url, report_results, test_progress):
-
     if test_progress >= 100:
-        loading_animation = "none"
+        loading_status = ""
     else:
-        loading_animation = "loading 1.5s infinite"
+        loading_status = 'Test läuft<span class="loading-dots"></span>'
 
     #strf = string format
     # %d → Tag %m → Monat %Y → Jahr
@@ -36,7 +35,7 @@ def create_report(report_file, test_start, url, report_results, test_progress):
         {{                             
             content: ".";
             font-size: 20px;   
-            animation: {loading_animation};
+            animation: loading 1.5s infinite;
         }}
 
         @keyframes loading 
@@ -69,9 +68,7 @@ def create_report(report_file, test_start, url, report_results, test_progress):
         <div class="progress-bar" style="width: {test_progress}%;">{test_progress} %
         </div>  
     </div>
-    <p id="loading-status">
-        Test läuft<span class="loading-dots"></span>    
-    </p>
+    <p id="loading-status">{loading_status}</p>
     {''.join(report_results)}
 
 </body>
