@@ -37,6 +37,8 @@ class QA_GUI:
         self.url_listbox = tk.Listbox(self.window, width=50, height=5)
         self.url_listbox.pack(pady=10)
 
+        self.url_listbox.bind("<Return>", lambda event: self.load_selected_url())
+
         self.delete_button = tk.Button(self.window,text="URL löschen",command=self.delete_selected_url)
         self.delete_button.pack(padx=10)
 
