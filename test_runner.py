@@ -1420,12 +1420,6 @@ def run_test(url, expected_title, expected_text):
                 print()
                 print(f"  Interaktive Elemente: "f"{len(passed_interactive_elements)} PASS - "f"{len(failed_interactive_elements)} FAIL")
 
-                #DOM Soll/Ist Vergleich
-                interactive_duplicates = (dom_interactive_count - len(interactive_elements))
-                print(f"  DOM Referenz: "f"{dom_interactive_count}")
-                print(f"  Eindeutig geprüft: "f"{len(interactive_elements)}")
-                print(f"  Duplikate: "f"{interactive_duplicates}")
-
                 # fehler anzeigen
                 for tag_name, element_name, error in failed_interactive_elements:
                     print(f"    FAIL: {tag_name} | "f"{element_name} - {error}")
@@ -1454,9 +1448,6 @@ def run_test(url, expected_title, expected_text):
             try:
                 print()
                 print("Interaktive Unterelemente:")
-
-                #sofort anzeigen, dass der Test gestartet ist
-                print("Prüfe interaktive Unterelemente... 0/0",end="")
 
                 page.goto(url)
 
@@ -1578,8 +1569,6 @@ def run_test(url, expected_title, expected_text):
 
                     except Exception as error:
                         failed_interactive_children.append((parent_name,"",str(error)))
-
-                    print(f"\rSuche interaktive Unterelemente... "f"{len(interactive_children)} gefunden", end="")
 
                 print()
                 print(f"Prüfe interaktive Unterelemente... "f"0/{len(interactive_children)}", end="")
@@ -1877,10 +1866,7 @@ def run_test(url, expected_title, expected_text):
 
                                 page.wait_for_load_state("domcontentloaded", timeout=10000)
                                 success_message = page.get_by_text("Nachricht wurde erfolgreich übermittelt",exact=True)
-#--
-                                print("  Aktuelle URL nach Submit:", page.url)
-                                print("  Erfolgsmeldung vorhanden:", success_message.count())
-#--
+
                                 if success_message.count() == 0:
                                     raise Exception("Erfolgsmeldung nicht gefunden")
 
