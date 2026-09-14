@@ -1,6 +1,7 @@
 import tkinter as tk
 from url_manager import load_urls, save_url, delete_url
 from test_runner import run_test
+import webbrowser                           #ermöglicht das Öffnen von Webseiten und HTML-Dateien im Standardbrowser
 
 class QA_GUI:
 
@@ -16,8 +17,15 @@ class QA_GUI:
         self.url_entry = tk.Entry(self.window,width=40)
         self.url_entry.pack()
 
-        self.button = tk.Button(self.window,text="Test starten",command=self.button_clicked)
-        self.button.pack(pady=10)
+        button_frame = tk.Frame(self.window)
+        button_frame.pack(pady=10)
+
+        self.button = tk.Button(button_frame, text="Test starten", command=self.button_clicked)
+        self.button.pack(side="left", padx=5)
+
+        self.report_button = tk.Button(button_frame, text="Report Anzeigen", command=self.open_report)
+        self.report_button.pack(side="left", padx=5)
+
         self.window.bind("<Return>", lambda event: self.button_clicked())
 
         self.save_button = tk.Button(self.window,text="URL speichern",command=self.save_url)
@@ -34,6 +42,9 @@ class QA_GUI:
 
         self.load_button = tk.Button(self.window,text="URLs laden",command=self.load_selected_url)
         self.load_button.pack()
+
+    def open_report(self):
+        webbrowser.open("qa_test_report.html")
 
     def button_clicked(self):
         content_window = tk.Toplevel()

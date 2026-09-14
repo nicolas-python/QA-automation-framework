@@ -57,6 +57,12 @@ qa_test_report.html auswählen → Rechtsklick → Öffnen mit → gewünschten 
 ## Verwendete Technologien
 
 - Python
+  - webbrowser
+  - Tkinter
+  - time
+  - ssl
+  - socket
+  - os
 - Requests
 - Playwright
 - HTML
