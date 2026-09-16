@@ -345,6 +345,33 @@ Wichtig!
 Der Fortschrittsbalken zeigt nicht wie viele Tests bestanden wurden sondern nur wo der test ungefähren ist bzw das er noch läuft das man ungefähren bescheid weiß
 Test in mehrere kleine bereiche einteilen das man einfachere zahlen hat bzw weiß wo der test hängt und eine aktuelle ausgabe hat bei längerem laden
 
+
+pdf downlode :
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+https://cdnjs.cloudflare.com/ = CDN bedeutet Content Delivery Network
+ -Dort liegen fertige Dateien von vielen bekannten JavaScript-Bibliotheken damit Webseiten sie laden können
+
+ajax/libs/
+ - der Pfad innerhalb CDN
+
+jspdf/
+ - Bibliothek
+
+2.5.1/
+ -Version der jsPDF-Bibliothek
+
+https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js
+│                         │    │       │       │
+│                         │    │       │       └─ JavaScript-Datei
+│                         │    │       └───────── Version 2.5.1
+│                         │    └───────────────── Bibliothek jsPDF
+│                         └────────────────────── Pfad
+└─────────────────────────────────────────────── CDN
+
+const = konstandte wird nicht verändert
+
+
 Momentan nur starterseite am Testen
 # ⚠️ TODO: Browser-Tests optimieren zusammenfassen – Aufklappbare Buttons auf großen Seiten zu langsam  → Elemente nur einmal testen und Ergebnisse speichern, anschließend nur noch ausgeben
 # ⚠️ TODO: Weiterführende Seiten/URLs im Browser-Test ebenfalls prüfen

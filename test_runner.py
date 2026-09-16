@@ -30,6 +30,7 @@ def create_report(report_file, test_start, url, report_results, test_progress):
     <meta charset="UTF-8">
     <link rel="stylesheet" href="qa_test_report.css">
     <meta http-equiv="refresh" content="1">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         .loading-dots::after 
         {{                             
@@ -48,6 +49,21 @@ def create_report(report_file, test_start, url, report_results, test_progress):
     </style>
     <title>QA Automation Test Report</title>
 </head>
+
+<script>
+function create_pdf_report() 
+{{
+
+    const {{ jsPDF }} = window.jspdf;
+
+    const pdf = new jsPDF();
+
+    pdf.text("QA Automation Test Report", 20, 20);
+
+    pdf.save("qa_test_report.pdf");
+}}
+</script>
+
 <body>
 
     <h1>QA Automation Test Report</h1>
@@ -55,7 +71,7 @@ def create_report(report_file, test_start, url, report_results, test_progress):
 
         <div class="report-buttons">
             <button onclick="window.print()">Bericht drucken</button>
-            <button onclick="window.print()">Als PDF speichern</button>
+            <button onclick="create_pdf_report()">Als PDF speichern</button>
         </div>
         
         Hinweis: Genauere Fehlerdetails werden in der Konsole angezeigt.
@@ -76,7 +92,6 @@ def create_report(report_file, test_start, url, report_results, test_progress):
     </div>
     <p id="loading-status">{loading_status}</p>
     {''.join(report_results)}
-
 </body>
 
 </html>
@@ -2349,6 +2364,3 @@ def run_test(url, expected_title, expected_text):
 
     except Exception as error:
         print("  Browser Tests : FAIL - konnte nicht  vollständig geprüft werden:", error)
-
-def create_pdf_report():
-    pass
