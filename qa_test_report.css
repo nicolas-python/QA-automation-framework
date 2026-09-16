@@ -53,3 +53,13 @@ p {
     text-align: center;
     line-height: 25px;
 }
+
+.report-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.report-hint {
+    text-align: right;
+}

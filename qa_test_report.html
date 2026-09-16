@@ -27,9 +27,12 @@
 
     <h1>QA Automation Test Report</h1>
     <p style="text-align: right; font-size: 12px;">
-    
-        <button onclick="window.print()">🖨 Bericht drucken</button>
-    
+
+        <div class="report-buttons">
+            <button onclick="window.print()">Bericht drucken</button>
+            <button onclick="window.print()">Als PDF speichern</button>
+        </div>
+        
         Hinweis: Genauere Fehlerdetails werden in der Konsole angezeigt.
     </p>
 
@@ -38,15 +41,15 @@
     <h3>Anfrage QA-Test:</h3>
                                                                 
     <p>Datum: 16.09.2026</p>             
-    <p>Uhrzeit: 13:56:40</p>      
+    <p>Uhrzeit: 13:59:39</p>      
     <p>URL: http://192.168.0.236/test/test_fomular_raspberry/index.html</p>
     
     <h3>Testfortschritt</h3>
     <div class="progress-container">
-        <div class="progress-bar" style="width: 72%;">72 %
+        <div class="progress-bar" style="width: 100%;">100 %
         </div>  
     </div>
-    <p id="loading-status">Test läuft<span class="loading-dots"></span></p>
+    <p id="loading-status"></p>
     
         <h3>HTTPS Prüfung</h3>
         <p>&nbsp;&nbsp;&nbsp;&nbsp;HTTPS: FAIL http://192.168.0.236/test/test_fomular_raspberry/index.html</p>
@@ -61,7 +64,7 @@
     <p>&nbsp;&nbsp;&nbsp;&nbsp;Status: PASS - 200</p>
     
     <h3>Performance Prüfung</h3>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;Ladezeit: PASS - 0.08 Sekunden</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;Ladezeit: PASS - 0.54 Sekunden</p>
     
     <h3>Content Check Prüfung</h3>
     <p>&nbsp;&nbsp;&nbsp;&nbsp;Title: FAIL - erwartet:  | gefunden: Hauptseite</p>
@@ -126,6 +129,145 @@
                 <h4>Interaktive Elemente:</h4>
                 <p>&nbsp;&nbsp;&nbsp;&nbsp;Interaktive Elemente: 1 PASS - 0 FAIL</p>
                 
+                <h4>Interaktive Unterelemente:</h4>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;Interaktive Unterelemente: 1 PASS - 0 FAIL</p>
+                
+            <h4>Interaktive Elemente Gesamtübersicht:</h4>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;Starterseite: 1</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;Unterelemente: 1</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;Insgesamt: 2</p>
+            
+            <h3>Browser Navigation:</3>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;Browser Navigation: Prüfe Zielseiten auf mögliche Formulare... 3/3</p>
+            
+            <h4>Formulare über Knöpfe:</h4>
+            
+                    <div class="formular-block">
+                    <p>Formular 1:</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;URL: http://192.168.0.236/test/test_fomular_raspberry/formular.php</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Button: Button 2 – Formular</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Eingabefelder erwartet: 8</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Eingabefelder gefunden: 8</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Eingabefelder Vorhanden: JA</p>
+                    
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Feld 1: PASS - beschreibbar</p>
+                        
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Feld 2: PASS - beschreibbar</p>
+                        
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Feld 3: PASS - beschreibbar</p>
+                        
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Feld 4: PASS - beschreibbar</p>
+                        
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Feld 5: PASS - beschreibbar</p>
+                        
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Feld 6: PASS - beschreibbar</p>
+                        
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Feld 7: PASS - beschreibbar</p>
+                        
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Feld 8: PASS - beschreibbar</p>
+                        
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Absenden: PASS - Formular erfolgreich übermittelt - HTTP 200</p>
+                    </div>
+                    
+                    <div class="formular-block">
+                    <p>Formular 2:</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;URL: http://192.168.0.236/test/test_fomular_raspberry/formular.php</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Button: Button 5 – Untermenü - Unterelement – Formular</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Eingabefelder erwartet: 8</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Eingabefelder gefunden: 8</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Eingabefelder Vorhanden: JA</p>
+                    
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Feld 1: PASS - beschreibbar</p>
+                        
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Feld 2: PASS - beschreibbar</p>
+                        
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Feld 3: PASS - beschreibbar</p>
+                        
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Feld 4: PASS - beschreibbar</p>
+                        
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Feld 5: PASS - beschreibbar</p>
+                        
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Feld 6: PASS - beschreibbar</p>
+                        
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Feld 7: PASS - beschreibbar</p>
+                        
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Feld 8: PASS - beschreibbar</p>
+                        
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Absenden: PASS - Formular erfolgreich übermittelt - HTTP 200</p>
+                    </div>
+                    
+                                    <h4>Formulare über Links:</h4>
+                                    
+                                    <div class="formular-block">
+                                    <p>Formular 1:</p>
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;URL: http://192.168.0.236/test/test_fomular_raspberry/formular.php</p>
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Über Link: http://192.168.0.236/test/test_fomular_raspberry/link.php</p>
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Eingabefelder erwartet: 8</p>
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Eingabefelder gefunden: 8</p>
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Eingabefelder Vorhanden: JA</p>
+                                    
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Feld 1: PASS - beschreibbar</p>
+                                    
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Feld 2: PASS - beschreibbar</p>
+                                    
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Feld 3: PASS - beschreibbar</p>
+                                    
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Feld 4: PASS - beschreibbar</p>
+                                    
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Feld 5: PASS - beschreibbar</p>
+                                    
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Feld 6: PASS - beschreibbar</p>
+                                    
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Feld 7: PASS - beschreibbar</p>
+                                    
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Feld 8: PASS - beschreibbar</p>
+                                    
+                                <p>&nbsp;&nbsp;&nbsp;&nbsp;Absenden: PASS - Formular erfolgreich übermittelt - HTTP 200</p>
+                                </div>
+                                
+            <h4>Formulare Auswahlbare Inhalte / Optionsfelder:</h4>
+            
+                    <div class="formular-block">
+                    <p>Formular 1:</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;URL: http://192.168.0.236/test/test_fomular_raspberry/optionsfeld.php</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Button: Button 3 – Optionsfeld</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Radio-Felder gefunden: 0</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Select-Felder gefunden: 1</p>
+                    
+                        <div class="formular-block">
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;Select-Feld 1:</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Optionen gefunden: 4</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Auswahloptionen: 4</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Funktionieren: 4 PASS - 0 FAIL</p>
+                        
+                            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Option 1:
+                            PASS - auswählbar</p>
+                            
+                            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Option 2:
+                            PASS - auswählbar</p>
+                            
+                            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Option 3:
+                            PASS - auswählbar</p>
+                            
+                            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Option 4:
+                            PASS - auswählbar</p>
+                            
+            <h4>Formulare Gesamtübersicht:</h4>
+            
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;Formulare Gesamt: 4</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;Formulare über Buttons: 2</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;Formulare über Links: 1</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;Formulare mit Auswahlfeldern: 1</p>
+
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;Eingabefelder: 24</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;Beschreibbar: 24</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;Nicht beschreibbar: 0</p>
+
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;Select-Felder: 1</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;Auswahloptionen: 4</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;Auswählbar: 4</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;Nicht auswählbar: 0</p>
+            
 
 </body>
 
