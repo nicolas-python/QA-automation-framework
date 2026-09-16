@@ -52,6 +52,9 @@ def create_report(report_file, test_start, url, report_results, test_progress):
 
     <h1>QA Automation Test Report</h1>
     <p style="text-align: right; font-size: 12px;">
+    
+        <button onclick="window.print()">🖨 Bericht drucken</button>
+    
         Hinweis: Genauere Fehlerdetails werden in der Konsole angezeigt.
     </p>
 
