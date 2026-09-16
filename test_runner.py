@@ -58,7 +58,11 @@ function create_pdf_report()
 
     const pdf = new jsPDF();
 
-    pdf.text("QA Automation Test Report", 20, 20);
+    const report = document.body.innerText;
+
+    const lines = pdf.splitTextToSize(report, 170);
+
+    pdf.text(lines, 20, 20);
 
     pdf.save("qa_test_report.pdf");
 }}

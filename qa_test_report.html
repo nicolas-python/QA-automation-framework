@@ -33,7 +33,11 @@ function create_pdf_report()
 
     const pdf = new jsPDF();
 
-    pdf.text("QA Automation Test Report", 20, 20);
+    const report = document.body.innerText;
+
+    const lines = pdf.splitTextToSize(report, 170);
+
+    pdf.text(lines, 20, 20);
 
     pdf.save("qa_test_report.pdf");
 }
@@ -57,7 +61,7 @@ function create_pdf_report()
     <h3>Anfrage QA-Test:</h3>
                                                                 
     <p>Datum: 16.09.2026</p>             
-    <p>Uhrzeit: 16:36:26</p>      
+    <p>Uhrzeit: 16:48:38</p>      
     <p>URL: http://192.168.0.236/test/test_fomular_raspberry/index.html</p>
     
     <h3>Testfortschritt</h3>
@@ -80,7 +84,7 @@ function create_pdf_report()
     <p>&nbsp;&nbsp;&nbsp;&nbsp;Status: PASS - 200</p>
     
     <h3>Performance Prüfung</h3>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;Ladezeit: PASS - 0.2 Sekunden</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;Ladezeit: PASS - 0.13 Sekunden</p>
     
     <h3>Content Check Prüfung</h3>
     <p>&nbsp;&nbsp;&nbsp;&nbsp;Title: FAIL - erwartet:  | gefunden: Hauptseite</p>

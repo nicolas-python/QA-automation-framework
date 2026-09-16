@@ -370,6 +370,10 @@ https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js
 └─────────────────────────────────────────────── CDN
 
 const = konstandte wird nicht verändert
+document.body.innerText = holt den sichtbaren Text aus dem kompletten <body> der aktuellen HTML-Seite
+  -document = die aktuelle HTML-Seite
+  -body = der komplette <body>
+  -innerText = der sichtbare Text darin
 
 
 Momentan nur starterseite am Testen
