@@ -52,9 +52,12 @@ def create_report(report_file, test_start, url, report_results, test_progress):
 
     <h1>QA Automation Test Report</h1>
     <p style="text-align: right; font-size: 12px;">
-    
-        <button onclick="window.print()">🖨 Bericht drucken</button>
-    
+
+        <div class="report-buttons">
+            <button onclick="window.print()">Bericht drucken</button>
+            <button onclick="window.print()">Als PDF speichern</button>
+        </div>
+        
         Hinweis: Genauere Fehlerdetails werden in der Konsole angezeigt.
     </p>
 
@@ -2346,3 +2349,6 @@ def run_test(url, expected_title, expected_text):
 
     except Exception as error:
         print("  Browser Tests : FAIL - konnte nicht  vollständig geprüft werden:", error)
+
+def create_pdf_report():
+    pass
