@@ -59,17 +59,25 @@ function create_pdf_report()
 
     const {{ jsPDF }} = window.jspdf;
 
-    const pdf = new jsPDF();
-
-     pdf.html(document.body, {{
-        callback: function (pdf) {{
-            pdf.save("qa_test_report.pdf");
-        }}
+    const pdf = new jsPDF({{
+        format: "a4",
+        unit: "mm"
     }});
+
+    pdf.html(document.querySelector(".report-content"), {{
+        margin: [15, 15, 15, 15],
+        width: 180,
+        windowWidth: 794,
+    callback: function (pdf) {{
+        pdf.save("qa_test_report.pdf");
+    }}
+}});
 }}
 </script>
 
 <body>
+    <div class="report-content">
+
 
     <h1>QA Automation Test Report</h1>
     <p style="text-align: right; font-size: 12px;">
@@ -97,6 +105,7 @@ function create_pdf_report()
     </div>
     <p id="loading-status">{loading_status}</p>
     {''.join(report_results)}
+    </div>
 </body>
 
 </html>
@@ -226,7 +235,7 @@ def run_test(url, expected_title, expected_text):
     except ConnectionRefusedError as error:  # fängt Fehler ab, wenn der Server die Verbindung ablehnt
         print("SSL/TLS Prüfung")
         print("  SSL/TLS: FAIL - connection refused:", error)
-        ssl_result = "<p>SSL/TLS: FAIL - connection refused</p>"
+        ssl_result = "<p>  SSL/TLS: FAIL - connection refused</p>"
 
     report_results.append(f"""
     <h3>SSL/TLS Prüfung</h3>

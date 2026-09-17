@@ -32,17 +32,25 @@ function create_pdf_report()
 
     const { jsPDF } = window.jspdf;
 
-    const pdf = new jsPDF();
-
-     pdf.html(document.body, {
-        callback: function (pdf) {
-            pdf.save("qa_test_report.pdf");
-        }
+    const pdf = new jsPDF({
+        format: "a4",
+        unit: "mm"
     });
+
+    pdf.html(document.querySelector(".report-content"), {
+        margin: [15, 15, 15, 15],
+        width: 180,
+        windowWidth: 794,
+    callback: function (pdf) {
+        pdf.save("qa_test_report.pdf");
+    }
+});
 }
 </script>
 
 <body>
+    <div class="report-content">
+
 
     <h1>QA Automation Test Report</h1>
     <p style="text-align: right; font-size: 12px;">
@@ -60,7 +68,7 @@ function create_pdf_report()
     <h3>Anfrage QA-Test:</h3>
                                                                 
     <p>Datum: 17.09.2026</p>             
-    <p>Uhrzeit: 16:55:47</p>      
+    <p>Uhrzeit: 17:17:55</p>      
     <p>URL: http://192.168.0.236/test/test_fomular_raspberry/index.html</p>
     
     <h3>Testfortschritt</h3>
@@ -83,7 +91,7 @@ function create_pdf_report()
     <p>&nbsp;&nbsp;&nbsp;&nbsp;Status: PASS - 200</p>
     
     <h3>Performance Prüfung</h3>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;Ladezeit: PASS - 0.43 Sekunden</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;Ladezeit: PASS - 0.81 Sekunden</p>
     
     <h3>Content Check Prüfung</h3>
     <p>&nbsp;&nbsp;&nbsp;&nbsp;Title: FAIL - erwartet:  | gefunden: Hauptseite</p>
@@ -287,6 +295,7 @@ function create_pdf_report()
             <p>&nbsp;&nbsp;&nbsp;&nbsp;Auswählbar: 4</p>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;Nicht auswählbar: 0</p>
             
+    </div>
 </body>
 
 </html>
