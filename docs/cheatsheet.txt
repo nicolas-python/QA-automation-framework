@@ -374,6 +374,7 @@ document.body.innerText = holt den sichtbaren Text aus dem kompletten <body> der
   -document = die aktuelle HTML-Seite
   -body = der komplette <body>
   -innerText = der sichtbare Text darin
+  -callback = Funktion, die ausgeführt wird, nachdem die PDF erstellt wurde
 
 
 Momentan nur starterseite am Testen

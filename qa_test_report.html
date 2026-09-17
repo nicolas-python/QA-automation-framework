@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="qa_test_report.css">
     <meta http-equiv="refresh" content="1">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         .loading-dots::after 
         {                             
@@ -33,13 +34,11 @@ function create_pdf_report()
 
     const pdf = new jsPDF();
 
-    const report = document.body.innerText;
-
-    const lines = pdf.splitTextToSize(report, 170);
-
-    pdf.text(lines, 20, 20);
-
-    pdf.save("qa_test_report.pdf");
+     pdf.html(document.body, {
+        callback: function (pdf) {
+            pdf.save("qa_test_report.pdf");
+        }
+    });
 }
 </script>
 
@@ -60,8 +59,8 @@ function create_pdf_report()
     
     <h3>Anfrage QA-Test:</h3>
                                                                 
-    <p>Datum: 16.09.2026</p>             
-    <p>Uhrzeit: 16:48:38</p>      
+    <p>Datum: 17.09.2026</p>             
+    <p>Uhrzeit: 16:55:47</p>      
     <p>URL: http://192.168.0.236/test/test_fomular_raspberry/index.html</p>
     
     <h3>Testfortschritt</h3>
@@ -84,7 +83,7 @@ function create_pdf_report()
     <p>&nbsp;&nbsp;&nbsp;&nbsp;Status: PASS - 200</p>
     
     <h3>Performance Prüfung</h3>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;Ladezeit: PASS - 0.13 Sekunden</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;Ladezeit: PASS - 0.43 Sekunden</p>
     
     <h3>Content Check Prüfung</h3>
     <p>&nbsp;&nbsp;&nbsp;&nbsp;Title: FAIL - erwartet:  | gefunden: Hauptseite</p>

@@ -23,6 +23,8 @@ def create_report(report_file, test_start, url, report_results, test_progress):
     # %d → Tag %m → Monat %Y → Jahr
     # %H → Stunde %M → Minute %S → Sekunde
     # ::after = füge den Inhalt hinter dem span ein
+    #jsPDF = erstellt und speichert die PDF-Datei
+    #html2canvas = hilft dabei die HTML-Seite mit ihrer Darstellung zu erfassen
     html = f"""<!DOCTYPE html>
 <html lang="de">
 
@@ -31,6 +33,7 @@ def create_report(report_file, test_start, url, report_results, test_progress):
     <link rel="stylesheet" href="qa_test_report.css">
     <meta http-equiv="refresh" content="1">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         .loading-dots::after 
         {{                             
@@ -58,13 +61,11 @@ function create_pdf_report()
 
     const pdf = new jsPDF();
 
-    const report = document.body.innerText;
-
-    const lines = pdf.splitTextToSize(report, 170);
-
-    pdf.text(lines, 20, 20);
-
-    pdf.save("qa_test_report.pdf");
+     pdf.html(document.body, {{
+        callback: function (pdf) {{
+            pdf.save("qa_test_report.pdf");
+        }}
+    }});
 }}
 </script>
 
