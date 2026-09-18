@@ -122,7 +122,9 @@ function create_pdf_report()
         <p id="loading-status">{loading_status}</p>
         </div>
         
+    <div class="report-results">
         {''.join(report_results)}
+    </div>
 </body>
 
 </html>
@@ -193,7 +195,7 @@ def run_test(url, expected_title, expected_text):
 
         report_results.append(f"""
         <h3>HTTPS Prüfung</h3>
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;{https_result}</p>
+        <p>{https_result}</p>
         """)
 
         test_progress = 5
@@ -289,7 +291,7 @@ def run_test(url, expected_title, expected_text):
 
     report_results.append(f"""
     <h3>Domain Prüfung</h3>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;{domain_result}</p>
+    <p>{domain_result}</p>
     """)
 
     test_progress = 15
@@ -330,7 +332,7 @@ def run_test(url, expected_title, expected_text):
 
     report_results.append(f"""
     <h3>Status Prüfung</h3>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;{status_result}</p>
+    <p>{status_result}</p>
     """)
 
     test_progress = 20
@@ -366,7 +368,7 @@ def run_test(url, expected_title, expected_text):
 
     report_results.append(f"""
     <h3>Performance Prüfung</h3>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;{performance_result}</p>
+    <p>{performance_result}</p>
     """)
 
     test_progress = 25
@@ -407,8 +409,8 @@ def run_test(url, expected_title, expected_text):
 
     report_results.append(f"""
     <h3>Content Check Prüfung</h3>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;{title_result}</p>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;{content_result}</p>
+    <p>{title_result}</p>
+    <p>{content_result}</p>
     """)
 
     test_progress = 30
@@ -491,7 +493,7 @@ def run_test(url, expected_title, expected_text):
 
     report_results.append(f"""
     <h3>Broken Links Prüfung</h3>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;{broken_links_result}</p>
+    <p>{broken_links_result}</p>
     """)
 
     test_progress = 34
@@ -561,7 +563,7 @@ def run_test(url, expected_title, expected_text):
 
     report_results.append(f"""
     <h3>Bilder / Dateien Prüfung</h3>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;{images_result}</p>
+    <p>{images_result}</p>
     """)
 
     test_progress = 38
@@ -603,7 +605,7 @@ def run_test(url, expected_title, expected_text):
     # &nbsp = 1 Leerzeichen in html
     html_structure_result += f"""
     <h4>Sprache:</h4>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;{language_result}</p>                            
+    <p>{language_result}</p>                            
     """
 
     test_progress = 42
@@ -638,8 +640,8 @@ def run_test(url, expected_title, expected_text):
 
     html_structure_result += f"""
     <h4>Grundstruktur:</h4>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;{head_result}</p>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;{body_result}</p>
+    <p>{head_result}</p>
+    <p>{body_result}</p>
     """
 
     report_results[-1] = html_structure_result
@@ -676,12 +678,12 @@ def run_test(url, expected_title, expected_text):
 
     html_structure_result += f"""
     <h4>Überschriften:</h4>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;{h1_result}</p>
+    <p>{h1_result}</p>
     """
 
     for level in ["h2", "h3", "h4", "h5", "h6"]:
         html_structure_result += f"""
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;{level.upper()}: INFO - {len(headings_by_level[level])} gefunden</p>
+        <p>{level.upper()}: INFO - {len(headings_by_level[level])} gefunden</p>
         """
 
     report_results[-1] = html_structure_result
@@ -715,7 +717,7 @@ def run_test(url, expected_title, expected_text):
     html_structure_result += f"""
     <h3>Meta-Informationen Prüfung</h3>
     <h4>Charset:</h4>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;{charset_result}</p>
+    <p>{charset_result}</p>
     """
 
     report_results[-1] = html_structure_result
@@ -754,8 +756,8 @@ def run_test(url, expected_title, expected_text):
 
     html_structure_result += f"""
     <h4>Viewport:</h4>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;{viewport_result}</p>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;{mobile_result}</p>
+    <p>{viewport_result}</p>
+    <p>{mobile_result}</p>
     """
 
     report_results[-1] = html_structure_result
@@ -791,7 +793,7 @@ def run_test(url, expected_title, expected_text):
 
     html_structure_result += f"""
     <h4>Description:</h4>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;{description_result}</p>
+    <p>{description_result}</p>
     """
 
     report_results[-1] = html_structure_result
@@ -828,7 +830,7 @@ def run_test(url, expected_title, expected_text):
 
     html_structure_result += f"""
     <h4>Robots:</h4>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;{robots_result}</p>
+    <p>{robots_result}</p>
     """
 
     report_results[-1] = html_structure_result
@@ -1052,7 +1054,7 @@ def run_test(url, expected_title, expected_text):
 
             browser_test_result += f"""
             <h4>Button test sichtbar:</h4>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;{buttons_result}</p>
+            <p>{buttons_result}</p>
             """
 
             report_results.append(browser_test_result)
@@ -1275,7 +1277,7 @@ def run_test(url, expected_title, expected_text):
 
                 browser_test_result += f"""
                 <h4>Aufklappbare Buttons:</h4>
-                <p>&nbsp;&nbsp;&nbsp;&nbsp;{expandable_buttons_result}</p>
+                <p>{expandable_buttons_result}</p>
                 """
 
                 report_results[-1] = browser_test_result
@@ -1376,7 +1378,7 @@ def run_test(url, expected_title, expected_text):
 
                     browser_test_result += f"""
                     <h4>Neue Buttons:</h4>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;{new_buttons_result}</p>
+                    <p>{new_buttons_result}</p>
                     """
 
                     report_results[-1] = browser_test_result
@@ -1403,10 +1405,10 @@ def run_test(url, expected_title, expected_text):
 
             button_total_result = f"""
             <h4>Buttons Gesamtübersicht:</h4>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;Normale Buttons: {len(filtered_buttons)}</p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;Aufklappbare Buttons: {len(expandable_buttons)}</p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;Neue Buttons: {len(new_buttons)}</p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;Insgesamt: {button_total}</p>
+            <p>Normale Buttons: {len(filtered_buttons)}</p>
+            <p>Aufklappbare Buttons: {len(expandable_buttons)}</p>
+            <p>Neue Buttons: {len(new_buttons)}</p>
+            <p>Insgesamt: {button_total}</p>
             """
 
             browser_test_result += button_total_result
@@ -1478,7 +1480,7 @@ def run_test(url, expected_title, expected_text):
 
                 interactive_elements_result = f"""
                 <h4>Interaktive Elemente:</h4>
-                <p>&nbsp;&nbsp;&nbsp;&nbsp;Interaktive Elemente: {len(passed_interactive_elements)} PASS - {len(failed_interactive_elements)} FAIL</p>
+                <p>Interaktive Elemente: {len(passed_interactive_elements)} PASS - {len(failed_interactive_elements)} FAIL</p>
                 """
 
                 browser_test_result += interactive_elements_result
@@ -1717,7 +1719,7 @@ def run_test(url, expected_title, expected_text):
 
                 browser_test_result += f"""
                 <h4>Interaktive Unterelemente:</h4>
-                <p>&nbsp;&nbsp;&nbsp;&nbsp;{interactive_children_result}</p>
+                <p>{interactive_children_result}</p>
                 """
 
                 report_results[-1] = browser_test_result
@@ -1743,9 +1745,9 @@ def run_test(url, expected_title, expected_text):
 
             interactive_total_result = f"""
             <h4>Interaktive Elemente Gesamtübersicht:</h4>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;Starterseite: {len(interactive_elements)}</p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;Unterelemente: {len(interactive_children)}</p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;Insgesamt: {interactive_total}</p>
+            <p>Starterseite: {len(interactive_elements)}</p>
+            <p>Unterelemente: {len(interactive_children)}</p>
+            <p>Insgesamt: {interactive_total}</p>
             """
 
             browser_test_result += interactive_total_result
@@ -1834,7 +1836,7 @@ def run_test(url, expected_title, expected_text):
 
             browser_test_result += f"""
             <h3>Browser Navigation:</3>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;{browser_navigation_result}</p>
+            <p>{browser_navigation_result}</p>
             """
 
             report_results[-1] = browser_test_result
@@ -1977,7 +1979,7 @@ def run_test(url, expected_title, expected_text):
 
             if not found_forms:
                 browser_test_result += """
-                <p>&nbsp;&nbsp;&nbsp;&nbsp;Keine Formularstellen über Knöpfe gefunden</p>
+                <p>Keine Formularstellen über Knöpfe gefunden</p>
                 """
             else:
                 for form_result in form_results:
@@ -1990,20 +1992,20 @@ def run_test(url, expected_title, expected_text):
                     browser_test_result += f"""
                     <div class="formular-block">
                     <p>Formular {form_result["form_index"]}:</p>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;URL: {form_result["url"]}</p>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Button: {form_result["button"]}</p>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Eingabefelder erwartet: {form_result["expected"]}</p>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Eingabefelder gefunden: {form_result["found"]}</p>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Eingabefelder Vorhanden: {inputs_present}</p>
+                    <p>URL: {form_result["url"]}</p>
+                    <p>Button: {form_result["button"]}</p>
+                    <p>Eingabefelder erwartet: {form_result["expected"]}</p>
+                    <p>Eingabefelder gefunden: {form_result["found"]}</p>
+                    <p>Eingabefelder Vorhanden: {inputs_present}</p>
                     """
 
                     for field_result in form_result["fields"]:
                         browser_test_result += f"""
-                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Feld {field_result["index"]}: {field_result["status"]} - {field_result["message"]}</p>
+                        <p>Feld {field_result["index"]}: {field_result["status"]} - {field_result["message"]}</p>
                         """
 
                     browser_test_result += f"""
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Absenden: {form_result["submit"]["status"]} - {form_result["submit"]["message"]}</p>
+                    <p>Absenden: {form_result["submit"]["status"]} - {form_result["submit"]["message"]}</p>
                     </div>
                     """
 
@@ -2110,7 +2112,7 @@ def run_test(url, expected_title, expected_text):
 
                         if not form_link_pages:
                             browser_test_result += """
-                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Keine Formularseiten über Links gefunden</p>
+                                    <p>Keine Formularseiten über Links gefunden</p>
                                     """
                         else:
                             for form_result in link_form_results:
@@ -2123,20 +2125,20 @@ def run_test(url, expected_title, expected_text):
                                 browser_test_result += f"""
                                     <div class="formular-block">
                                     <p>Formular {form_result["form_index"]}:</p>
-                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;URL: {form_result["url"]}</p>
-                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Über Link: {form_result["via_url"]}</p>
-                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Eingabefelder erwartet: {form_result["expected"]}</p>
-                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Eingabefelder gefunden: {form_result["found"]}</p>
-                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Eingabefelder Vorhanden: {inputs_present}</p>
+                                    <p>URL: {form_result["url"]}</p>
+                                    <p>Über Link: {form_result["via_url"]}</p>
+                                    <p>Eingabefelder erwartet: {form_result["expected"]}</p>
+                                    <p>Eingabefelder gefunden: {form_result["found"]}</p>
+                                    <p>Eingabefelder Vorhanden: {inputs_present}</p>
                                     """
 
                                 for field_result in form_result["fields"]:
                                     browser_test_result += f"""
-                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Feld {field_result["index"]}: {field_result["status"]} - {field_result["message"]}</p>
+                                    <p>Feld {field_result["index"]}: {field_result["status"]} - {field_result["message"]}</p>
                                     """
 
                                 browser_test_result += f"""
-                                <p>&nbsp;&nbsp;&nbsp;&nbsp;Absenden: {form_result["submit"]["status"]} - {form_result["submit"]["message"]}</p>
+                                <p>Absenden: {form_result["submit"]["status"]} - {form_result["submit"]["message"]}</p>
                                 </div>
                                 """
 
@@ -2292,7 +2294,7 @@ def run_test(url, expected_title, expected_text):
 
             if not option_forms:
                 browser_test_result += """
-                <p>&nbsp;&nbsp;&nbsp;&nbsp;Keine auswählbaren Inhalte gefunden</p>
+                <p>Keine auswählbaren Inhalte gefunden</p>
                 """
             else:
                 for option_result in option_results:
@@ -2300,24 +2302,24 @@ def run_test(url, expected_title, expected_text):
                     browser_test_result += f"""
                     <div class="formular-block">
                     <p>Formular {option_result["form_index"]}:</p>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;URL: {option_result["url"]}</p>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Button: {option_result["button"]}</p>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Radio-Felder gefunden: {option_result["radio_found"]}</p>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Select-Felder gefunden: {option_result["select_found"]}</p>
+                    <p>URL: {option_result["url"]}</p>
+                    <p>Button: {option_result["button"]}</p>
+                    <p>Radio-Felder gefunden: {option_result["radio_found"]}</p>
+                    <p>Select-Felder gefunden: {option_result["select_found"]}</p>
                     """
 
                     for select_result in option_result["select_results"]:
                         browser_test_result += f"""
                         <div class="formular-block">
-                        <p>&nbsp;&nbsp;&nbsp;&nbsp;Select-Feld {select_result["select_index"]}:</p>
-                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Optionen gefunden: {select_result["option_count"]}</p>
-                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Auswahloptionen: {select_result["selectable_count"]}</p>
-                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Funktionieren: {select_result["passed"]} PASS - {select_result["failed"]} FAIL</p>
+                        <p>Select-Feld {select_result["select_index"]}:</p>
+                        <p>Optionen gefunden: {select_result["option_count"]}</p>
+                        <p>Auswahloptionen: {select_result["selectable_count"]}</p>
+                        <p>Funktionieren: {select_result["passed"]} PASS - {select_result["failed"]} FAIL</p>
                         """
 
                         for option_result_inner in select_result["options"]:
                             browser_test_result += f"""
-                            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Option {option_result_inner["option_index"]}:
+                            <p>Option {option_result_inner["option_index"]}:
                             {option_result_inner["status"]} - {option_result_inner["message"]}</p>
                             """
 
@@ -2374,19 +2376,19 @@ def run_test(url, expected_title, expected_text):
             """
 
             browser_test_result += f"""
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;Formulare Gesamt: {total_forms}</p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;Formulare über Buttons: {button_forms}</p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;Formulare über Links: {link_forms}</p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;Formulare mit Auswahlfeldern: {option_forms_total}</p>
+            <p>Formulare Gesamt: {total_forms}</p>
+            <p>Formulare über Buttons: {button_forms}</p>
+            <p>Formulare über Links: {link_forms}</p>
+            <p>Formulare mit Auswahlfeldern: {option_forms_total}</p>
 
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;Eingabefelder: {total_fields}</p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;Beschreibbar: {passed_fields}</p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;Nicht beschreibbar: {failed_fields}</p>
+            <p>Eingabefelder: {total_fields}</p>
+            <p>Beschreibbar: {passed_fields}</p>
+            <p>Nicht beschreibbar: {failed_fields}</p>
 
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;Select-Felder: {total_selects}</p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;Auswahloptionen: {total_options}</p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;Auswählbar: {passed_options_total}</p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;Nicht auswählbar: {failed_options_total}</p>
+            <p>Select-Felder: {total_selects}</p>
+            <p>Auswahloptionen: {total_options}</p>
+            <p>Auswählbar: {passed_options_total}</p>
+            <p>Nicht auswählbar: {failed_options_total}</p>
             """
 
             report_results[-1] = browser_test_result

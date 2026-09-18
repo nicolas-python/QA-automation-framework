@@ -70,3 +70,7 @@ p {
         display: none;
     }
 }
+
+.report-results p {
+    margin-left: 20px;
+}
