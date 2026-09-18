@@ -63,3 +63,10 @@ p {
 .report-hint {
     text-align: right;
 }
+
+@media print
+{
+    .no-print {
+        display: none;
+    }
+}

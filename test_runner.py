@@ -64,10 +64,23 @@ function create_pdf_report()
         unit: "mm"
     }});
 
-    pdf.html(document.querySelector(".report-content"), {{
+    pdf.html(document.querySelector(".report-content"), 
+    {{
         margin: [15, 15, 15, 15],
         width: 180,
         windowWidth: 794,
+        
+        html2canvas: 
+        {{
+        onclone: function (clonedDocument) 
+        {{
+            clonedDocument.querySelectorAll(".no-print").forEach(function (element) 
+            {{
+                element.style.display = "none";
+            }});
+        }}
+    }},
+
     callback: function (pdf) {{
         pdf.save("qa_test_report.pdf");
     }}
@@ -77,19 +90,19 @@ function create_pdf_report()
 
 <body>
     <div class="report-content">
-
-
     <h1>QA Automation Test Report</h1>
-    <p style="text-align: right; font-size: 12px;">
+        <div class="no-print">
+            <p style="text-align: right; font-size: 12px;">
+        
+                <div class="report-buttons">
+                    <button onclick="window.print()">Bericht drucken</button>
+                    <button onclick="create_pdf_report()">Als PDF speichern</button>
+                </div>
 
-        <div class="report-buttons">
-            <button onclick="window.print()">Bericht drucken</button>
-            <button onclick="create_pdf_report()">Als PDF speichern</button>
+                Hinweis: Genauere Fehlerdetails werden in der Konsole angezeigt
+            </p>
         </div>
         
-        Hinweis: Genauere Fehlerdetails werden in der Konsole angezeigt.
-    </p>
-
     <h2>Testinformationen</h2>
     
     <h3>Anfrage QA-Test:</h3>
@@ -98,14 +111,18 @@ function create_pdf_report()
     <p>Uhrzeit: {test_start.strftime("%H:%M:%S")}</p>      
     <p>URL: {url}</p>
     
-    <h3>Testfortschritt</h3>
-    <div class="progress-container">
-        <div class="progress-bar" style="width: {test_progress}%;">{test_progress} %
+    <div class="no-print">
+        <h3>Testfortschritt</h3>
+        
+        <div class="progress-container">
+            <div class="progress-bar" style="width: {test_progress}%;">{test_progress} %
         </div>  
-    </div>
-    <p id="loading-status">{loading_status}</p>
-    {''.join(report_results)}
-    </div>
+            
+        </div>
+        <p id="loading-status">{loading_status}</p>
+        </div>
+        
+        {''.join(report_results)}
 </body>
 
 </html>

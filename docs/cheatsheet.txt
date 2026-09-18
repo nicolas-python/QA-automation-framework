@@ -376,6 +376,13 @@ document.body.innerText = holt den sichtbaren Text aus dem kompletten <body> der
   -innerText = der sichtbare Text darin
   -callback = Funktion, die ausgeführt wird, nachdem die PDF erstellt wurde
 
+  -windowWidth = Breite des HTML-Bereichs in CSS-Pixeln den html2canvas beim Rendern verwendet.
+        794 px = ungefähr A4-Breite bei 96 DPI
+
+ -html2canvas = JavaScript-Bibliothek, die einen HTML-Bereich für die Darstellung/Weiterverarbeitung erfasst
+
+ -onclone = wird auf die Kopie des HTML-Dokuments angewendet
+
 
 Momentan nur starterseite am Testen
 # ⚠️ TODO: Browser-Tests optimieren zusammenfassen – Aufklappbare Buttons auf großen Seiten zu langsam  → Elemente nur einmal testen und Ergebnisse speichern, anschließend nur noch ausgeben
