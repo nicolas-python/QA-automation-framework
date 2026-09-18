@@ -1991,7 +1991,7 @@ def run_test(url, expected_title, expected_text):
 
                     for field_result in form_result["fields"]:
                         browser_test_result += f"""
-                        <p>Feld {field_result["index"]}: {field_result["status"]} - {field_result["message"]}</p>
+                        <p class="field-result">Feld {field_result["index"]}: {field_result["status"]} - {field_result["message"]}</p>
                         """
 
                     browser_test_result += f"""
@@ -2124,7 +2124,7 @@ def run_test(url, expected_title, expected_text):
 
                                 for field_result in form_result["fields"]:
                                     browser_test_result += f"""
-                                    <p>Feld {field_result["index"]}: {field_result["status"]} - {field_result["message"]}</p>
+                                    <p class="field-result">Feld {field_result["index"]}: {field_result["status"]} - {field_result["message"]}</p>
                                     """
 
                                 browser_test_result += f"""
@@ -2366,19 +2366,25 @@ def run_test(url, expected_title, expected_text):
             """
 
             browser_test_result += f"""
-            <p>Formulare Gesamt: {total_forms}</p>
-            <p>Formulare über Buttons: {button_forms}</p>
-            <p>Formulare über Links: {link_forms}</p>
-            <p>Formulare mit Auswahlfeldern: {option_forms_total}</p>
-
-            <p>Eingabefelder: {total_fields}</p>
-            <p>Beschreibbar: {passed_fields}</p>
-            <p>Nicht beschreibbar: {failed_fields}</p>
-
-            <p>Select-Felder: {total_selects}</p>
-            <p>Auswahloptionen: {total_options}</p>
-            <p>Auswählbar: {passed_options_total}</p>
-            <p>Nicht auswählbar: {failed_options_total}</p>
+            <div class="gesamtuebersicht-block">
+                <p>Formulare Gesamt: {total_forms}</p>
+                <p>Formulare über Buttons: {button_forms}</p>
+                <p>Formulare über Links: {link_forms}</p>
+                <p>Formulare mit Auswahlfeldern: {option_forms_total}</p>
+            </div>
+                
+            <div class="gesamtuebersicht-block">
+                <p>Eingabefelder: {total_fields}</p>
+                <p>Beschreibbar: {passed_fields}</p>
+                <p>Nicht beschreibbar: {failed_fields}</p>
+            </div>
+                
+            <div class="gesamtuebersicht-block">
+                <p>Select-Felder: {total_selects}</p>
+                <p>Auswahloptionen: {total_options}</p>
+                <p>Auswählbar: {passed_options_total}</p>
+                <p>Nicht auswählbar: {failed_options_total}</p>
+            </div>
             """
 
             report_results[-1] = browser_test_result

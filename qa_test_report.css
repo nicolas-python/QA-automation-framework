@@ -32,8 +32,19 @@ p {
     margin: 2px 0;
 }
 
-/* Formular abstand */
+/* Formularblöcke */
 .formular-block {
+    margin-bottom: 20px;
+    margin-left: 20px;
+}
+
+/* Formularfelder */
+.formular-block .field-result {
+    margin-left: 40px;
+}
+
+/* Formular-Gesamtübersicht */
+.gesamtuebersicht-block {
     margin-bottom: 20px;
 }
 
@@ -54,16 +65,19 @@ p {
     line-height: 25px;
 }
 
+/* Report-Schaltflächen */
 .report-buttons {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
 }
 
+/* Hinweistext */
 .report-hint {
     text-align: right;
 }
 
+/* Druckansicht */
 @media print
 {
     .no-print {
@@ -71,6 +85,7 @@ p {
     }
 }
 
+/* Alle Ergebnisse (<p>) einrücken */
 .report-results p {
     margin-left: 20px;
 }
