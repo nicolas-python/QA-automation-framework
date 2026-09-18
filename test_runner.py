@@ -1829,16 +1829,6 @@ def run_test(url, expected_title, expected_text):
             except Exception as error:
                 print("  Browser Navigation: "f"FAIL - konnte Zielseiten nicht prüfen: {error}")
 
-            browser_navigation_result = (
-                f"Browser Navigation: Prüfe Zielseiten auf mögliche Formulare... "
-                f"{len(html_links)}/{len(html_links)}"
-            )
-
-            browser_test_result += f"""
-            <h3>Browser Navigation:</3>
-            <p>{browser_navigation_result}</p>
-            """
-
             report_results[-1] = browser_test_result
             test_progress = 84
             create_report(report_file, test_start, url, report_results, test_progress)
