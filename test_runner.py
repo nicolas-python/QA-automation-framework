@@ -31,7 +31,6 @@ def create_report(report_file, test_start, url, report_results, test_progress):
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="qa_test_report.css">
-    <meta http-equiv="refresh" content="1">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
@@ -86,6 +85,13 @@ function create_pdf_report()
     }}
 }});
 }}
+
+if ({test_progress} < 100) {{
+    setTimeout(function() {{
+        location.reload();
+    }}, 1000);
+}}
+
 </script>
 
 <body>

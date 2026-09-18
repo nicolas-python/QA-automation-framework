@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="qa_test_report.css">
-    <meta http-equiv="refresh" content="1">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
@@ -59,6 +58,13 @@ function create_pdf_report()
     }
 });
 }
+
+if (100 < 100) {
+    setTimeout(function() {
+        location.reload();
+    }, 1000);
+}
+
 </script>
 
 <body>
@@ -81,7 +87,7 @@ function create_pdf_report()
     <h3>Anfrage QA-Test:</h3>
                                                                 
     <p>Datum: 18.09.2026</p>             
-    <p>Uhrzeit: 13:59:06</p>      
+    <p>Uhrzeit: 14:05:42</p>      
     <p>URL: http://192.168.0.236/test/test_fomular_raspberry/index.html</p>
     
     <div class="no-print">
@@ -110,7 +116,7 @@ function create_pdf_report()
     <p>Status: PASS - 200</p>
     
     <h3>Performance Prüfung</h3>
-    <p>Ladezeit: PASS - 0.18 Sekunden</p>
+    <p>Ladezeit: PASS - 0.16 Sekunden</p>
     
     <h3>Content Check Prüfung</h3>
     <p>Title: FAIL - erwartet:  | gefunden: Hauptseite</p>
