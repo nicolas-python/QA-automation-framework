@@ -156,6 +156,19 @@ def run_test(url, expected_title, expected_text):
 
     report_file = "qa_test_report.html"
     report_results = []
+    test_summary = {
+        "passed": 0,
+        "failed": 0,
+        "warnings": 0
+    }
+
+    def add_test_result(result):
+        if result == "PASS":
+            test_summary["passed"] += 1
+        elif result == "FAIL":
+            test_summary["failed"] += 1
+        elif result == "WARNING":
+            test_summary["warnings"] += 1
 
 
 # --------------------------------------------------
@@ -195,10 +208,12 @@ def run_test(url, expected_title, expected_text):
         if response.url.startswith("https://"):
             print("  HTTPS: PASS -", response.url)
             https_result = f"HTTPS: PASS {response.url}"
+            add_test_result("PASS")
 
         else:
             print("  HTTPS: FAIL", response.url)
             https_result = f"HTTPS: FAIL {response.url}"
+            add_test_result("FAIL")
 
         report_results.append(f"""
         <h3>HTTPS Prüfung</h3>
@@ -229,6 +244,7 @@ def run_test(url, expected_title, expected_text):
         print()
         print("SSL/TLS Prüfung")
         print("  SSL/TLS: PASS")
+        add_test_result("PASS")
 
         expiration_date = certificate["notAfter"]                   #notAfter = Datum, bis zu dem das Zertifikat gültig ist
         expiration_date = datetime.strptime(expiration_date,"%b %d %H:%M:%S %Y %Z")     #wandelt den Text des Ablaufdatums in ein datetime-Objekt um
@@ -237,12 +253,14 @@ def run_test(url, expected_title, expected_text):
 
         if expiration_date > current_date:
             print("  Certificate: PASS - gültig bis:", expiration_date)
+            add_test_result("PASS")
             ssl_result = f"""
             <p>SSL/TLS: PASS</p>
             <p>Certificate: PASS - gültig bis: {expiration_date}</p>
             """
         else:
             print("  Certificate: FAIL - expired", expiration_date)
+            add_test_result("FAIL")
             ssl_result = f"""
             <p>SSL/TLS: PASS</p>
             <p>Certificate: FAIL - expired {expiration_date}</p>
@@ -251,16 +269,19 @@ def run_test(url, expected_title, expected_text):
     except ssl.SSLCertVerificationError:        #fängt Zertifikatsfehler bei der direkten SSL/TLS-Verbindung mit socket ab
         print("SSL/TLS Prüfung")
         print("  SSL/TLS: FAIL - certificate error")
+        add_test_result("FAIL")
         ssl_result = "<p>SSL/TLS: FAIL - certificate error</p>"
 
     except requests.exceptions.SSLError:        #fängt SSL/TLS-Fehler ab, die bei requests auftreten
         print("SSL/TLS Prüfung")
         print("  SSL/TLS: FAIL - certificate error")
+        add_test_result("FAIL")
         ssl_result = "<p>SSL/TLS: FAIL - certificate error</p>"
 
     except ConnectionRefusedError as error:  # fängt Fehler ab, wenn der Server die Verbindung ablehnt
         print("SSL/TLS Prüfung")
         print("  SSL/TLS: FAIL - connection refused:", error)
+        add_test_result("FAIL")
         ssl_result = "<p>  SSL/TLS: FAIL - connection refused</p>"
 
     report_results.append(f"""
@@ -287,13 +308,16 @@ def run_test(url, expected_title, expected_text):
 
         if start_domain == final_domain:         #hostname gibt den Hostnamen der URL zurück
             print("  Domain: PASS -", start_domain, "→", final_domain)
+            add_test_result("PASS")
             domain_result = f"Domain: PASS - {start_domain} → {final_domain}"
         else:
             print("  Domain: WARNING - different domain", start_domain, "→", final_domain)
+            add_test_result("WARNING")
             domain_result = f"Domain: WARNING - different domain {start_domain} → {final_domain}"
 
     except Exception as error:                                                     #fängt Fehler innerhalb dieses try-Blocks ab und führt danach den nächsten Code aus
         print("  Domain: FAIL - konnte nicht geprüft werden: ", error)
+        add_test_result("FAIL")
         domain_result = "Domain: FAIL - konnte nicht geprüft werden"
 
     report_results.append(f"""
@@ -315,26 +339,32 @@ def run_test(url, expected_title, expected_text):
 
         if 200 <= response.status_code < 300:
             print("  Status: PASS -", response.status_code)
+            add_test_result("PASS")
             status_result = f"Status: PASS - {response.status_code}"
 
         elif 300 <= response.status_code < 400:
             print("  Status: REDIRECT", response.status_code)
+            add_test_result("WARNING")
             status_result = f"Status: REDIRECT {response.status_code}"
 
         elif 400 <= response.status_code < 500:
             print("  Status: FAIL - Client Fehler", response.status_code)
+            add_test_result("FAIL")
             status_result = f"Status: FAIL - Client Fehler {response.status_code}"
 
         elif 500 <= response.status_code < 600:
             print("  Status: FAIL - Server Fehler", response.status_code)
+            add_test_result("FAIL")
             status_result = f"Status: FAIL - Server Fehler {response.status_code}"
 
         else:
             print("  Status: Unbekannter Status", response.status_code)
+            add_test_result("WARNING")
             status_result = f"Status: Unbekannter Status {response.status_code}"
 
     except Exception as error:
         print("  Status: FAIL - konnte nicht geprüft werden: ", error)
+        add_test_result("FAIL")
         status_result = "Status: FAIL - konnte nicht geprüft werden"
 
     report_results.append(f"""
@@ -359,18 +389,22 @@ def run_test(url, expected_title, expected_text):
 
         if response_time < 2:
             print("  Ladezeit: PASS -", response_time, "Sekunden")
+            add_test_result("PASS")
             performance_result = f"Ladezeit: PASS - {response_time} Sekunden"
 
         elif response_time <= 3:
             print("  Ladezeit: WARNING -", response_time, "Sekunden")
+            add_test_result("WARNING")
             performance_result = f"Ladezeit: WARNING - {response_time} Sekunden"
 
         else:
             print("  Ladezeit: FAIL -", response_time, "Sekunden")
+            add_test_result("FAIL")
             performance_result = f"Ladezeit: FAIL - {response_time} Sekunden"
 
     except Exception as error:
         print("  Ladezeit: FAIL - konnte nicht geprüft werden: ", error)
+        add_test_result("FAIL")
         performance_result = "Ladezeit: FAIL - konnte nicht geprüft werden"
 
     report_results.append(f"""
@@ -397,21 +431,27 @@ def run_test(url, expected_title, expected_text):
 
         if expected_title.strip().lower() == actual_title.strip().lower():
             print("  Title: PASS -", actual_title)
+            add_test_result("PASS")
             title_result = f"Title: PASS - {actual_title}"
         else:
             print("  Title: FAIL - erwartet:", expected_title, "| gefunden:", actual_title)
+            add_test_result("FAIL")
             title_result = f"Title: FAIL - erwartet: {expected_title} | gefunden: {actual_title}"
 
         if expected_text.strip().lower() in response.text.strip().lower():
             print("  Content: PASS - erwarteter Text gefunden:", expected_text)
+            add_test_result("PASS")
             content_result = f"Content: PASS - erwarteter Text gefunden: {expected_text}"
         else:
             print("  Content: FAIL - erwarteter Text nicht gefunden:", expected_text)
+            add_test_result("FAIL")
             content_result = f"Content: FAIL - erwarteter Text nicht gefunden: {expected_text}"
 
     except Exception as error:
         print("  Content Check: FAIL - konnte nicht geprüft werden:", error)
+        add_test_result("FAIL")
         title_result = "Title: FAIL - konnte nicht geprüft werden"
+        add_test_result("FAIL")
         content_result = "Content: FAIL - konnte nicht geprüft werden"
 
     report_results.append(f"""
@@ -472,12 +512,15 @@ def run_test(url, expected_title, expected_text):
                     link_response = requests.get(full_url, timeout=10)
 
                     if link_response.status_code < 400:
+                        add_test_result("PASS")
                         passed_links.append(full_url)
                     else:
+                        failed_links.append(full_url)
                         failed_links.append(full_url)
 
                 except requests.RequestException:
                     failed_links.append(full_url)
+                    add_test_result("FAIL")
 
                 #fortschrittszeile
                 print(f"\rBroken Links: Prüfe Links... {len(passed_links) + len(failed_links)}/{len(links)}", end="")       #\r= innerhalb der aktuellen Zeile wieder an den Anfang
@@ -544,12 +587,14 @@ def run_test(url, expected_title, expected_text):
 
                     if image_response.status_code < 400 and content_type.startswith("image/"):
                         passed_images.append(full_url)
+                        add_test_result("PASS")
                     else:
                         failed_images.append(full_url)
+                        add_test_result("FAIL")
 
                 except requests.RequestException:
                     failed_images.append(full_url)
-
+                    add_test_result("FAIL")
 
                 print(f"\rBilder: Prüfe Bilder... {len(passed_images) + len(failed_images)}/{len(images)}", end="")
 
@@ -599,14 +644,17 @@ def run_test(url, expected_title, expected_text):
             language_code = lang.group(1).lower()
             language_name = lang_names.get(language_code, "Unbekannte Sprache")
             print(f"    Lang: PASS - {language_code} = {language_name}")
+            add_test_result("PASS")
             language_result = f"Lang: PASS - {language_code} = {language_name}"
 
         else:
             print("    Lang: FAIL - kein Sprachattribut gefunden")
+            add_test_result("FAIL")
             language_result = "Lang: FAIL - kein Sprachattribut gefunden"
 
     except Exception as error:
         print("  HTML/Struktur: FAIL - konnte nicht prüfen:", error)
+        add_test_result("FAIL")
         language_result = "Lang: FAIL - konnte nicht geprüft werden"
 
     # &nbsp = 1 Leerzeichen in html
@@ -628,21 +676,27 @@ def run_test(url, expected_title, expected_text):
 
         if head:
             print("  HEAD: PASS - vorhanden")
+            add_test_result("PASS")
             head_result = "HEAD: PASS - vorhanden"
         else:
             print("  HEAD: FAIL - nicht vorhanden")
+            add_test_result("FAIL")
             head_result = "HEAD: FAIL - nicht vorhanden"
 
         if body:
             print("  BODY: PASS - vorhanden")
+            add_test_result("PASS")
             body_result = "BODY: PASS - vorhanden"
         else:
             print("  BODY: FAIL - nicht vorhanden")
+            add_test_result("FAIL")
             body_result = "BODY: FAIL - nicht vorhanden"
 
     except Exception as error:
         print("  Grundstruktur: FAIL - konnte nicht geprüft werden:", error)
+        add_test_result("FAIL")
         head_result = "HEAD: FAIL - konnte nicht geprüft werden"
+        add_test_result("FAIL")
         body_result = "BODY: FAIL - konnte nicht geprüft werden"
 
     html_structure_result += f"""
@@ -671,9 +725,11 @@ def run_test(url, expected_title, expected_text):
         print("Überschriften:")
         if not headings_by_level["h1"]:
             print("  H1: FAIL - keine H1 gefunden")
+            add_test_result("FAIL")
             h1_result = "H1: FAIL - keine H1 gefunden"
         else:
             print(f"  H1: PASS - {len(headings_by_level['h1'])} gefunden")
+            add_test_result("PASS")
             h1_result = f"H1: PASS - {len(headings_by_level['h1'])} gefunden"
 
         for level in ["h2", "h3", "h4", "h5", "h6"]:
@@ -681,6 +737,7 @@ def run_test(url, expected_title, expected_text):
 
     except Exception as error:
         print("  HTML/Struktur: FAIL - konnte nicht prüfen:", error)
+        add_test_result("FAIL")
         h1_result = "H1: FAIL - konnte nicht geprüft werden"
 
     html_structure_result += f"""
@@ -712,13 +769,16 @@ def run_test(url, expected_title, expected_text):
         if charset:
             charset_value = charset.group(1).lower()
             print(f"    Charset: PASS - {charset_value}")
+            add_test_result("PASS")
             charset_result = f"Charset: PASS - {charset_value}"
         else:
             print("    Charset: FAIL - nicht vorhanden")
+            add_test_result("FAIL")
             charset_result = "Charset: FAIL - nicht vorhanden"
 
     except Exception as error:
         print("  Meta-Informationen Charset: FAIL - konnte nicht geprüft werden:", error)
+        add_test_result("FAIL")
         charset_result = "Charset: FAIL - konnte nicht geprüft werden"
 
     html_structure_result += f"""
@@ -743,22 +803,28 @@ def run_test(url, expected_title, expected_text):
         if viewport:
             viewport_value = viewport.group(1).lower()
             print(f"    Viewport: PASS - {viewport_value}")
+            add_test_result("PASS")
             viewport_result = f"Viewport: PASS - {viewport_value}"
 
             if "width=device-width" in viewport_value:              #device-width= Behandle die Breite der Webseite so, als wäre sie so breit wie das Gerät
                 print(f"    Mobile Darstellung: PASS - width=device-width")
+                add_test_result("PASS")
                 mobile_result = "Mobile Darstellung: PASS - width=device-width"
             else:
                 print(f"    Mobile Darstellung: FAIL - width=device-width fehlt - {viewport_value}")
+                add_test_result("FAIL")
                 mobile_result = f"Mobile Darstellung: FAIL - width=device-width fehlt - {viewport_value}"
 
         else:
             print("    Viewport: FAIL - nicht vorhanden")
+            add_test_result("FAIL")
             mobile_result = "Mobile Darstellung: FAIL - Viewport nicht vorhanden"
 
     except Exception as error:
         print("  Meta-Informationen Viewport: FAIL - konnte nicht geprüft werden:", error)
+        add_test_result("FAIL")
         viewport_result = "Viewport: FAIL - konnte nicht geprüft werden"
+        add_test_result("FAIL")
         mobile_result = "Mobile Darstellung: FAIL - konnte nicht geprüft werden"
 
     html_structure_result += f"""
@@ -785,17 +851,21 @@ def run_test(url, expected_title, expected_text):
 
             if description_value:
                 print(f"    Description: PASS - {description_value}")
+                add_test_result("PASS")
                 description_result = f"Description: PASS - {description_value}"
             else:
                 print("    Description: FAIL - Beschreibung ist leer")
+                add_test_result("FAIL")
                 description_result = "Description: FAIL - Beschreibung ist leer"
 
         else:
             print("    Description: FAIL - nicht vorhanden")
+            add_test_result("FAIL")
             description_result = "Description: FAIL - nicht vorhanden"
 
     except Exception as error:
         print("  Meta-Informationen description: FAIL - konnte nicht geprüft werden:", error)
+        add_test_result("FAIL")
         description_result = "Description: FAIL - konnte nicht geprüft werden"
 
     html_structure_result += f"""
@@ -822,17 +892,21 @@ def run_test(url, expected_title, expected_text):
 
             if robots_value:
                 print(f"    Robots: PASS - {robots_value}")
+                add_test_result("PASS")
                 robots_result = f"Robots: PASS - {robots_value}"
             else:
                 print("     Robots: FAIL - Wert ist leer")
+                add_test_result("FAIL")
                 robots_result = "Robots: FAIL - Wert ist leer"
 
         else:
             print("    Robots: FAIL - nicht vorhanden")
+            add_test_result("FAIL")
             robots_result = "Robots: FAIL - nicht vorhanden"
 
     except Exception as error:
         print("  Meta-Informationen robots: FAIL - konnte nicht geprüft werden:", error)
+        add_test_result("FAIL")
         robots_result = "Robots: FAIL - konnte nicht geprüft werden"
 
     html_structure_result += f"""
@@ -1035,9 +1109,11 @@ def run_test(url, expected_title, expected_text):
                             dom_interactive_count += 1
 
                     passed_buttons.append(button_name)
+                    add_test_result("PASS")
 
                 except Exception as error:
                     failed_buttons.append((button_name, str(error)))
+                    add_test_result("FAIL")
 
                 #zurück zur startseite
                 try:
@@ -1221,6 +1297,7 @@ def run_test(url, expected_title, expected_text):
                         #clicken button zuerst
                         current_button.click(timeout=3000, force=True)
                         passed_expandable_buttons.append(button_name)
+                        add_test_result("PASS")
                         #kurz warten, bis das Menü geöffnet wurde
                         page.wait_for_timeout(1000)
 
@@ -1267,6 +1344,7 @@ def run_test(url, expected_title, expected_text):
 
                     except Exception as error:
                         failed_expandable_buttons.append((button_name, str(error)))
+                        add_test_result("FAIL")
 
                     print(f"\rPrüfe Aufklappbare Buttons... "f"{len(passed_expandable_buttons) + len(failed_expandable_buttons)}"f"/{len(expandable_buttons)}",end="")
 
@@ -1367,9 +1445,11 @@ def run_test(url, expected_title, expected_text):
                             # -------------------------------------------------------------------
 
                             passed_new_buttons.append((parent_name, new_button_name))
+                            add_test_result("PASS")
 
                         except Exception as error:
                             failed_new_buttons.append((parent_name,new_button_name,str(error)))
+                            add_test_result("FAIL")
 
                     print(f"Prüfe neue Buttons... "f"{len(passed_new_buttons) + len(failed_new_buttons)}"f"/{len(new_buttons)}")
                     print(f"  Neue Buttons: "f"{len(passed_new_buttons)} PASS - "f"{len(failed_new_buttons)} FAIL")
@@ -1472,9 +1552,11 @@ def run_test(url, expected_title, expected_text):
                             raise Exception("Interaktives Element ohne Namen")
 
                         passed_interactive_elements.append((tag_name, element_name))
+                        add_test_result("PASS")
 
                     except Exception as error:
                         failed_interactive_elements.append((tag_name,element_name,str(error)))
+                        add_test_result("FAIL")
 
                     print(f"\rPrüfe Interaktive Elemente... "f"{len(passed_interactive_elements) + len(failed_interactive_elements)}"f"/{len(interactive_elements)}",end="")
 
@@ -1706,10 +1788,12 @@ def run_test(url, expected_title, expected_text):
 
                         child_element.click(timeout=3000,force=True)
                         passed_interactive_children.append((parent_name,child_name))
+                        add_test_result("PASS")
 
                     except Exception as error:
                         error_message = str(error).splitlines()[0]
                         failed_interactive_children.append((parent_name, child_name, error_message))
+                        add_test_result("FAIL")
 
                     interactive_children_checked += 1
                     #genaueres anzeigen was  tatsächlich abgearbeitet ist
@@ -1889,13 +1973,13 @@ def run_test(url, expected_title, expected_text):
                                         raise Exception("Eingabe wurde nicht übernommen")
 
                                     # PASS-Ergebnis speichern
-                                    field_results.append(
-                                        {"index": index + 1, "status": "PASS", "message": "beschreibbar"})
+                                    field_results.append({"index": index + 1, "status": "PASS", "message": "beschreibbar"})
+                                    add_test_result("PASS")
 
                                 # FAIL-Ergebnis speichern
                                 except Exception as field_error:
-                                    field_results.append(
-                                        {"index": index + 1, "status": "FAIL", "message": str(field_error)})
+                                    field_results.append({"index": index + 1, "status": "FAIL", "message": str(field_error)})
+                                    add_test_result("FAIL")
 
                             #Formular absenden und Ergebnis prüfen
                             submit_result = {"status": "FAIL","message": "Formular konnte nicht abgeschickt werden"}
@@ -1925,9 +2009,11 @@ def run_test(url, expected_title, expected_text):
                                     raise Exception("Erfolgsmeldung nicht sichtbar")
 
                                 submit_result = {"status": "PASS","message": f"Formular erfolgreich übermittelt - HTTP {response.status}"}
+                                add_test_result("PASS")
 
                             except Exception as submit_error:
                                 submit_result = {"status": "FAIL","message": str(submit_error)}
+                                add_test_result("FAIL")
 
                             #komplettes Formularergebnis speichern
                             form_results.append(
@@ -1945,6 +2031,7 @@ def run_test(url, expected_title, expected_text):
 
                         except Exception as error:
                             print(f"\rPrüfe Formulare... {form_index}/{len(found_forms)} - FAIL: {error}")
+                            #kein add_test_result sonst weiß man nicht welche einzelnen Prüfungen darin bereits fehlgeschlagen ist oder gar nicht erreicht wurde
 
                     print()
                     for form_result in form_results:
@@ -2059,10 +2146,11 @@ def run_test(url, expected_title, expected_text):
                                         raise Exception("Eingabe wurde nicht übernommen")
 
                                     field_results.append({"index": index + 1, "status": "PASS", "message": "beschreibbar"})
+                                    add_test_result("PASS")
 
                                 except Exception as field_error:
-                                    field_results.append(
-                                        {"index": index + 1, "status": "FAIL", "message": str(field_error)})
+                                    field_results.append({"index": index + 1, "status": "FAIL", "message": str(field_error)})
+                                    add_test_result("FAIL")
 
                             # Formular absenden und Ergebnis prüfen
                             submit_result = {"status": "FAIL","message": "Formular konnte nicht abgeschickt werden"}
@@ -2083,9 +2171,11 @@ def run_test(url, expected_title, expected_text):
                                     raise Exception(f"Formular-Submit fehlgeschlagen - HTTP {response.status}")
 
                                 submit_result = {"status": "PASS","message": f"Formular erfolgreich übermittelt - HTTP {response.status}"}
+                                add_test_result("PASS")
 
                             except Exception as submit_error:
                                 submit_result = {"status": "FAIL", "message": str(submit_error)}
+                                add_test_result("FAIL")
 
                             #komplettes Formularergebnis speichern
                             link_form_results.append(
@@ -2222,14 +2312,17 @@ def run_test(url, expected_title, expected_text):
 
                                         if selected_value == option_value:
                                             passed_options += 1
+                                            add_test_result("PASS")
                                             individual_option_results.append({"option_index": option_index_inner + 1,"status": "PASS","message": "auswählbar"})
 
                                         else:
                                             failed_options += 1
+                                            add_test_result("FAIL")
                                             individual_option_results.append({"option_index": option_index_inner + 1,"status": "FAIL","message": "Auswahl wurde nicht übernommen"})
 
                                     except Exception as error:
                                         failed_options += 1
+                                        add_test_result("FAIL")
                                         individual_option_results.append({"option_index": option_index_inner + 1,"status": "FAIL","message": str(error)})
 
                                 select_results.append(
@@ -2393,6 +2486,30 @@ def run_test(url, expected_title, expected_text):
                 <p>Nicht auswählbar: {failed_options_total}</p>
             </div>
             """
+
+# --------------------------------------------------
+# Test Gesamtergebnis
+# --------------------------------------------------
+            total_tests = (
+                            test_summary["passed"]
+                            + test_summary["failed"]
+                            + test_summary["warnings"]
+                          )
+
+            if test_summary["failed"] > 0:
+                overall_result = "FEHLGESCHLAGEN"
+            elif test_summary["warnings"] > 0:
+                overall_result = "BESTANDEN MIT WARNUNGEN"
+            else:
+                overall_result = "BESTANDEN"
+
+            print()
+            print("Test Gesamtergebnis:")
+            print(f"  Einzelprüfungen gesamt: {total_tests}")
+            print(f"  Bestanden: {test_summary['passed']}")
+            print(f"  Warnungen: {test_summary['warnings']}")
+            print(f"  Fehlgeschlagen: {test_summary['failed']}")
+            print(f"  Gesamtergebnis: {overall_result}")
 
             report_results[-1] = browser_test_result
             test_progress = 100
