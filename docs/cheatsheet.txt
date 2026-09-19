@@ -392,3 +392,9 @@ Momentan nur starterseite am Testen
 PyCharm
 Strg + F = Suchen
 Strg + R = Suchen und Ersetzen
+
+CSS
+Am besten beide zusammen verwenden weil bessere Kompatibilität mit unterschiedlichen Browsern und PDF-Renderern
+
+break-inside: avoid = Umbruch innerhalb dieses Elements vermeiden
+page-break-inside: avoid = ältere CSS-Eigenschaft speziell für Seitenumbrüche

@@ -86,7 +86,8 @@ function create_pdf_report()
 }});
 }}
 
-if ({test_progress} < 100) {{
+if ({test_progress} < 100) 
+{{
     setTimeout(function() {{
         location.reload();
     }}, 1000);

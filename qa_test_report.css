@@ -32,11 +32,14 @@ p {
     margin: 2px 0;
 }
 
-/* Formularblöcke */
+/* Formularblöcke Seitenumbruch innerhalb von Formularblöcken vermeiden */
 .formular-block {
     margin-bottom: 20px;
     margin-left: 20px;
+    break-inside: avoid;
+    page-break-inside: avoid;
 }
+
 
 /* Formularfelder */
 .formular-block .field-result {

@@ -101,3 +101,8 @@ Dadurch können die Browser- und Funktionstests mit kontrollierten Testfällen e
 
 <!-- Screenshot der Testseite  -->
 
+## Testbericht Druck/PDF
+
+Die Testergebnisse werden automatisch aus dem vorhandenen Testbericht übernommen und für den Druck bzw. die PDF-Ausgabe vorbereitet.
+Der Druck-/PDF-Export befindet sich aktuell noch in der Weiterentwicklung. Dabei wird insbesondere die automatische Aufteilung der Inhalte auf mehrere PDF-Seiten optimiert, 
+damit zusammengehörige Testbereiche möglichst nicht unnötig voneinander getrennt werden.
