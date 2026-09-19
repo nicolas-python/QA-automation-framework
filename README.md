@@ -78,10 +78,23 @@ qa_test_report.html auswählen → Rechtsklick → Öffnen mit → gewünschten 
 3. Framework starten: ```bash python main.py```
 
 ## Verwendung
-Die zu prüfende URL kann in das obere Eingabefeld eingetragen werden. Über die vorhandenen Buttons erfolgt die weitere Bedienung des Frameworks.
+Die zu prüfende URL kann in das obere Eingabefeld eingetragen werden. 
+Über die vorhandenen Buttons erfolgt die weitere Bedienung des Frameworks.
 Nach dem Testlauf wird automatisch der HTML-Testbericht erstellt.
+Der Testbericht kann anschließend über den dafür vorgesehenen Button geöffnet werden.
 
 ## Projektstruktur
+### Zentrale Dateien
+
+- main.py – Startpunkt des Frameworks
+- gui.py – grafische Benutzeroberfläche
+- test_runner.py – Durchführung der automatisierten Tests und Erstellung des Testberichts
+- url_manager.py – Verwaltung der zu prüfenden URLs
+- url_list.txt – gespeicherte URLs
+- qa_test_report.html – automatisch erzeugter HTML-Testbericht
+- qa_test_report.css – Gestaltung des HTML-Testberichts
+- requirements.txt – benötigte Python-Abhängigkeiten
+- docs/cheatsheet.txt – hilfreiche Notizen und Befehle
 
 ## Testseite
 
