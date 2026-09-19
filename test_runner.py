@@ -2511,6 +2511,18 @@ def run_test(url, expected_title, expected_text):
             print(f"  Fehlgeschlagen: {test_summary['failed']}")
             print(f"  Gesamtergebnis: {overall_result}")
 
+            browser_test_result += f"""
+                        <h3>Test Gesamtergebnis</h3>
+
+                        <div class="gesamtuebersicht-block">
+                            <p>Einzelprüfungen gesamt: {total_tests}</p>
+                            <p>Bestanden: {test_summary["passed"]}</p>
+                            <p>Warnungen: {test_summary["warnings"]}</p>
+                            <p>Fehlgeschlagen: {test_summary["failed"]}</p>
+                            <p><strong>Gesamtergebnis: {overall_result}</strong></p>
+                        </div>
+                        """
+
             report_results[-1] = browser_test_result
             test_progress = 100
             create_report(report_file, test_start, url, report_results, test_progress)
