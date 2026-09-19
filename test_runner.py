@@ -2504,11 +2504,15 @@ def run_test(url, expected_title, expected_text):
                 overall_result = "BESTANDEN"
 
             print()
+            test_end = datetime.now()
+            test_duration = test_end - test_start
+            test_duration_seconds = test_duration.total_seconds()
             print("Test Gesamtergebnis:")
             print(f"  Einzelprüfungen gesamt: {total_tests}")
             print(f"  Bestanden: {test_summary['passed']}")
             print(f"  Warnungen: {test_summary['warnings']}")
             print(f"  Fehlgeschlagen: {test_summary['failed']}")
+            print(f"  Testdauer: {test_duration_seconds:.2f} Sekunden")
             print(f"  Gesamtergebnis: {overall_result}")
 
             browser_test_result += f"""
@@ -2519,6 +2523,7 @@ def run_test(url, expected_title, expected_text):
                             <p>Bestanden: {test_summary["passed"]}</p>
                             <p>Warnungen: {test_summary["warnings"]}</p>
                             <p>Fehlgeschlagen: {test_summary["failed"]}</p>
+                            <p>Testdauer: {test_duration_seconds:.2f} Sekunden</p>
                             <p><strong>Gesamtergebnis: {overall_result}</strong></p>
                         </div>
                         """
