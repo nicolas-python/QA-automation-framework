@@ -89,7 +89,7 @@ Der Testbericht kann anschließend über den dafür vorgesehenen Button geöffne
 - main.py – Startpunkt des Frameworks
 - gui.py – grafische Benutzeroberfläche
 - test_runner.py – Durchführung der automatisierten Tests und Erstellung des Testberichts
-- url_manager.py – Verwaltung der zu prüfenden URLs
+- url_manager.py – Laden, Speichern und Löschen der zu prüfenden URLs
 - url_list.txt – gespeicherte URLs
 - qa_test_report.html – automatisch erzeugter HTML-Testbericht
 - qa_test_report.css – Gestaltung des HTML-Testberichts
