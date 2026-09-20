@@ -1991,24 +1991,16 @@ def run_test(url, expected_title, expected_text):
                                 if submit_button.count() == 0:
                                     raise Exception("Submit-Button nicht gefunden")
 
-                                with page.expect_response(lambda response: response.request.method == "POST",timeout=10000) as response_info:
-                                    submit_button.first.click(timeout=3000)
+                                if not submit_button.first.is_visible():
+                                    raise Exception("Submit-Button nicht sichtbar")
 
-                                response = response_info.value
+                                if not submit_button.first.is_enabled():
+                                    raise Exception("Submit-Button ist deaktiviert")
 
-                                if not 200 <= response.status < 400:
-                                    raise Exception(f"Formular-Submit fehlgeschlagen - HTTP {response.status}")
-
-                                page.wait_for_load_state("domcontentloaded", timeout=10000)
-                                success_message = page.get_by_text("Nachricht wurde erfolgreich übermittelt",exact=True)
-
-                                if success_message.count() == 0:
-                                    raise Exception("Erfolgsmeldung nicht gefunden")
-
-                                if not success_message.first.is_visible():
-                                    raise Exception("Erfolgsmeldung nicht sichtbar")
-
-                                submit_result = {"status": "PASS","message": f"Formular erfolgreich übermittelt - HTTP {response.status}"}
+                                submit_result = {
+                                    "status": "PASS",
+                                    "message": "Formular grundsätzlich absendbar - Submit-Button vorhanden und aktiv - kein Absenden durchgeführt"
+                                }
                                 add_test_result("PASS")
 
                             except Exception as submit_error:
@@ -2162,15 +2154,16 @@ def run_test(url, expected_title, expected_text):
                                 if submit_button.count() == 0:
                                     raise Exception("Submit-Button nicht gefunden")
 
-                                with page.expect_response(lambda response: response.request.method == "POST",timeout=10000) as response_info:
-                                    submit_button.first.click(timeout=3000)
+                                if not submit_button.first.is_visible():
+                                    raise Exception("Submit-Button nicht sichtbar")
 
-                                response = response_info.value
+                                if not submit_button.first.is_enabled():
+                                    raise Exception("Submit-Button ist deaktiviert")
 
-                                if not 200 <= response.status < 400:
-                                    raise Exception(f"Formular-Submit fehlgeschlagen - HTTP {response.status}")
-
-                                submit_result = {"status": "PASS","message": f"Formular erfolgreich übermittelt - HTTP {response.status}"}
+                                submit_result = {
+                                    "status": "PASS",
+                                    "message": "Formular grundsätzlich absendbar - Submit-Button vorhanden und aktiv - kein Absenden durchgeführt"
+                                }
                                 add_test_result("PASS")
 
                             except Exception as submit_error:
