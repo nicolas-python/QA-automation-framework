@@ -216,10 +216,11 @@ def run_test(url, expected_title, expected_text):
             add_test_result("FAIL")
 
         report_results.append(f"""
-        <h3>HTTPS Prüfung</h3>
-        <p>{https_result}</p>
+        <div class="test-block">
+            <h3>HTTPS Prüfung</h3>
+            <p>{https_result}</p>
+        </div>
         """)
-
         test_progress = 5
         create_report(report_file, test_start, url, report_results, test_progress)
 
@@ -285,8 +286,10 @@ def run_test(url, expected_title, expected_text):
         ssl_result = "<p>  SSL/TLS: FAIL - connection refused</p>"
 
     report_results.append(f"""
-    <h3>SSL/TLS Prüfung</h3>
-    <p>{ssl_result}</p>
+    <div class="test-block">
+        <h3>SSL/TLS Prüfung</h3>
+        <p>{ssl_result}</p>
+    </div>
     """)
 
     test_progress = 10
@@ -321,8 +324,10 @@ def run_test(url, expected_title, expected_text):
         domain_result = "Domain: FAIL - konnte nicht geprüft werden"
 
     report_results.append(f"""
-    <h3>Domain Prüfung</h3>
-    <p>{domain_result}</p>
+    <div class="test-block">
+        <h3>Domain Prüfung</h3>
+        <p>{domain_result}</p>
+    </div>
     """)
 
     test_progress = 15
@@ -368,8 +373,10 @@ def run_test(url, expected_title, expected_text):
         status_result = "Status: FAIL - konnte nicht geprüft werden"
 
     report_results.append(f"""
-    <h3>Status Prüfung</h3>
-    <p>{status_result}</p>
+    <div class="test-block">
+        <h3>Status Prüfung</h3>
+        <p>{status_result}</p>
+    </div>
     """)
 
     test_progress = 20
@@ -408,8 +415,10 @@ def run_test(url, expected_title, expected_text):
         performance_result = "Ladezeit: FAIL - konnte nicht geprüft werden"
 
     report_results.append(f"""
-    <h3>Performance Prüfung</h3>
-    <p>{performance_result}</p>
+    <div class="test-block">
+        <h3>Performance Prüfung</h3>
+        <p>{performance_result}</p>
+    </div>
     """)
 
     test_progress = 25
@@ -455,9 +464,11 @@ def run_test(url, expected_title, expected_text):
         content_result = "Content: FAIL - konnte nicht geprüft werden"
 
     report_results.append(f"""
-    <h3>Content Check Prüfung</h3>
-    <p>{title_result}</p>
-    <p>{content_result}</p>
+    <div class="test-block">
+        <h3>Content Check Prüfung</h3>
+        <p>{title_result}</p>
+        <p>{content_result}</p>
+    </div>
     """)
 
     test_progress = 30
@@ -542,8 +553,10 @@ def run_test(url, expected_title, expected_text):
         broken_links_result = "Broken Links: FAIL - konnte Links nicht finden"
 
     report_results.append(f"""
-    <h3>Broken Links Prüfung</h3>
-    <p>{broken_links_result}</p>
+    <div class="test-block">
+        <h3>Broken Links Prüfung</h3>
+        <p>{broken_links_result}</p>
+    </div>
     """)
 
     test_progress = 34
@@ -614,8 +627,10 @@ def run_test(url, expected_title, expected_text):
         images_result = "Bilder: FAIL - konnte Bilder nicht prüfen"
 
     report_results.append(f"""
-    <h3>Bilder / Dateien Prüfung</h3>
-    <p>{images_result}</p>
+    <div class="test-block">
+        <h3>Bilder / Dateien Prüfung</h3>
+        <p>{images_result}</p>
+    </div>
     """)
 
     test_progress = 38
@@ -1140,7 +1155,13 @@ def run_test(url, expected_title, expected_text):
             <p>{buttons_result}</p>
             """
 
-            report_results.append(browser_test_result)
+            report_results.append(f"""
+            <div class="test-block">
+                <h3>Browser Prüfung</h3>
+                {browser_test_result}
+            </div>
+            """)
+
             test_progress = 54
             create_report(report_file, test_start, url, report_results, test_progress)
 

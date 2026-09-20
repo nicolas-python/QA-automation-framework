@@ -88,7 +88,7 @@ if (100 < 100)
     <h3>Anfrage QA-Test:</h3>
                                                                 
     <p>Datum: 20.09.2026</p>             
-    <p>Uhrzeit: 11:50:36</p>      
+    <p>Uhrzeit: 13:56:25</p>      
     <p>URL: http://192.168.0.236/test/test_fomular_raspberry/index.html</p>
     
     <div class="no-print">
@@ -104,27 +104,41 @@ if (100 < 100)
         
     <div class="report-results">
         
-        <h3>HTTPS Prüfung</h3>
-        <p>HTTPS: FAIL http://192.168.0.236/test/test_fomular_raspberry/index.html</p>
+        <div class="test-block">
+            <h3>HTTPS Prüfung</h3>
+            <p>HTTPS: FAIL http://192.168.0.236/test/test_fomular_raspberry/index.html</p>
+        </div>
         
-    <h3>SSL/TLS Prüfung</h3>
-    <p><p>  SSL/TLS: FAIL - connection refused</p></p>
+    <div class="test-block">
+        <h3>SSL/TLS Prüfung</h3>
+        <p><p>  SSL/TLS: FAIL - connection refused</p></p>
+    </div>
     
-    <h3>Domain Prüfung</h3>
-    <p>Domain: PASS - 192.168.0.236 → 192.168.0.236</p>
+    <div class="test-block">
+        <h3>Domain Prüfung</h3>
+        <p>Domain: PASS - 192.168.0.236 → 192.168.0.236</p>
+    </div>
     
-    <h3>Status Prüfung</h3>
-    <p>Status: PASS - 200</p>
+    <div class="test-block">
+        <h3>Status Prüfung</h3>
+        <p>Status: PASS - 200</p>
+    </div>
     
-    <h3>Performance Prüfung</h3>
-    <p>Ladezeit: PASS - 0.07 Sekunden</p>
+    <div class="test-block">
+        <h3>Performance Prüfung</h3>
+        <p>Ladezeit: PASS - 0.24 Sekunden</p>
+    </div>
     
-    <h3>Content Check Prüfung</h3>
-    <p>Title: FAIL - erwartet:  | gefunden: Hauptseite</p>
-    <p>Content: PASS - erwarteter Text gefunden: </p>
+    <div class="test-block">
+        <h3>Content Check Prüfung</h3>
+        <p>Title: FAIL - erwartet:  | gefunden: Hauptseite</p>
+        <p>Content: PASS - erwarteter Text gefunden: </p>
+    </div>
     
-    <h3>Broken Links Prüfung</h3>
-    <p>Broken Links: 4 PASS - 0 FAIL<br></p>
+    <div class="test-block">
+        <h3>Broken Links Prüfung</h3>
+        <p>Broken Links: 4 PASS - 0 FAIL<br></p>
+    </div>
     
     <h3>HTML-Struktur Prüfung</h3>
     
@@ -216,7 +230,7 @@ if (100 < 100)
                         
                         <p class="field-result">Feld 8: PASS - beschreibbar</p>
                         
-                    <p>Absenden: PASS - Formular grundsätzlich absendbar - Submit-Button vorhanden und aktiv</p>
+                    <p>Absenden: PASS - Formular grundsätzlich absendbar - Submit-Button vorhanden und aktiv - kein Absenden durchgeführt</p>
                     </div>
                     
                     <div class="formular-block">
@@ -243,7 +257,7 @@ if (100 < 100)
                         
                         <p class="field-result">Feld 8: PASS - beschreibbar</p>
                         
-                    <p>Absenden: PASS - Formular grundsätzlich absendbar - Submit-Button vorhanden und aktiv</p>
+                    <p>Absenden: PASS - Formular grundsätzlich absendbar - Submit-Button vorhanden und aktiv - kein Absenden durchgeführt</p>
                     </div>
                     
                                     <h4>Formulare über Links:</h4>
@@ -272,7 +286,7 @@ if (100 < 100)
                                     
                                     <p class="field-result">Feld 8: PASS - beschreibbar</p>
                                     
-                                <p>Absenden: PASS - Formular grundsätzlich absendbar - Submit-Button vorhanden und aktiv</p>
+                                <p>Absenden: PASS - Formular grundsätzlich absendbar - Submit-Button vorhanden und aktiv - kein Absenden durchgeführt</p>
                                 </div>
                                 
             <h4>Formulare Auswahlbare Inhalte / Optionsfelder:</h4>
@@ -331,7 +345,7 @@ if (100 < 100)
                             <p>Bestanden: 60</p>
                             <p>Warnungen: 0</p>
                             <p>Fehlgeschlagen: 5</p>
-                            <p>Testdauer: 52.22 Sekunden</p>
+                            <p>Testdauer: 50.01 Sekunden</p>
                             <p><strong>Gesamtergebnis: FEHLGESCHLAGEN</strong></p>
                         </div>
                         

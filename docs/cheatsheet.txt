@@ -398,3 +398,37 @@ Am besten beide zusammen verwenden weil bessere Kompatibilität mit unterschiedl
 
 break-inside: avoid = Umbruch innerhalb dieses Elements vermeiden
 page-break-inside: avoid = ältere CSS-Eigenschaft speziell für Seitenumbrüche
+
+break-inside: avoid = Umbruch innerhalb dieses Elements vermeiden
+page-break-inside: avoid = ältere CSS-Eigenschaft speziell für Seitenumbrüche
+
+html2pdf.js – offizielle Dokumentation
+https://github.com/eKoopmans/html2pdf.js#getting-started
+Was macht :
+
+html2pdf.js
+→ wandelt HTML bzw. ein HTML-Element in eine PDF um
+
+html2canvas
+→ erstellt aus HTML eine Canvas-Darstellung
+
+jsPDF
+→ erstellt/speichert die eigentliche PDF
+
+html2pdf.bundle.min.js
+→ Bundle-Version
+→ enthält html2pdf.js + html2canvas + jsPDF
+
+pagebreak
+→ steuert Seitenumbrüche
+
+pagebreak.mode
+→ bestimmt, wie Seitenumbrüche behandelt werden
+
+pagebreak.avoid
+→ bestimmte HTML-Elemente möglichst nicht innerhalb teilen
+
+z.B.
+avoid: ".formular-block"
+→ Formularblock möglichst auf einer Seite zusammenhalten
+

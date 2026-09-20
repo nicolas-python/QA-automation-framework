@@ -6,6 +6,13 @@ body {
     margin: 30px;
 }
 
+/* PDF-Abstände alle Testblöcke */
+.test-block {
+    margin-bottom: 20px;
+    break-inside: avoid;
+    page-break-inside: avoid;
+}
+
 /* Hauptüberschrift */
 h1 {
     margin: 0 0 30px 0;
@@ -14,12 +21,16 @@ h1 {
 /* Hauptbereiche */
 h2 {
     margin: 35px 0 15px 0;
+    break-after: avoid;
+    page-break-after: avoid;
 }
 
 /* Haupt-Testbereiche */
 h3 {
     margin-top: 60px;
     margin-bottom: 8px;
+    break-after: avoid;
+    page-break-after: avoid;
 }
 
 /* Unterbereiche */
