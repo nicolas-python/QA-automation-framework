@@ -7,7 +7,6 @@ import socket                           #für eine direkte Netzwerkverbindung zu
 from datetime import datetime           #datetime zum Erstellen, Umwandeln und Vergleichen von Datum und Uhrzeit
 import re                               #Regular Expressions= Suchmuster für Text
 from playwright.sync_api import sync_playwright     #playwright für Browser-Automatisierung und Browser-Tests     #sync_playwright() startet die Schnittstelle, über die Python den Browser steuern kann
-from playwright.sync_api import expect              #expect zum Prüfen, ob ein erwarteter Zustand eingetreten ist(speziell für Browser-Elemente und Browser-Zustände)
 
 
 # --------------------------------------------------
