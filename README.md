@@ -52,7 +52,7 @@ Der erzeugte Bericht kann anschließend im Browser geöffnet werden und zeigt de
 Die Datei qa_test_report.html kann in einem beliebigen Browser geöffnet werden:
 qa_test_report.html auswählen → Rechtsklick → Öffnen mit → gewünschten Browser auswählen.
 
-<!-- Screenshot des HTML-Testberichts -->
+![QA html](docs/QA_html.png)
 
 ## Verwendete Technologien
 
@@ -83,6 +83,8 @@ Die zu prüfende URL kann in das obere Eingabefeld eingetragen werden.
 Nach dem Testlauf wird automatisch der HTML-Testbericht erstellt.
 Der Testbericht kann anschließend über den dafür vorgesehenen Button geöffnet werden.
 
+![QA GUI](docs/QA_gui.png)
+
 ## Projektstruktur
 ### Zentrale Dateien
 
@@ -112,10 +114,10 @@ Diese enthält unter anderem:
 
 Dadurch können die Browser- und Funktionstests mit kontrollierten Testfällen entwickelt und überprüft werden.
 
-<!-- Screenshot der Testseite  -->
-
 ## Testbericht Druck/PDF
 
 Die Testergebnisse werden automatisch aus dem vorhandenen Testbericht übernommen und für den Druck bzw. die PDF-Ausgabe vorbereitet.
 Der Druck-/PDF-Export befindet sich aktuell noch in der Weiterentwicklung. Dabei wird insbesondere die automatische Aufteilung der Inhalte auf mehrere PDF-Seiten optimiert, 
 damit zusammengehörige Testbereiche möglichst nicht unnötig voneinander getrennt werden.
+
+![QA_pdf](docs/QA_pdf.png)
