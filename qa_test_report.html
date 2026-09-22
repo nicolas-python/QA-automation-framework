@@ -41,6 +41,9 @@ function create_pdf_report()
         margin: [15, 15, 15, 15],
         width: 180,
         windowWidth: 794,
+        pagebreak:{
+                    mode: ["css", "legacy"]
+                  },
         
         html2canvas: 
         {
@@ -87,8 +90,8 @@ if (100 < 100)
     
     <h3>Anfrage QA-Test:</h3>
                                                                 
-    <p>Datum: 21.09.2026</p>             
-    <p>Uhrzeit: 16:51:26</p>      
+    <p>Datum: 22.09.2026</p>             
+    <p>Uhrzeit: 16:26:03</p>      
     <p>URL: http://192.168.0.236/test/test_fomular_raspberry/index.html</p>
     
     <div class="no-print">
@@ -126,12 +129,12 @@ if (100 < 100)
     
     <div class="test-block">
         <h3>Performance Prüfung</h3>
-        <p>Ladezeit: PASS - 0.34 Sekunden</p>
+        <p>Ladezeit: PASS - 0.65 Sekunden</p>
     </div>
     
     <div class="test-block">
         <h3>Content Check Prüfung</h3>
-        <p>Title: PASS - Hauptseite</p>
+        <p>Title: FAIL - erwartet:  | gefunden: Hauptseite</p>
         <p>Content: PASS - erwarteter Text gefunden: </p>
     </div>
     
@@ -140,6 +143,7 @@ if (100 < 100)
         <p>Broken Links: 4 PASS - 0 FAIL<br></p>
     </div>
     
+    <div class="test-block">
     <h3>HTML-Struktur Prüfung</h3>
     
     <h4>Sprache:</h4>
@@ -175,7 +179,9 @@ if (100 < 100)
     
     <h4>Robots:</h4>
     <p>Robots: FAIL - nicht vorhanden</p>
+    </div>
     
+    <div class="test-block">
     <h3>Browser Tests</h3>
     
             <h4>Button test sichtbar:</h4>
@@ -289,6 +295,7 @@ if (100 < 100)
                                 <p>Absenden: PASS - Formular grundsätzlich absendbar - Submit-Button vorhanden und aktiv - kein Absenden durchgeführt</p>
                                 </div>
                                 
+            <div class="formular-block">
             <h4>Formulare Auswahlbare Inhalte / Optionsfelder:</h4>
             
                     <div class="formular-block">
@@ -316,6 +323,11 @@ if (100 < 100)
                             <p>Option 4:
                             PASS - auswählbar</p>
                             
+                                </div>
+                               
+                            </div>
+                           
+            <div class="formular-block">
             <h4>Formulare Gesamtübersicht:</h4>
             
             <div class="gesamtuebersicht-block">
@@ -342,10 +354,10 @@ if (100 < 100)
 
                         <div class="gesamtuebersicht-block">
                             <p>Einzelprüfungen gesamt: 65</p>
-                            <p>Bestanden: 61</p>
+                            <p>Bestanden: 60</p>
                             <p>Warnungen: 0</p>
-                            <p>Fehlgeschlagen: 4</p>
-                            <p>Testdauer: 51.02 Sekunden</p>
+                            <p>Fehlgeschlagen: 5</p>
+                            <p>Testdauer: 49.83 Sekunden</p>
                             <p><strong>Gesamtergebnis: FEHLGESCHLAGEN</strong></p>
                         </div>
                         

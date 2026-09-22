@@ -431,4 +431,3 @@ pagebreak.avoid
 z.B.
 avoid: ".formular-block"
 → Formularblock möglichst auf einer Seite zusammenhalten
-

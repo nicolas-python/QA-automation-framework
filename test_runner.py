@@ -67,6 +67,9 @@ function create_pdf_report()
         margin: [15, 15, 15, 15],
         width: 180,
         windowWidth: 794,
+        pagebreak:{{
+                    mode: ["css", "legacy"]
+                  }},
         
         html2canvas: 
         {{
@@ -644,6 +647,7 @@ def run_test(url, expected_title, expected_text):
     print("HTML-Struktur Prüfung")
 
     html_structure_result = """
+    <div class="test-block">
     <h3>HTML-Struktur Prüfung</h3>
     """
 
@@ -926,6 +930,7 @@ def run_test(url, expected_title, expected_text):
     html_structure_result += f"""
     <h4>Robots:</h4>
     <p>{robots_result}</p>
+    </div>
     """
 
     report_results[-1] = html_structure_result
@@ -952,6 +957,7 @@ def run_test(url, expected_title, expected_text):
     print("Browser Tests")
 
     browser_test_result = """
+    <div class="test-block">
     <h3>Browser Tests</h3>
     """
 
@@ -2392,6 +2398,7 @@ def run_test(url, expected_title, expected_text):
                 print("  Auswahlfelder: FAIL - "f"konnte nicht geprüft werden: {error}")
 
             browser_test_result += """
+            <div class="formular-block">
             <h4>Formulare Auswahlbare Inhalte / Optionsfelder:</h4>
             """
 
@@ -2425,6 +2432,14 @@ def run_test(url, expected_title, expected_text):
                             <p>Option {option_result_inner["option_index"]}:
                             {option_result_inner["status"]} - {option_result_inner["message"]}</p>
                             """
+
+                        browser_test_result += """
+                                </div>
+                               """
+
+                    browser_test_result += """
+                            </div>
+                           """
 
             report_results[-1] = browser_test_result
             test_progress = 98
@@ -2475,6 +2490,7 @@ def run_test(url, expected_title, expected_text):
             print(f"  Nicht auswählbar: {failed_options_total}")
 
             browser_test_result += """
+            <div class="formular-block">
             <h4>Formulare Gesamtübersicht:</h4>
             """
 
