@@ -2,6 +2,7 @@ import tkinter as tk
 from url_manager import load_urls, save_url, delete_url
 from test_runner import run_test, export_pdf_with_playwright
 import webbrowser                           #ermöglicht das Öffnen von Webseiten und HTML-Dateien im Standardbrowser
+import os
 
 class QA_GUI:
 
@@ -116,5 +117,8 @@ class QA_GUI:
         self.window.mainloop()
 
     def export_pdf(self):
-        export_pdf_with_playwright("qa_test_report.html","qa_test_report.pdf")
+        downloads = os.path.join(os.path.expanduser("~"), "Downloads")
+        pdf_file = os.path.join(downloads, "qa_test_report.pdf")
+
+        export_pdf_with_playwright("qa_test_report.html",pdf_file)
 
