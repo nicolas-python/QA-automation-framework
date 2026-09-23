@@ -30,8 +30,6 @@ def create_report(report_file, test_start, url, report_results, test_progress):
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="qa_test_report.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         .loading-dots::after 
         {{                             
@@ -52,42 +50,6 @@ def create_report(report_file, test_start, url, report_results, test_progress):
 </head>
 
 <script>
-function create_pdf_report() 
-{{
-
-    const {{ jsPDF }} = window.jspdf;
-
-    const pdf = new jsPDF({{
-        format: "a4",
-        unit: "mm"
-    }});
-
-    pdf.html(document.querySelector(".report-content"), 
-    {{
-        margin: [15, 15, 15, 15],
-        width: 180,
-        windowWidth: 794,
-        pagebreak:{{
-                    mode: ["css", "legacy"]
-                  }},
-        
-        html2canvas: 
-        {{
-        onclone: function (clonedDocument) 
-        {{
-            clonedDocument.querySelectorAll(".no-print").forEach(function (element) 
-            {{
-                element.style.display = "none";
-            }});
-        }}
-    }},
-
-    callback: function (pdf) {{
-        pdf.save("qa_test_report.pdf");
-    }}
-}});
-}}
-
 if ({test_progress} < 100) 
 {{
     setTimeout(function() {{
@@ -2563,3 +2525,30 @@ def run_test(url, expected_title, expected_text):
 
     except Exception as error:
         print("  Browser Tests : FAIL - konnte nicht  vollständig geprüft werden:", error)
+
+def export_pdf_with_playwright(html_file, pdf_file):                #html_file = welche HTML-Datei soll als Vorlage verwendet werden  #pdf_file = wie soll die fertige PDF-Datei heißen
+    import os                                                       #os =Operating System(Betriebssystem) =um mit Dateipfaden arbeiten zu können
+    html_path = os.path.abspath(html_file)
+    html_url = "file:///" + html_path.replace("\\", "/")
+
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page()
+
+        page.goto(html_url, wait_until="networkidle")           #wait_until="networkidle = warten bis keine bzw. kaum noch Netzwerkaktivität
+
+        page.pdf(
+            path=pdf_file,
+            format="A4",
+            print_background=True,
+            margin=
+            {
+                "top": "15mm",
+                "bottom": "15mm",
+                "left": "15mm",
+                "right": "15mm"
+            })
+
+        browser.close()
+
+    print(f"PDF gespeichert: {pdf_file}")

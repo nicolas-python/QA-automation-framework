@@ -1,6 +1,6 @@
 import tkinter as tk
 from url_manager import load_urls, save_url, delete_url
-from test_runner import run_test
+from test_runner import run_test, export_pdf_with_playwright
 import webbrowser                           #ermöglicht das Öffnen von Webseiten und HTML-Dateien im Standardbrowser
 
 class QA_GUI:
@@ -25,6 +25,9 @@ class QA_GUI:
 
         self.report_button = tk.Button(button_frame, text="Report Anzeigen", command=self.open_report)
         self.report_button.pack(side="left", padx=5)
+
+        self.pdf_button = tk.Button(button_frame,text="PDF exportieren",command=self.export_pdf)
+        self.pdf_button.pack(side="left", padx=5)
 
         self.window.bind("<Return>", lambda event: self.button_clicked())
 
@@ -111,4 +114,7 @@ class QA_GUI:
 
     def start(self):
         self.window.mainloop()
+
+    def export_pdf(self):
+        export_pdf_with_playwright("qa_test_report.html","qa_test_report.pdf")
 

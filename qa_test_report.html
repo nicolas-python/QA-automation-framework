@@ -4,8 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="qa_test_report.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         .loading-dots::after 
         {                             
@@ -26,42 +24,6 @@
 </head>
 
 <script>
-function create_pdf_report() 
-{
-
-    const { jsPDF } = window.jspdf;
-
-    const pdf = new jsPDF({
-        format: "a4",
-        unit: "mm"
-    });
-
-    pdf.html(document.querySelector(".report-content"), 
-    {
-        margin: [15, 15, 15, 15],
-        width: 180,
-        windowWidth: 794,
-        pagebreak:{
-                    mode: ["css", "legacy"]
-                  },
-        
-        html2canvas: 
-        {
-        onclone: function (clonedDocument) 
-        {
-            clonedDocument.querySelectorAll(".no-print").forEach(function (element) 
-            {
-                element.style.display = "none";
-            });
-        }
-    },
-
-    callback: function (pdf) {
-        pdf.save("qa_test_report.pdf");
-    }
-});
-}
-
 if (100 < 100) 
 {
     setTimeout(function() {
@@ -90,8 +52,8 @@ if (100 < 100)
     
     <h3>Anfrage QA-Test:</h3>
                                                                 
-    <p>Datum: 22.09.2026</p>             
-    <p>Uhrzeit: 16:26:03</p>      
+    <p>Datum: 23.09.2026</p>             
+    <p>Uhrzeit: 17:51:01</p>      
     <p>URL: http://192.168.0.236/test/test_fomular_raspberry/index.html</p>
     
     <div class="no-print">
@@ -129,7 +91,7 @@ if (100 < 100)
     
     <div class="test-block">
         <h3>Performance Prüfung</h3>
-        <p>Ladezeit: PASS - 0.65 Sekunden</p>
+        <p>Ladezeit: PASS - 0.22 Sekunden</p>
     </div>
     
     <div class="test-block">
@@ -357,7 +319,7 @@ if (100 < 100)
                             <p>Bestanden: 60</p>
                             <p>Warnungen: 0</p>
                             <p>Fehlgeschlagen: 5</p>
-                            <p>Testdauer: 49.83 Sekunden</p>
+                            <p>Testdauer: 51.63 Sekunden</p>
                             <p><strong>Gesamtergebnis: FEHLGESCHLAGEN</strong></p>
                         </div>
                         
