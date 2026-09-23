@@ -10,44 +10,57 @@ class QA_GUI:
         self.window = tk.Tk()
 
         self.window.title("QA Automation Framework")
-        self.window.geometry("400x350")
+        self.window.geometry("400x670")
 
-        self.label = tk.Label(self.window,text="Webseite testen:")
-        self.label.pack(pady=10)
+        #titel
+        title_label = tk.Label(self.window,text="QA Automation Framework",font=("Arial", 18, "bold"))
+        title_label.pack(pady=(20, 5))
 
-        self.url_entry = tk.Entry(self.window,width=40)
-        self.url_entry.pack()
+        subtitle_label = tk.Label(self.window,text="Website Quality Assurance",font=("Arial", 10))
+        subtitle_label.pack(pady=(0, 20))
 
-        button_frame = tk.Frame(self.window)
-        button_frame.pack(pady=10)
+        #webseite testen
+        test_frame = tk.LabelFrame(self.window,text="Webseite testen",padx=15,pady=15)                  #tk.LabelFrame = erstellt einen Rahmen mit Beschriftung mit self.window wird es direkt im hauptfenster erzeugt
+        test_frame.pack(fill="x", padx=20, pady=10)                                                     # fill x = Rahmen wird über die verfügbare Breite gezogen
 
-        self.button = tk.Button(button_frame, text="Test starten", command=self.button_clicked)
-        self.button.pack(side="left", padx=5)
+        self.url_entry = tk.Entry(test_frame, width=50)
+        self.url_entry.pack(pady=5)
 
-        self.report_button = tk.Button(button_frame, text="Report Anzeigen", command=self.open_report)
+        self.button = tk.Button(test_frame,text="Test starten",command=self.button_clicked,width=20)
+        self.button.pack(pady=10)
+
+        #bericht
+        report_frame = tk.LabelFrame(self.window,text="Bericht",padx=15,pady=15)
+        report_frame.pack(fill="x", padx=20, pady=10)
+
+        self.report_button = tk.Button(report_frame,text="Report anzeigen",command=self.open_report,width=18)
         self.report_button.pack(side="left", padx=5)
 
-        self.pdf_button = tk.Button(button_frame,text="PDF exportieren",command=self.export_pdf)
+        self.pdf_button = tk.Button(report_frame,text="PDF exportieren",command=self.export_pdf,width=18)
         self.pdf_button.pack(side="left", padx=5)
 
         self.window.bind("<Return>", lambda event: self.button_clicked())
 
-        self.save_button = tk.Button(self.window,text="URL speichern",command=self.save_url)
-        self.save_button.pack(padx=10)
+        #gespeicherte URLS
+        url_frame = tk.LabelFrame(self.window,text="Gespeicherte URLs",padx=15,pady=15)
+        url_frame.pack(fill="both", expand=True, padx=20, pady=10)
 
-        self.url_button = tk.Button(self.window, text="Gespeicherte URLs laden", command=self.load_saved_urls)
-        self.url_button.pack(pady=10)
+        self.save_button = tk.Button(url_frame,text="URL speichern",command=self.save_url,width=18)
+        self.save_button.pack(pady=5)
 
-        self.url_listbox = tk.Listbox(self.window, width=50, height=5)
-        self.url_listbox.pack(pady=10)
+        self.url_button = tk.Button(url_frame,text="URLs laden",command=self.load_saved_urls,width=18)
+        self.url_button.pack(pady=5)
 
-        self.url_listbox.bind("<Return>", lambda event: self.load_selected_url())
+        self.url_listbox = tk.Listbox(url_frame,width=50,height=5)
+        self.url_listbox.pack(pady=10, fill="x")
 
-        self.delete_button = tk.Button(self.window,text="URL löschen",command=self.delete_selected_url)
-        self.delete_button.pack(padx=10)
+        self.url_listbox.bind("<Return>",lambda event: self.load_selected_url())
 
-        self.load_button = tk.Button(self.window,text="URLs laden",command=self.load_selected_url)
-        self.load_button.pack()
+        self.delete_button = tk.Button(url_frame,text="URL löschen",command=self.delete_selected_url,width=18)
+        self.delete_button.pack(pady=5)
+
+        self.load_button = tk.Button(url_frame,text="URL auswählen",command=self.load_selected_url,width=18)
+        self.load_button.pack(pady=5)
 
     def open_report(self):
         webbrowser.open("qa_test_report.html")

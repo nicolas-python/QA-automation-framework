@@ -67,7 +67,6 @@ if ({test_progress} < 100)
         
                 <div class="report-buttons">
                     <button onclick="window.print()">Bericht drucken</button>
-                    <button onclick="create_pdf_report()">Als PDF speichern</button>
                 </div>
 
                 Hinweis: Genauere Fehlerdetails werden in der Konsole angezeigt
