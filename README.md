@@ -78,10 +78,16 @@ qa_test_report.html auswählen → Rechtsklick → Öffnen mit → gewünschten 
 3. Framework starten: ```bash python main.py```
 
 ## Verwendung
-Die zu prüfende URL kann in das obere Eingabefeld eingetragen werden. 
-Über die vorhandenen Buttons erfolgt die weitere Bedienung des Frameworks.
+Die zu prüfende URL kann in das obere Eingabefeld eingetragen werden.
+Über den Button „Test starten“ wird der Testlauf gestartet.
+Gespeicherte URLs können über die entsprechenden Buttons geladen, gespeichert, ausgewählt und gelöscht werden.
+
 Nach dem Testlauf wird automatisch der HTML-Testbericht erstellt.
-Der Testbericht kann anschließend über den dafür vorgesehenen Button geöffnet werden.
+Der Testbericht kann anschließend über den Button „Report anzeigen“ geöffnet werden.
+
+Über den Button „PDF exportieren“ kann der Testbericht zusätzlich als PDF gespeichert werden.
+Die PDF-Datei wird automatisch im Downloads-Ordner als `qa_test_report.pdf` gespeichert.
+
 
 ![QA GUI](docs/QA_gui.png)
 
@@ -116,8 +122,9 @@ Dadurch können die Browser- und Funktionstests mit kontrollierten Testfällen e
 
 ## Testbericht Druck/PDF
 
-Die Testergebnisse werden automatisch aus dem vorhandenen Testbericht übernommen und für den Druck bzw. die PDF-Ausgabe vorbereitet.
-Der Druck-/PDF-Export befindet sich aktuell noch in der Weiterentwicklung. Dabei wird insbesondere die automatische Aufteilung der Inhalte auf mehrere PDF-Seiten optimiert, 
-damit zusammengehörige Testbereiche möglichst nicht unnötig voneinander getrennt werden.
+Der vorhandene HTML-Testbericht kann direkt aus dem Browser heraus gedruckt werden.
+Zusätzlich bietet das Framework einen PDF-Export über Playwright.
+Beim PDF-Export wird der vorhandene HTML-Testbericht mit Chromium geladen und als PDF im A4-Format erstellt.
+Die erzeugte Datei wird automatisch im Downloads-Ordner als `qa_test_report.pdf` gespeichert.
 
 ![QA_pdf](docs/QA_pdf.png)
