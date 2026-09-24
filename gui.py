@@ -67,6 +67,13 @@ class QA_GUI:
         webbrowser.open("qa_test_report.html")
 
     def button_clicked(self):
+        url = self.url_entry.get()
+
+        if not url:
+            print("Keine URL eingegeben")
+            messagebox.showwarning("Warnung", "Bitte geben Sie zuerst eine URL ein")
+            return
+
         content_window = tk.Toplevel()
         content_window.title("Content Check")
         content_window.geometry("400x250")
