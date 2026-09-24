@@ -63,12 +63,13 @@ qa_test_report.html auswählen → Rechtsklick → Öffnen mit → gewünschten 
   - ssl
   - socket
   - os
+  - threading
 - Requests
 - Playwright
 - HTML
 - CSS
 - JavaScript
-- PHP
+- PHP (Testseite/Testformulare)
 
 ## Installation
 
@@ -80,10 +81,9 @@ qa_test_report.html auswählen → Rechtsklick → Öffnen mit → gewünschten 
 ## Verwendung
 Die zu prüfende URL kann in das obere Eingabefeld eingetragen werden.
 Über den Button „Test starten“ wird der Testlauf gestartet.
+Während des Testlaufs bleibt die GUI bedienbar und der aktuelle Testbericht kann über „Report anzeigen“ geöffnet werden.
 Gespeicherte URLs können über die entsprechenden Buttons geladen, gespeichert, ausgewählt und gelöscht werden.
-
 Nach dem Testlauf wird automatisch der HTML-Testbericht erstellt.
-Der Testbericht kann anschließend über den Button „Report anzeigen“ geöffnet werden.
 
 Über den Button „PDF exportieren“ kann der Testbericht zusätzlich als PDF gespeichert werden.
 Die PDF-Datei wird automatisch im Downloads-Ordner als `qa_test_report.pdf` gespeichert.
@@ -103,6 +103,12 @@ Die PDF-Datei wird automatisch im Downloads-Ordner als `qa_test_report.pdf` gesp
 - qa_test_report.css – Gestaltung des HTML-Testberichts
 - requirements.txt – benötigte Python-Abhängigkeiten
 - docs/cheatsheet.txt – hilfreiche Notizen und Befehle
+
+### Testumgebung für den QA-Test
+
+- Test_Formulare_Raspberry
+  - Testseiten
+  - Testformulare für die Browser- und Funktionstests
 
 ## Testseite
 
