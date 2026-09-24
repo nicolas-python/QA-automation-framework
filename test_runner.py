@@ -119,6 +119,7 @@ def run_test(url, expected_title, expected_text):
 
     report_file = "qa_test_report.html"
     report_results = []
+    create_report(report_file, test_start, url, report_results, test_progress)
     test_summary = {
         "passed": 0,
         "failed": 0,

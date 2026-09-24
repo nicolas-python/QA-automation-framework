@@ -4,6 +4,7 @@ from url_manager import load_urls, save_url, delete_url
 from test_runner import run_test, export_pdf_with_playwright
 import webbrowser                           #ermöglicht das Öffnen von Webseiten und HTML-Dateien im Standardbrowser
 import os
+import threading                            #ermöglicht das Ausführen von Aufgaben im Hintergrund ohne die GUI zu blockieren (Report Anzeigen knopf)
 
 class QA_GUI:
 
@@ -95,7 +96,8 @@ class QA_GUI:
     def button_start(self, content_window, expected_title, expected_text):
         url = self.url_entry.get()
         content_window.destroy()
-        run_test(url, expected_title, expected_text)
+        threading.Thread(target=run_test,                                           #threading.Thread= erstellt einen neuen Hintergrund-Thread
+                         args=(url, expected_title, expected_text)).start()         #target = führe aus args= welche werte übergeben
 
     def load_saved_urls(self):
         self.url_listbox.delete(0, tk.END)
