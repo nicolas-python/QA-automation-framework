@@ -24,7 +24,7 @@
 </head>
 
 <script>
-if (100 < 100) 
+if (25 < 100) 
 {
     setTimeout(function() {
         location.reload();
@@ -51,27 +51,22 @@ if (100 < 100)
     
     <h3>Anfrage QA-Test:</h3>
                                                                 
-    <p>Datum: 23.09.2026</p>             
-    <p>Uhrzeit: 18:13:10</p>      
-    <p>URL: http://192.168.0.236/test/test_fomular_raspberry/index.html</p>
+    <p>Datum: 24.09.2026</p>             
+    <p>Uhrzeit: 16:10:25</p>      
+    <p>URL: </p>
     
     <div class="no-print">
         <h3>Testfortschritt</h3>
         
         <div class="progress-container">
-            <div class="progress-bar" style="width: 100%;">100 %
+            <div class="progress-bar" style="width: 25%;">25 %
         </div>  
             
         </div>
-        <p id="loading-status"></p>
+        <p id="loading-status">Test läuft<span class="loading-dots"></span></p>
         </div>
         
     <div class="report-results">
-        
-        <div class="test-block">
-            <h3>HTTPS Prüfung</h3>
-            <p>HTTPS: FAIL http://192.168.0.236/test/test_fomular_raspberry/index.html</p>
-        </div>
         
     <div class="test-block">
         <h3>SSL/TLS Prüfung</h3>
@@ -80,248 +75,19 @@ if (100 < 100)
     
     <div class="test-block">
         <h3>Domain Prüfung</h3>
-        <p>Domain: PASS - 192.168.0.236 → 192.168.0.236</p>
+        <p>Domain: FAIL - konnte nicht geprüft werden</p>
     </div>
     
     <div class="test-block">
         <h3>Status Prüfung</h3>
-        <p>Status: PASS - 200</p>
+        <p>Status: FAIL - konnte nicht geprüft werden</p>
     </div>
     
     <div class="test-block">
         <h3>Performance Prüfung</h3>
-        <p>Ladezeit: PASS - 0.21 Sekunden</p>
+        <p>Ladezeit: FAIL - konnte nicht geprüft werden</p>
     </div>
     
-    <div class="test-block">
-        <h3>Content Check Prüfung</h3>
-        <p>Title: FAIL - erwartet:  | gefunden: Hauptseite</p>
-        <p>Content: PASS - erwarteter Text gefunden: </p>
-    </div>
-    
-    <div class="test-block">
-        <h3>Broken Links Prüfung</h3>
-        <p>Broken Links: 4 PASS - 0 FAIL<br></p>
-    </div>
-    
-    <div class="test-block">
-    <h3>HTML-Struktur Prüfung</h3>
-    
-    <h4>Sprache:</h4>
-    <p>Lang: PASS - de = Deutsch</p>                            
-    
-    <h4>Grundstruktur:</h4>
-    <p>HEAD: PASS - vorhanden</p>
-    <p>BODY: PASS - vorhanden</p>
-    
-    <h4>Überschriften:</h4>
-    <p>H1: PASS - 1 gefunden</p>
-    
-        <p>H2: INFO - 1 gefunden</p>
-        
-        <p>H3: INFO - 0 gefunden</p>
-        
-        <p>H4: INFO - 0 gefunden</p>
-        
-        <p>H5: INFO - 0 gefunden</p>
-        
-        <p>H6: INFO - 0 gefunden</p>
-        
-    <h3>Meta-Informationen Prüfung</h3>
-    <h4>Charset:</h4>
-    <p>Charset: PASS - utf-8</p>
-    
-    <h4>Viewport:</h4>
-    <p>Viewport: PASS - width=device-width, initial-scale=1.0</p>
-    <p>Mobile Darstellung: PASS - width=device-width</p>
-    
-    <h4>Description:</h4>
-    <p>Description: FAIL - nicht vorhanden</p>
-    
-    <h4>Robots:</h4>
-    <p>Robots: FAIL - nicht vorhanden</p>
-    </div>
-    
-    <div class="test-block">
-    <h3>Browser Tests</h3>
-    
-            <h4>Button test sichtbar:</h4>
-            <p>Buttons: 5 PASS - 0 FAIL</p>
-            
-                <h4>Aufklappbare Buttons:</h4>
-                <p>Aufklappbare Buttons: 5 PASS - 0 FAIL</p>
-                
-                    <h4>Neue Buttons:</h4>
-                    <p>Neue Buttons: 2 PASS - 0 FAIL</p>
-                    
-            <h4>Buttons Gesamtübersicht:</h4>
-            <p>Normale Buttons: 5</p>
-            <p>Aufklappbare Buttons: 5</p>
-            <p>Neue Buttons: 2</p>
-            <p>Insgesamt: 12</p>
-            
-                <h4>Interaktive Elemente:</h4>
-                <p>Interaktive Elemente: 1 PASS - 0 FAIL</p>
-                
-                <h4>Interaktive Unterelemente:</h4>
-                <p>Interaktive Unterelemente: 1 PASS - 0 FAIL</p>
-                
-            <h4>Interaktive Elemente Gesamtübersicht:</h4>
-            <p>Starterseite: 1</p>
-            <p>Unterelemente: 1</p>
-            <p>Insgesamt: 2</p>
-            
-            <h4>Formulare über Knöpfe:</h4>
-            
-                    <div class="formular-block">
-                    <p>Formular 1:</p>
-                    <p>URL: http://192.168.0.236/test/test_fomular_raspberry/formular.php</p>
-                    <p>Button: Button 2 – Formular</p>
-                    <p>Eingabefelder erwartet: 8</p>
-                    <p>Eingabefelder gefunden: 8</p>
-                    <p>Eingabefelder Vorhanden: JA</p>
-                    
-                        <p class="field-result">Feld 1: PASS - beschreibbar</p>
-                        
-                        <p class="field-result">Feld 2: PASS - beschreibbar</p>
-                        
-                        <p class="field-result">Feld 3: PASS - beschreibbar</p>
-                        
-                        <p class="field-result">Feld 4: PASS - beschreibbar</p>
-                        
-                        <p class="field-result">Feld 5: PASS - beschreibbar</p>
-                        
-                        <p class="field-result">Feld 6: PASS - beschreibbar</p>
-                        
-                        <p class="field-result">Feld 7: PASS - beschreibbar</p>
-                        
-                        <p class="field-result">Feld 8: PASS - beschreibbar</p>
-                        
-                    <p>Absenden: PASS - Formular grundsätzlich absendbar - Submit-Button vorhanden und aktiv - kein Absenden durchgeführt</p>
-                    </div>
-                    
-                    <div class="formular-block">
-                    <p>Formular 2:</p>
-                    <p>URL: http://192.168.0.236/test/test_fomular_raspberry/formular.php</p>
-                    <p>Button: Button 5 – Untermenü - Unterelement – Formular</p>
-                    <p>Eingabefelder erwartet: 8</p>
-                    <p>Eingabefelder gefunden: 8</p>
-                    <p>Eingabefelder Vorhanden: JA</p>
-                    
-                        <p class="field-result">Feld 1: PASS - beschreibbar</p>
-                        
-                        <p class="field-result">Feld 2: PASS - beschreibbar</p>
-                        
-                        <p class="field-result">Feld 3: PASS - beschreibbar</p>
-                        
-                        <p class="field-result">Feld 4: PASS - beschreibbar</p>
-                        
-                        <p class="field-result">Feld 5: PASS - beschreibbar</p>
-                        
-                        <p class="field-result">Feld 6: PASS - beschreibbar</p>
-                        
-                        <p class="field-result">Feld 7: PASS - beschreibbar</p>
-                        
-                        <p class="field-result">Feld 8: PASS - beschreibbar</p>
-                        
-                    <p>Absenden: PASS - Formular grundsätzlich absendbar - Submit-Button vorhanden und aktiv - kein Absenden durchgeführt</p>
-                    </div>
-                    
-                                    <h4>Formulare über Links:</h4>
-                                    
-                                    <div class="formular-block">
-                                    <p>Formular 1:</p>
-                                    <p>URL: http://192.168.0.236/test/test_fomular_raspberry/formular.php</p>
-                                    <p>Über Link: http://192.168.0.236/test/test_fomular_raspberry/link.php</p>
-                                    <p>Eingabefelder erwartet: 8</p>
-                                    <p>Eingabefelder gefunden: 8</p>
-                                    <p>Eingabefelder Vorhanden: JA</p>
-                                    
-                                    <p class="field-result">Feld 1: PASS - beschreibbar</p>
-                                    
-                                    <p class="field-result">Feld 2: PASS - beschreibbar</p>
-                                    
-                                    <p class="field-result">Feld 3: PASS - beschreibbar</p>
-                                    
-                                    <p class="field-result">Feld 4: PASS - beschreibbar</p>
-                                    
-                                    <p class="field-result">Feld 5: PASS - beschreibbar</p>
-                                    
-                                    <p class="field-result">Feld 6: PASS - beschreibbar</p>
-                                    
-                                    <p class="field-result">Feld 7: PASS - beschreibbar</p>
-                                    
-                                    <p class="field-result">Feld 8: PASS - beschreibbar</p>
-                                    
-                                <p>Absenden: PASS - Formular grundsätzlich absendbar - Submit-Button vorhanden und aktiv - kein Absenden durchgeführt</p>
-                                </div>
-                                
-            <div class="formular-block">
-            <h4>Formulare Auswahlbare Inhalte / Optionsfelder:</h4>
-            
-                    <div class="formular-block">
-                    <p>Formular 1:</p>
-                    <p>URL: http://192.168.0.236/test/test_fomular_raspberry/optionsfeld.php</p>
-                    <p>Button: Button 3 – Optionsfeld</p>
-                    <p>Radio-Felder gefunden: 0</p>
-                    <p>Select-Felder gefunden: 1</p>
-                    
-                        <div class="formular-block">
-                        <p>Select-Feld 1:</p>
-                        <p>Optionen gefunden: 4</p>
-                        <p>Auswahloptionen: 4</p>
-                        <p>Funktionieren: 4 PASS - 0 FAIL</p>
-                        
-                            <p>Option 1:
-                            PASS - auswählbar</p>
-                            
-                            <p>Option 2:
-                            PASS - auswählbar</p>
-                            
-                            <p>Option 3:
-                            PASS - auswählbar</p>
-                            
-                            <p>Option 4:
-                            PASS - auswählbar</p>
-                            
-                                </div>
-                               
-                            </div>
-                           
-            <div class="formular-block">
-            <h4>Formulare Gesamtübersicht:</h4>
-            
-            <div class="gesamtuebersicht-block">
-                <p>Formulare Gesamt: 4</p>
-                <p>Formulare über Buttons: 2</p>
-                <p>Formulare über Links: 1</p>
-                <p>Formulare mit Auswahlfeldern: 1</p>
-            </div>
-                
-            <div class="gesamtuebersicht-block">
-                <p>Eingabefelder: 24</p>
-                <p>Beschreibbar: 24</p>
-                <p>Nicht beschreibbar: 0</p>
-            </div>
-                
-            <div class="gesamtuebersicht-block">
-                <p>Select-Felder: 1</p>
-                <p>Auswahloptionen: 4</p>
-                <p>Auswählbar: 4</p>
-                <p>Nicht auswählbar: 0</p>
-            </div>
-            
-                        <h3>Test Gesamtergebnis</h3>
-
-                        <div class="gesamtuebersicht-block">
-                            <p>Einzelprüfungen gesamt: 65</p>
-                            <p>Bestanden: 60</p>
-                            <p>Warnungen: 0</p>
-                            <p>Fehlgeschlagen: 5</p>
-                            <p>Testdauer: 52.69 Sekunden</p>
-                            <p><strong>Gesamtergebnis: FEHLGESCHLAGEN</strong></p>
-                        </div>
-                        
     </div>
 </body>
 

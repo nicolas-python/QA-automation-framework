@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import messagebox
 from url_manager import load_urls, save_url, delete_url
 from test_runner import run_test, export_pdf_with_playwright
 import webbrowser                           #ermöglicht das Öffnen von Webseiten und HTML-Dateien im Standardbrowser
@@ -104,6 +105,8 @@ class QA_GUI:
 
         else:
             print("Keine URL ausgewählt")
+            messagebox.showwarning("Warnung", "Keine URL ausgewählt")
+
 
     def save_url(self):
         url = self.url_entry.get()
@@ -114,6 +117,7 @@ class QA_GUI:
 
         else:
             print("Keine URL eingegeben")
+            messagebox.showwarning("Warnung", "Keine URL eingegeben")
 
     def load_selected_url(self):
         selection = self.url_listbox.curselection()
@@ -125,6 +129,7 @@ class QA_GUI:
 
         else:
             print("Keine URL ausgewählt")
+            messagebox.showwarning("Warnung", "Keine URL ausgewählt")
 
     def start(self):
         self.window.mainloop()
