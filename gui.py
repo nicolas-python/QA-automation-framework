@@ -10,6 +10,9 @@ class QA_GUI:
     def __init__(self):
         self.window = tk.Tk()
 
+        if os.path.exists("qa_test_report.html"):
+            os.remove("qa_test_report.html")
+
         self.window.title("QA Automation Framework")
         self.window.geometry("400x670")
 
